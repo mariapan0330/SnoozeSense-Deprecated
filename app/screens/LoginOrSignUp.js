@@ -14,10 +14,16 @@ import {
   createUserWithEmailAndPassword,
 } from "firebase/auth";
 
-const Login = () => {
+const LoginOrSignUp = () => {
+  /*
+    LOGIN SCREEN: allows the user to enter their username and password and login.
+    Currently this is also the place where they CREATE an account with the credentials they entered.
+  */
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [retypePassword, setRetypePassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isCreatingAccount, setIsCreatingAccount] = useState(false);
   const auth = FIREBASE_AUTH;
 
   const signIn = async () => {
@@ -54,33 +60,41 @@ const Login = () => {
 
   return (
     <View style={styles.container}>
-      <KeyboardAvoidingView behavior="height">
-        <Text>Login!!</Text>
+      <Text>Login!!</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Email"
+        autoCapitalize="none"
+        value={email}
+        onChangeText={(text) => setEmail(text)}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Password"
+        autoCapitalize="none"
+        value={password}
+        secureTextEntry={true}
+        onChangeText={(text) => setPassword(text)}
+      />
+      {isCreatingAccount && (
         <TextInput
           style={styles.input}
-          placeholder="Email"
+          placeholder="Retype Password"
           autoCapitalize="none"
-          value={email}
-          onChangeText={(text) => setEmail(text)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          autoCapitalize="none"
-          value={password}
+          value={retypePassword}
           secureTextEntry={true}
-          onChangeText={(text) => setPassword(text)}
+          onChangeText={(text) => setRetypePassword(text)}
         />
+      )}
 
-        {loading ? (
-          <ActivityIndicator size="large" color="red" />
-        ) : (
-          <>
-            <Button title="Login" onPress={signIn} />
-            <Button title="Create Account" onPress={signUp} />
-          </>
-        )}
-      </KeyboardAvoidingView>
+      {loading ? (
+        <ActivityIndicator size="large" color="red" />
+      ) : (
+        <>
+          <Button title="Login" onPress={signIn} />
+          <Button title="Sign Up" onPress={signUp} />
+        </>
+      )}
     </View>
   );
 };
@@ -95,6 +109,7 @@ const styles = StyleSheet.create({
   },
   input: {
     marginVertical: 4,
+    width: "80%",
     height: 50,
     borderWidth: 1,
     borderRadius: 4,
