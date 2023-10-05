@@ -5,7 +5,6 @@ import {
   TextInput,
   ActivityIndicator,
   Pressable,
-  Button,
 } from "react-native";
 import React, { useState } from "react";
 import { FIREBASE_AUTH } from "../../FirebaseConfig";
@@ -77,8 +76,6 @@ const Login = ({ navigation }) => {
   );
 };
 
-export default Login;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -112,3 +109,5 @@ const styles = StyleSheet.create({
     backgroundColor: "black",
   },
 });
+
+export default Login;
