@@ -1,10 +1,10 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import LoginOrSignUp from "./app/screens/LoginOrSignUp";
+import LoginOrSignUp from "./app/screens/LoginOrSignUp.js";
 import Login from "./app/screens/Login";
 import SignUp from "./app/screens/SignUp";
-import PlaceholderOnboarding from "./app/screens/PlaceholderOnboarding";
-import PlaceholderLanding from "./app/screens/PlaceholderLanding";
+import PlaceholderOnboarding from "./app/screens/PlaceholderOnboarding.js";
+import PlaceholderLanding from "./app/screens/PlaceholderLanding.js";
 
 const Stack = createNativeStackNavigator();
 

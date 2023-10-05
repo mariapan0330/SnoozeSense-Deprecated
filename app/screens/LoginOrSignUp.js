@@ -1,7 +1,5 @@
-import { View, Text, StyleSheet, Button, Pressable } from "react-native";
-import React, { useState } from "react";
-import SignUp from "./SignUp";
-import Login from "./Login";
+import { View, Text, StyleSheet, Pressable } from "react-native";
+import React from "react";
 
 const LoginOrSignUp = ({ navigation }) => {
   /*
@@ -27,8 +25,6 @@ const LoginOrSignUp = ({ navigation }) => {
   );
 };
 
-export default LoginOrSignUp;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -53,3 +49,5 @@ const styles = StyleSheet.create({
     backgroundColor: "black",
   },
 });
+
+export default LoginOrSignUp;
