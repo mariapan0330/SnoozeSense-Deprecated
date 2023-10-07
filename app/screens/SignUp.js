@@ -8,10 +8,12 @@ import {
   Button,
 } from "react-native";
 import React, { useState } from "react";
-import { FIREBASE_AUTH } from "../../FirebaseConfig";
+import { FIREBASE_AUTH } from "../../services/FirebaseConfig";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createNewUserWithDefaultValues } from "../../services/handleFirestore";
 
 const SignUp = ({ navigation }) => {
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [retypePassword, setRetypePassword] = useState("");
@@ -26,6 +28,7 @@ const SignUp = ({ navigation }) => {
         const res = await createUserWithEmailAndPassword(auth, email, password);
         navigation.navigate("PlaceholderOnboarding");
         console.log(res);
+        createNewUserWithDefaultValues(username, email);
       } catch (err) {
         console.log(err);
         alert("Sign Up failed " + err.message);
@@ -36,9 +39,17 @@ const SignUp = ({ navigation }) => {
       alert("Passwords do not match!");
     }
   };
+
   return (
     <View style={styles.container}>
       <Text>Sign Up</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Username"
+        autoCapitalize="none"
+        value={username}
+        onChangeText={(text) => setUsername(text)}
+      />
       <TextInput
         style={styles.input}
         placeholder="Email"
