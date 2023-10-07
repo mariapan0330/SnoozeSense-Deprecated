@@ -1,0 +1,67 @@
+users (COLLECTION): [
+  userID1 (DOCUMENT): {
+    username: mariapan0330,
+    email: maria.pan0330@gmail.com,
+    age: 23,
+    sleepStreak: 3,
+    settings (SUBCOLLECTION): [
+      notificationPreferences (DOCUMENT): {
+        enableNotifications: true,
+        sleepTimeReminderOffset: 15,
+        soundChoice: AUDIO_1,
+        soundOn: false,
+        vibrationOn: true
+      },
+      sleepPreferences (DOCUMENT): {
+        sleepDurationGoal: 7.5,
+        sundaySleepTimeGoal: '2230',
+        mondaySleepTimeGoal: '2230',
+        wednesdaySleepTimeGoal: '2230',
+        thursdaySleepTimeGoal: '2200',
+        fridaySleepTimeGoal: '2330',
+        saturdaySleepTimeGoal: '2330',
+      }
+    ],
+    sleepLogs (SUBCOLLECTION): [
+      10062023 (DOCUMENT): {
+        date: '10.05.2023',
+        sleepDurationGoalMet: true,
+        sleepLogStart: '0300',
+        sleepLogEnd: '1230',
+        challengesCompleted: [challengeID1, challengeID3]
+      },
+      ...
+    ],
+    tasks (SUBCOLLECTION): [
+      taskID1 (DOCUMENT): {
+        taskName: "Brush teeth, floss, mouthwash",
+        taskDuration: 7,
+        isCompleted: false,
+        enableNotification: false
+      },
+      taskID2: {
+        taskName: "Turn off phone & read book",
+        taskDuration: 30,
+        isCompleted: false,
+        enableNotification: true
+      }
+    ],
+    challenges (SUBCOLLECTION): [
+      challengeID1 (DOCUMENT): {
+        title: "No Screen Bedtime Challenge",
+        description: "Avoid screens 10 minutes before beds for 3 nights.",
+        completed: true
+      }
+      challengeID2: {
+        title: "7 Day Streak Challenge",
+        description: "Accomplish your sleep goals for nights in a row.",
+        completed: false
+      }
+      challengeID3: {
+        title: "Reading Challenge",
+        description: "Read for 3 nights.",
+        completed: true
+      }
+    ]
+  }
+]
