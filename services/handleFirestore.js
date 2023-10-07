@@ -1,5 +1,5 @@
 import { FIREBASE_DB } from "./FirebaseConfig";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 
 const db = FIREBASE_DB;
 
@@ -15,6 +15,7 @@ export const createNewUserWithDefaultValues = async (username, email) => {
       soundChoice: "",
       soundOn: true,
       vibrationOn: true,
+      sleepDurationGoal: 8,
       mondaySleepTime: "2100",
       tuesdaySleepTime: "2100",
       wednesdaySleepTime: "2100",
@@ -24,14 +25,34 @@ export const createNewUserWithDefaultValues = async (username, email) => {
       sundaySleepTime: "2100",
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 
-// export const updateUserData = (email, keyToUpdate, valToUpdate) => {
-//   const ref = doc(db, "users", email);
-//   setDoc(ref, { keyToUpdate, valToUpdate }, { merge: true });
-// };
+export const getUserData = async (email) => {
+  try {
+    const docRef = doc(db, "users", email);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      console.log("Document data:", docSnap.data());
+      return docSnap.data();
+    } else {
+      console.log("No such document!!");
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const updateUserData = (email, objToUpdate) => {
+  try {
+    const ref = doc(db, "users", email);
+    setDoc(ref, objToUpdate, { merge: true });
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 // export const addChallenge = (challengeTitle, challengeDescription) => {
 //   const ref = doc(db, "challenges", challengeTitle);
