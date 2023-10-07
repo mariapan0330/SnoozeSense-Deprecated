@@ -1,5 +1,6 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Button } from "react-native";
 import React from "react";
+import { getUserData } from "../../services/handleFirestore";
 
 const PlaceholderOnboarding = () => {
   return (
