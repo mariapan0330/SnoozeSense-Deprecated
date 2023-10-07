@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, Button } from "react-native";
 import React from "react";
-import { FIREBASE_AUTH } from "../../FirebaseConfig";
+import { FIREBASE_AUTH } from "../../services/FirebaseConfig";
 
 const PlaceholderLanding = ({ navigation }) => {
   return (
