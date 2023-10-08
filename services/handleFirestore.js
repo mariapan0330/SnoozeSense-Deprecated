@@ -3,7 +3,11 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 
 const db = FIREBASE_DB;
 
-export const createNewUserWithDefaultValues = async (username, email) => {
+export const createNewUserWithDefaultValues = async (
+  username,
+  email,
+  userID
+) => {
   try {
     await setDoc(doc(db, "users", email), {
       username: username,
@@ -23,36 +27,23 @@ export const createNewUserWithDefaultValues = async (username, email) => {
       fridaySleepTime: "2100",
       saturdaySleepTime: "2100",
       sundaySleepTime: "2100",
+      tasks: [],
+      sleepLogs: [],
+      challenges: [],
     });
   } catch (error) {
     console.error(error);
   }
 };
 
-export const getUserData = async (email) => {
-  try {
-    const docRef = doc(db, "users", email);
-    const docSnap = await getDoc(docRef);
-
-    if (docSnap.exists()) {
-      console.log("Document data:", docSnap.data());
-      return docSnap.data();
-    } else {
-      console.log("No such document!!");
-    }
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-export const updateUserData = (email, objToUpdate) => {
-  try {
-    const ref = doc(db, "users", email);
-    setDoc(ref, objToUpdate, { merge: true });
-  } catch (error) {
-    console.error(error);
-  }
-};
+// export const updateUserData = (email, objToUpdate) => {
+//   try {
+//     const ref = doc(db, "users", email);
+//     setDoc(ref, objToUpdate, { merge: true });
+//   } catch (error) {
+//     console.error(error);
+//   }
+// };
 
 // export const addChallenge = (challengeTitle, challengeDescription) => {
 //   const ref = doc(db, "challenges", challengeTitle);
