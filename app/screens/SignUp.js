@@ -12,7 +12,7 @@ import { FIREBASE_AUTH } from "../../services/FirebaseConfig";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { createNewUserWithDefaultValues } from "../../services/handleFirestore";
 
-const SignUp = ({ navigation }) => {
+const SignUp = ({ navigation, currentUser }) => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -33,7 +33,7 @@ const SignUp = ({ navigation }) => {
         console.log(err);
         alert("Sign Up failed " + err.message);
       } finally {
-        setLoading(false);
+        // setLoading(false);
       }
     } else {
       alert("Passwords do not match!");
