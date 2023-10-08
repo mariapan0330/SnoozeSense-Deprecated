@@ -38,3 +38,48 @@ USERS_CHALLENGES TABLE
     REF challengeID
     REF userID
     STR dateCompleted
+
+
+
+SAMPLE USER OBJECT FROM AUTHENTICATION
+    currentUser:  
+    {
+        "_redirectEventId": undefined,
+        "apiKey": "AIzaSyCjz476Iu-LUly7xC7tOwrpvA8jrZFz24U"
+        "appName": "[DEFAULT]",
+        "createdAt": "1696654542471",
+        "displayName": undefined, 
+        "email": "user6@gmail.com", 
+        "emailVerified": false, 
+        "isAnonymous": false, 
+        "lastLoginAt": "1696746163979", 
+        "phoneNumber": undefined, 
+        "photoURL": undefined, 
+        "providerData": [[Object]], 
+        "stsTokenManager": 
+            {
+                "accessToken": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjlhNTE5MDc0NmU5M2JhZTI
+                0OWIyYWE3YzJhYTRlMzA2M2UzNDFlYzciLCJ0eXAiOiJKV1QifQ.e
+                yJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vc
+                25vb3plc2Vuc2UtNjgxYWYiLCJhdWQiOiJzbm9vemVzZW5zZS02
+                ODFhZiIsImF1dGhfdGltZSI6MTY5Njc0NjE2MywidXNlcl9pZCI6ImJ
+                wb1FFUXc0d1ZYQ3l0RVEzQ3NXc1kyWlYwaTEiLCJzdWIiOiJicG9RRVF3N
+                HdWWEN5dEVRM0NzV3NZMlpWMGkxIiwiaWF0IjoxNjk2NzQ2MTYzLCJleHAiO
+                jE2OTY3NDk3NjMsImVtYWlsIjoidXNlcjZAZ21haWwuY29tIiwiZW1haWxfd
+                mVyaWZpZWQiOmZhbHNlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtY
+                WlsIjpbInVzZXI2QGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6I
+                nBhc3N3b3JkIn19.Fa3f_89H-aBuMJ3FhZTeyk0yazfrvqabO28l0o12F8wm
+                vjEDzg9_Eqi2Jo0tilaGre8fUSo6KPIQoM6aH09_KVNVn8M_gh-7kornLYw7y
+                V7rQZvrodsONzX42ha9fqwIWMZ7ow2rABQDmVr4qEc7yBFQwEQokFs1hugM9n
+                RzAtLPEKgmkFwq3a7r0Qf7zPKJw_ujgfB5gww2OZibWjmq8rs0Qp_1aO5vh7p
+                MyS9atypTLEuAZPdTi-uQbA0HUV30tSpTUKQmTWwci_08EeitVOVEg8gYSlOf
+                Z--5sgEQSilZE0zgtFPTZpFAUXiHy-6QXOeZPHdldYZwAdGL1iDwQ",
+
+                "expirationTime": 1696749763544, 
+                "refreshToken": "AMf-vBy9ixVj9eK0scMEoLMx1PAxNh2Y4vf6NVfMB-7Kw
+                DJUqnBmxGGb0bgeUR6csjxXFBaFlwfnBRO1QjcflbsH6UXN_Zb4PvbHG6UTBfKr
+                YI5BECD_TATicwWuQpTkXs4Ysy3E_q7jht9n84571HJ2IUzto2Bbp7gEmtWMm5n
+                jsu7B1IgPgPKenb2eMZPBjobpa6Ek4OwFnAP96gP-cSdAcn0oN9zAww"
+            }, 
+        "tenantId": undefined, 
+        "uid": "bpoQEQw4wVXCytEQ3CsWsY2ZV0i1"}

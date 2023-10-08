@@ -4,12 +4,12 @@ import { FIREBASE_AUTH } from "../../services/FirebaseConfig";
 // import { getUserData, updateUserData } from "../../services/handleFirestore";
 import useUserData from "../hooks/useUserData";
 
-const PlaceholderLanding = ({ navigation }) => {
-  const TEST_USER = "user6@gmail.com";
-  const { userData } = useUserData("user6@gmail.com");
+const PlaceholderLanding = ({ navigation, currentUser }) => {
+  const { userData } = useUserData(currentUser.email);
 
   return (
     <View style={styles.container}>
+      <Text>PLACEHOLDER LANDING</Text>
       <Text>Welcome, {userData.username}!</Text>
       <Text>Sleep Streak: {userData.sleepStreak} days</Text>
       <Text>Sleep Duration Goal: {userData.sleepDurationGoal} hours</Text>
@@ -29,7 +29,7 @@ const PlaceholderLanding = ({ navigation }) => {
           console.log(userData.tasks);
         }}
       />
-      <Button title="Log Out" />
+      <Button title="Log Out" onPress={() => FIREBASE_AUTH.signOut()} />
     </View>
   );
 };

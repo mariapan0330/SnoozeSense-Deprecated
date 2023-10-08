@@ -3,17 +3,13 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 
 const db = FIREBASE_DB;
 
-export const createNewUserWithDefaultValues = async (
-  username,
-  email,
-  userID
-) => {
+export const createNewUserWithDefaultValues = async (username, email) => {
   try {
     await setDoc(doc(db, "users", email), {
       username: username,
       email: email,
       birthday: "01.01.1990",
-      enableNotifications: false,
+      enableNotifications: true,
       sleepStreak: 0,
       sleepReminderOffset: 20,
       soundChoice: "",
@@ -32,7 +28,7 @@ export const createNewUserWithDefaultValues = async (
       challenges: [],
     });
   } catch (error) {
-    console.error(error);
+    console.error("Error Creating New User: ", error);
   }
 };
 
