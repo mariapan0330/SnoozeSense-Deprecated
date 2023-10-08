@@ -1,11 +1,14 @@
 import { View, Text, StyleSheet, Button } from "react-native";
 import React from "react";
-import { getUserData } from "../../services/handleFirestore";
 
-const PlaceholderOnboarding = () => {
+const PlaceholderOnboarding = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text>Placeholder Onboarding</Text>
+      <Button
+        title="Skip"
+        onPress={() => navigation.navigate("PlaceholderLanding")}
+      />
     </View>
   );
 };

@@ -1,11 +1,9 @@
 import { useState, useEffect } from "react";
 import { FIREBASE_DB } from "../../services/FirebaseConfig";
-import { doc, collection, getDoc, getDocs } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 
 const useUserData = (email) => {
   const [userData, setUserData] = useState({});
-  const [userTasks, setUserTasks] = useState({});
-  const [userSleepLogs, setUserSleepLogs] = useState({});
 
   const db = FIREBASE_DB;
 
