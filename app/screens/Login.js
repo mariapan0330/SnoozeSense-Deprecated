@@ -1,5 +1,6 @@
 import {
   View,
+  Image,
   Text,
   StyleSheet,
   TextInput,
@@ -9,6 +10,7 @@ import {
 import React, { useState } from "react";
 import { FIREBASE_AUTH } from "../../services/FirebaseConfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import { colors } from "../../utils/colors";
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -18,37 +20,45 @@ const Login = ({ navigation }) => {
   const auth = FIREBASE_AUTH;
 
   const handleLogin = async () => {
-    setLoading(true);
-    try {
-      const res = await signInWithEmailAndPassword(auth, email, password);
-      console.log(res);
-    } catch (err) {
-      console.log(err);
-      if (err.message === "Firebase: Error (auth/invalid-login-credentials).") {
-        alert(
-          'Invalid Login Credentials. Click "Create Account" if you are new!'
-        );
-      } else {
-        alert("Sign In failed!" + err);
+    if (email + password !== "") {
+      setLoading(true);
+      try {
+        const res = await signInWithEmailAndPassword(auth, email, password);
+        console.log(res);
+      } catch (err) {
+        console.log(err);
+        if (
+          err.message === "Firebase: Error (auth/invalid-login-credentials)."
+        ) {
+          alert(
+            'Invalid Login Credentials. Click "Create Account" if you are new!'
+          );
+        } else {
+          alert("Sign In failed!" + err);
+        }
+      } finally {
+        setLoading(false);
       }
-    } finally {
-      setLoading(false);
     }
   };
 
   return (
     <View style={styles.container}>
-      <Text>Login</Text>
+      <Image source={require("../../assets/logo.png")} style={styles.icon} />
+      <Text style={styles.heroText}>Welcome to SnoozeSense</Text>
+      <Text style={styles.subtitle}>Helping you reach your sleep goals</Text>
+      <Text style={styles.inputLabel}>{"\n\n"}Email</Text>
       <TextInput
         style={styles.input}
-        placeholder="Email"
+        placeholder="example@snooze.com"
         autoCapitalize="none"
         value={email}
         onChangeText={(text) => setEmail(text)}
       />
+      <Text style={styles.inputLabel}>{"\n"}Password</Text>
       <TextInput
         style={styles.input}
-        placeholder="Password"
+        placeholder="******"
         autoCapitalize="none"
         value={password}
         secureTextEntry={true}
@@ -61,12 +71,16 @@ const Login = ({ navigation }) => {
         <View style={styles.buttonContainer}>
           <Pressable onPress={() => handleLogin()}>
             <View style={[styles.button, styles.loginButton]}>
-              <Text>Login</Text>
+              <Text>Sign In</Text>
             </View>
           </Pressable>
+
           <Pressable onPress={() => navigation.navigate("SignUp")}>
-            <View style={[styles.button, styles.signUpButton]}>
-              <Text style={{ color: "white" }}>Go to Create Account</Text>
+            <View style={styles.signUpContainer}>
+              <Text style={styles.text}>
+                {"\n\n"}Don't have an account?{" "}
+                <Text style={{ textDecorationLine: "underline" }}>Sign Up</Text>
+              </Text>
             </View>
           </Pressable>
         </View>
@@ -80,18 +94,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-  },
-  input: {
-    marginVertical: 4,
-    width: "80%",
-    height: 50,
-    borderWidth: 1,
-    borderRadius: 4,
-    padding: 10,
-    backgroundColor: "white",
+    paddingHorizontal: 40,
+    backgroundColor: colors.background,
   },
   buttonContainer: {
-    width: "60%",
+    // width: "50%",
+    justifyContent: "center",
+    alignItems: "center",
   },
   button: {
     alignItems: "center",
@@ -100,12 +109,49 @@ const styles = StyleSheet.create({
     margin: 5,
     borderRadius: 30,
     borderWidth: 2,
+    width: "300%",
+  },
+  heroText: {
+    fontWeight: "bold",
+    color: colors.fontWhite,
+    fontSize: 20,
+  },
+  icon: {
+    width: 200,
+    height: 200,
+    marginBottom: 10,
+  },
+  input: {
+    marginVertical: 4,
+    width: "100%",
+    height: 40,
+    borderWidth: 1,
+    borderRadius: 20,
+    padding: 10,
+    borderColor: "transparent",
+    backgroundColor: colors.fontWhite,
+  },
+  inputLabel: {
+    alignSelf: "flex-start",
+    color: colors.fontWhite,
   },
   loginButton: {
-    backgroundColor: "white",
+    backgroundColor: colors.mainButton,
   },
   signUpButton: {
-    backgroundColor: "black",
+    backgroundColor: colors.secondaryButton,
+  },
+  signUpContainer: {
+    flexDirection: "row",
+    width: "100%",
+  },
+  subtitle: {
+    fontSize: 16,
+    color: colors.fontWhite,
+  },
+  text: {
+    alignSelf: "center",
+    color: colors.fontWhite,
   },
 });
 

@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, Button } from "react-native";
 import React from "react";
 
-const PlaceholderOnboarding = ({ navigation }) => {
+const PlaceholderOnboarding = ({ navigation, currentUser }) => {
   return (
     <View style={styles.container}>
       <Text>Placeholder Onboarding</Text>

@@ -21,9 +21,12 @@ function InsideLayout({ currentUser }) {
       </InsideStack.Screen>
       <InsideStack.Screen
         name="PlaceholderOnboarding"
-        component={PlaceholderOnboarding}
         options={{ headerShown: false }}
-      />
+      >
+        {(props) => (
+          <PlaceholderOnboarding {...props} {...{ currentUser: currentUser }} />
+        )}
+      </InsideStack.Screen>
     </InsideStack.Navigator>
   );
 }
@@ -58,11 +61,11 @@ export default function App() {
           </>
         ) : (
           <>
-            <Stack.Screen
+            {/* <Stack.Screen
               name="LoginOrSignUp"
               component={LoginOrSignUp}
               options={{ headerShown: false }}
-            />
+            /> */}
             <Stack.Screen
               name="Login"
               component={Login}
