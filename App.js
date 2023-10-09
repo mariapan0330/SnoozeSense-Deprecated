@@ -17,13 +17,8 @@ const InsideStack = createNativeStackNavigator();
 function InsideLayout({ currentUser }) {
   return (
     <InsideStack.Navigator>
-      <InsideStack.Screen
-        name="PlaceholderLanding"
-        options={{ headerShown: false }}
-      >
-        {(props) => (
-          <Home {...props} {...{ currentUser: currentUser }} />
-        )}
+      <InsideStack.Screen name="Home" options={{ headerShown: false }}>
+        {(props) => <Home {...props} {...{ currentUser: currentUser }} />}
       </InsideStack.Screen>
       <InsideStack.Screen
         name="PlaceholderOnboarding"
