@@ -64,7 +64,7 @@ const Home = () => {
             <Text>Bedtime</Text>
           </View>
           <View style={[styles.switchContainer, styles.wakeUpContainer]}>
-            {/* <Image source={require("./sunicon.png")} style={styles.icon} /> */}
+            {/* <Image source={require('./sunicon.png')} style={styles.icon} /> */}
             <Text style={styles.timeText}>{wakeUpTime}</Text>
             <Switch
               trackColor={{ false: "#767577", true: "#ffd700" }}
@@ -88,7 +88,7 @@ const Home = () => {
         <View style={styles.challengesContainer}>
           <View style={styles.header}>
             <Text style={styles.headerText}>Night Routine</Text>
-            {/* <Image source={require("./moonicon.png")} style={styles.icon} /> */}
+            {/* <Image source={require('./moonicon.png')} style={styles.icon} /> */}
           </View>
           <Text style={styles.message}>
             You currently have no night routine task
