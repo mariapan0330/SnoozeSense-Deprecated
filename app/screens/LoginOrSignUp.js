@@ -1,10 +1,9 @@
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import { View, Text, StyleSheet, Pressable, Button } from "react-native";
 import React from "react";
 
 const LoginOrSignUp = ({ navigation }) => {
   /*
     LOGIN SCREEN: allows the user to enter their username and password and login.
-    Currently this is also the place where they CREATE an account with the credentials they entered.
   */
 
   return (
