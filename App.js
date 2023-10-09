@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { FIREBASE_AUTH } from "./services/FirebaseConfig.js";
 import Home from "./app/screens/Home.js"
+import Tabs from "./app/navigation/tabs.js"
 
 const Stack = createNativeStackNavigator();
 const InsideStack = createNativeStackNavigator();
@@ -60,6 +61,7 @@ export default function App() {
                 />
               )}
             </Stack.Screen>
+            <Stack.Screen name="Tabs" component={Tabs} options={{ headerShown: false }} />
           </>
         ) : (
           <>

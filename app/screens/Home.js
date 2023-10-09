@@ -47,12 +47,12 @@ const Home = () => {
       />
       <View style={styles.mainContainer}>
         <View style={styles.goalContainer}>
-          <Image source={require('./moonicon.png')} style={styles.icon} />
+          {/* <Image source={require('./moonicon.png')} style={styles.icon} /> */}
           <Text styles={styles.goalText}> Sleep Goal: 8 Hours</Text>
         </View>
         <View style={styles.container}>
           <View style={[styles.switchContainer, styles.bedtimeContainer]}>
-            <Image source={require('./moonicon.png')} style={styles.icon} />
+            {/* <Image source={require('./moonicon.png')} style={styles.icon} /> */}
             <Text style={styles.timeText}>{bedtime}</Text>
             <Switch
               trackColor={{ false: '#767577', true: '#81b0ff' }}
@@ -63,7 +63,7 @@ const Home = () => {
             <Text>Bedtime</Text>
           </View>
           <View style={[styles.switchContainer, styles.wakeUpContainer]}>
-            <Image source={require('./sunicon.png')} style={styles.icon} />
+            {/* <Image source={require('./sunicon.png')} style={styles.icon} /> */}
             <Text style={styles.timeText}>{wakeUpTime}</Text>
             <Switch
               trackColor={{ false: '#767577', true: '#ffd700' }}
@@ -77,7 +77,7 @@ const Home = () => {
         <View style={styles.challengesContainer}>
           <View style={styles.header}>
             <Text style={styles.headerText}>Challenges</Text>
-            <Image source={require('./moonicon.png')} style={styles.icon} />
+            {/* <Image source={require('./moonicon.png')} style={styles.icon} /> */}
           </View>
           <Text style={styles.message}>You currently have no challenges</Text>
           <TouchableOpacity style={styles.button}>
@@ -87,7 +87,7 @@ const Home = () => {
         <View style={styles.challengesContainer}>
           <View style={styles.header}>
             <Text style={styles.headerText}>Night Routine</Text>
-            <Image source={require('./moonicon.png')} style={styles.icon} />
+            {/* <Image source={require('./moonicon.png')} style={styles.icon} /> */}
           </View>
           <Text style={styles.message}>
             You currently have no night routine task
