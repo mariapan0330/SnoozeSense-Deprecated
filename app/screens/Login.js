@@ -22,7 +22,6 @@ const Login = ({ navigation }) => {
     try {
       const res = await signInWithEmailAndPassword(auth, email, password);
       console.log(res);
-      navigation.navigate("PlaceholderLanding");
     } catch (err) {
       console.log(err);
       if (err.message === "Firebase: Error (auth/invalid-login-credentials).") {

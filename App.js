@@ -8,7 +8,7 @@ import PlaceholderLanding from "./app/screens/PlaceholderLanding.js";
 import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { FIREBASE_AUTH } from "./services/FirebaseConfig.js";
-import Home from "./app/screens/Home.js"
+import Home from "./app/screens/Home.js";
 
 const Stack = createNativeStackNavigator();
 const InsideStack = createNativeStackNavigator();
@@ -16,13 +16,8 @@ const InsideStack = createNativeStackNavigator();
 function InsideLayout({ currentUser }) {
   return (
     <InsideStack.Navigator>
-      <InsideStack.Screen
-        name="PlaceholderLanding"
-        options={{ headerShown: false }}
-      >
-        {(props) => (
-          <Home {...props} {...{ currentUser: currentUser }} />
-        )}
+      <InsideStack.Screen name="Home" options={{ headerShown: false }}>
+        {(props) => <Home {...props} {...{ currentUser: currentUser }} />}
       </InsideStack.Screen>
       <InsideStack.Screen
         name="PlaceholderOnboarding"
