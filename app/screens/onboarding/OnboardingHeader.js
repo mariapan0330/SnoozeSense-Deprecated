@@ -7,7 +7,10 @@ const OnboardingHeader = ({ navigation, progressPercent }) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Image source={require("../../assets/logo.png")} style={styles.icon} />
+        <Image
+          source={require("../../../assets/logo.png")}
+          style={styles.icon}
+        />
         <Text style={{ color: colors.textWhite }}>Step 1 of 6</Text>
       </View>
       <View style={styles.progressView}>

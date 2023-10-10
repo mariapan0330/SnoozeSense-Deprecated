@@ -5,8 +5,6 @@ import {
   TextInput,
   ActivityIndicator,
   Pressable,
-  Button,
-  Image,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { FIREBASE_AUTH } from "../../../services/FirebaseConfig";
@@ -14,6 +12,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { createNewUserWithDefaultValues } from "../../../services/handleFirestore";
 import { colors } from "../../../utils/colors";
 import OnboardingHeader from "./OnboardingHeader";
+import ContinueButton from "./ContinueButton";
 
 const OnboardingStep1 = ({ navigation, currentUser }) => {
   const [username, setUsername] = useState("");
@@ -35,7 +34,10 @@ const OnboardingStep1 = ({ navigation, currentUser }) => {
             email,
             password
           );
-          navigation.navigate("PlaceholderOnboarding");
+          navigation.navigate("Step2", {
+            navigation: navigation,
+            currentUser: currentUser,
+          });
           console.log(res);
           createNewUserWithDefaultValues(username, email);
         } catch (err) {
@@ -107,19 +109,10 @@ const OnboardingStep1 = ({ navigation, currentUser }) => {
             <ActivityIndicator size="large" color="white" />
           ) : (
             <View style={styles.buttonContainer}>
-              <Pressable onPress={handleSignUp}>
-                <View
-                  title="Sign Up"
-                  style={{
-                    ...styles.button,
-                    backgroundColor: allFieldsFilled
-                      ? colors.mainButton
-                      : colors.inactiveMainButton,
-                  }}
-                >
-                  <Text style={{ color: colors.mainButtonText }}>Continue</Text>
-                </View>
-              </Pressable>
+              <ContinueButton
+                activeCondition={allFieldsFilled}
+                onPressFn={handleSignUp}
+              />
               <Pressable onPress={() => navigation.navigate("Login")}>
                 <Text style={styles.backToLogin}>{"\n<<"} Back to Login</Text>
               </Pressable>
