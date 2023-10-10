@@ -11,6 +11,7 @@ import React, { useState } from "react";
 import { FIREBASE_AUTH } from "../../services/FirebaseConfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { colors } from "../../utils/colors";
+import { text } from "../../utils/text";
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -45,9 +46,11 @@ const Login = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Image source={require("../../assets/logo.png")} style={styles.icon} />
-      <Text style={styles.heroText}>Welcome to SnoozeSense</Text>
-      <Text style={styles.subtitle}>Helping you reach your sleep goals</Text>
-      <Text style={styles.inputLabel}>{"\n\n"}Email</Text>
+      <Text style={text.heroText}>Welcome to SnoozeSense</Text>
+      <Text style={[text.subtitle, styles.subtitle]}>
+        Helping you reach your sleep goals
+      </Text>
+      <Text style={styles.inputLabel}>{"\n"}Email</Text>
       <TextInput
         style={styles.input}
         placeholder="example@snooze.com"
@@ -64,6 +67,7 @@ const Login = ({ navigation }) => {
         secureTextEntry={true}
         onChangeText={(text) => setPassword(text)}
       />
+      <Text style={styles.forgotPw}>Forgot Password?{"\n"}</Text>
 
       {loading ? (
         <ActivityIndicator size="large" color="white" />
@@ -71,15 +75,14 @@ const Login = ({ navigation }) => {
         <View style={styles.buttonContainer}>
           <Pressable onPress={() => handleLogin()}>
             <View style={[styles.button, styles.loginButton]}>
-              <Text>Sign In</Text>
+              <Text style={{ color: colors.mainButtonText }}>Sign In</Text>
             </View>
           </Pressable>
-
           <Pressable onPress={() => navigation.navigate("SignUp")}>
             <View style={styles.signUpContainer}>
               <Text style={styles.text}>
                 {"\n\n"}Don't have an account?{" "}
-                <Text style={{ textDecorationLine: "underline" }}>Sign Up</Text>
+                <Text style={styles.signUpButton}>Sign Up</Text>
               </Text>
             </View>
           </Pressable>
@@ -96,29 +99,30 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 40,
     backgroundColor: colors.background,
+    width: "100%",
   },
   buttonContainer: {
-    // width: "50%",
-    justifyContent: "center",
-    alignItems: "center",
+    width: "100%",
+    flex: 0.5,
+    justifyContent: "start",
   },
   button: {
     alignItems: "center",
     padding: 10,
     paddingVertical: 10,
-    margin: 5,
+    marginTop: 5,
     borderRadius: 30,
-    borderWidth: 2,
-    width: "300%",
+    width: "100%",
   },
-  heroText: {
-    fontWeight: "bold",
-    color: colors.fontWhite,
-    fontSize: 20,
+  forgotPw: {
+    alignSelf: "flex-end",
+    color: colors.textWhite,
+    textDecorationLine: "underline",
+    fontSize: 12,
   },
   icon: {
-    width: 200,
-    height: 200,
+    width: 150,
+    height: 150,
     marginBottom: 10,
   },
   input: {
@@ -128,30 +132,32 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 20,
     padding: 10,
+    paddingHorizontal: 20,
     borderColor: "transparent",
-    backgroundColor: colors.fontWhite,
+    backgroundColor: colors.textWhite,
   },
   inputLabel: {
     alignSelf: "flex-start",
-    color: colors.fontWhite,
+    color: colors.textWhite,
   },
   loginButton: {
     backgroundColor: colors.mainButton,
   },
   signUpButton: {
-    backgroundColor: colors.secondaryButton,
+    textDecorationLine: "underline",
+    fontWeight: "bold",
   },
   signUpContainer: {
+    alignself: "flex-end",
     flexDirection: "row",
     width: "100%",
   },
   subtitle: {
-    fontSize: 16,
-    color: colors.fontWhite,
+    paddingBottom: 50,
   },
   text: {
     alignSelf: "center",
-    color: colors.fontWhite,
+    color: colors.textWhite,
   },
 });
 
