@@ -4,6 +4,7 @@ import {
     StyleSheet,
     Text,
     TouchableOpacity,
+    SafeAreaView,
   } from 'react-native';
   import { Calendar } from 'react-native-calendars';
   import React, { useState } from 'react';
@@ -25,46 +26,51 @@ import {
     };
   
     return (
-      <ScrollView>
-        <Calendar
-          onDayPress={(day) => {
-            setSelected(day.dateString);
-          }}
-          markedDates={{
-            [selected]: {
-              selected: true,
-              disableTouchEvent: true,
-              selectedDotColor: 'orange',
-            },
-          }}
-        />
-        <View style={styles.goalContainer}>
-          {/* <Image source={require('./moonicon.png')} style={styles.icon} /> */}
-          <Text styles={styles.goalText}> Sleep Goal: 8 Hours</Text>
-        </View>
-        <View>
-          <Text> Today's Task </Text>
-        </View>
+      <SafeAreaView style={{ flex: 1 }}>
+        <ScrollView styles={styles.calendarContainer}>
+          <Calendar
+            onDayPress={(day) => {
+              setSelected(day.dateString);
+            }}
+            markedDates={{
+              [selected]: {
+                selected: true,
+                disableTouchEvent: true,
+                selectedDotColor: 'orange',
+              },
+            }}
+          />
+          <View style={styles.goalContainer}>
+            {/* <Image source={require('./moonicon.png')} style={styles.icon} /> */}
+            <Text styles={styles.goalText}> Sleep Goal: 8 Hours</Text>
+          </View>
+          <View>
+            <Text> Today's Task </Text>
+          </View>
   
-        <View style={styles.container}>
-          {tasks.map((task, index) => (
-            <View style={styles.card} key={index}>
-              <View style={styles.textContainer}>
-                <Text style={styles.taskText}>{task.task}</Text>
-                <Text style={styles.timeframeText}>{task.timeframe}</Text>
+          <View style={styles.container}>
+            {tasks.map((task, index) => (
+              <View style={styles.card} key={index}>
+                <View style={styles.textContainer}>
+                  <Text style={styles.taskText}>{task.task}</Text>
+                  <Text style={styles.timeframeText}>{task.timeframe}</Text>
+                </View>
+                <TouchableOpacity
+                  style={styles.circle}
+                  onPress={() => handlePress(index)}>
+                  {checked[index] && <Text style={styles.checkMark}>✔</Text>}
+                </TouchableOpacity>
               </View>
-              <TouchableOpacity
-                style={styles.circle}
-                onPress={() => handlePress(index)}>
-                {checked[index] && <Text style={styles.checkMark}>✔</Text>}
-              </TouchableOpacity>
-            </View>
-          ))}
-        </View>
-      </ScrollView>
+            ))}
+          </View>
+        </ScrollView>
+      </SafeAreaView>
     );
   }
   const styles = StyleSheet.create({
+    calendarContainer: {
+      marginTop: 50,
+    },
     goalContainer: {
       flexDirection: 'row',
       alignItems: 'center',
