@@ -1,18 +1,22 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import LoginOrSignUp from "./app/screens/LoginOrSignUp.js";
 import Login from "./app/screens/Login";
-import SignUp from "./app/screens/SignUp";
-import PlaceholderOnboarding from "./app/screens/PlaceholderOnboarding.js";
-import PlaceholderLanding from "./app/screens/PlaceholderLanding.js";
-import { useEffect, useState } from "react";
+import OnboardingStep1 from "./app/screens/onboarding/OnboardingStep1.js";
+import OnboardingStep2 from "./app/screens/onboarding/OnboardingStep2.js";
+import OnboardingStep3 from "./app/screens/onboarding/OnboardingStep3.js";
+import OnboardingStep4 from "./app/screens/onboarding/OnboardingStep4.js";
+import OnboardingStep5 from "./app/screens/onboarding/OnboardingStep5.js";
+import React, { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { FIREBASE_AUTH } from "./services/FirebaseConfig.js";
-import Home from "./app/screens/Home.js"
-import Tabs from "./app/navigation/tabs.js"
+import Home from "./app/screens/Home.js";
+import Tabs from "./app/navigation/tabs.js";
+import useUserData from "./app/hooks/useUserData";
 
 const Stack = createNativeStackNavigator();
 const InsideStack = createNativeStackNavigator();
+const AuthenticationStack = createNativeStackNavigator();
+const OnboardingStack = createNativeStackNavigator();
 
 function InsideLayout({ currentUser }) {
   return (
@@ -20,17 +24,68 @@ function InsideLayout({ currentUser }) {
       <InsideStack.Screen name="Home" options={{ headerShown: false }}>
         {(props) => <Home {...props} {...{ currentUser: currentUser }} />}
       </InsideStack.Screen>
-      <InsideStack.Screen
-        name="PlaceholderOnboarding"
-        component={PlaceholderOnboarding}
+    </InsideStack.Navigator>
+  );
+}
+
+function OnboardingLayout({ currentUser }) {
+  return (
+    <OnboardingStack.Navigator initialRouteName="Step2">
+      <OnboardingStack.Screen name="Step2" options={{ headerShown: false }}>
+        {(props) => (
+          <OnboardingStep2 {...props} {...{ currentUser: currentUser }} />
+        )}
+      </OnboardingStack.Screen>
+      <OnboardingStack.Screen name="Step3" options={{ headerShown: false }}>
+        {(props) => (
+          <OnboardingStep3 {...props} {...{ currentUser: currentUser }} />
+        )}
+      </OnboardingStack.Screen>
+      <OnboardingStack.Screen name="Step4" options={{ headerShown: false }}>
+        {(props) => (
+          <OnboardingStep4 {...props} {...{ currentUser: currentUser }} />
+        )}
+      </OnboardingStack.Screen>
+      <OnboardingStack.Screen name="Step5" options={{ headerShown: false }}>
+        {(props) => (
+          <OnboardingStep5 {...props} {...{ currentUser: currentUser }} />
+        )}
+      </OnboardingStack.Screen>
+    </OnboardingStack.Navigator>
+  );
+}
+
+function AuthenticationLayout({ currentUser }) {
+  return (
+    <AuthenticationStack.Navigator>
+      <AuthenticationStack.Screen
+        name="Login"
+        component={Login}
         options={{ headerShown: false }}
       />
-    </InsideStack.Navigator>
+      <AuthenticationStack.Screen
+        name="SignUp"
+        options={{ headerShown: false }}
+      >
+        {/* <OnboardingStack.Screen name="Step1" options={{ headerShown: false }}> */}
+        {(props) => (
+          <OnboardingStep1 {...props} {...{ currentUser: currentUser }} />
+        )}
+        {/* </OnboardingStack.Screen> */}
+      </AuthenticationStack.Screen>
+      <AuthenticationStack.Screen name="Onboarding">
+        {(props) => (
+          <OnboardingLayout {...props} {...{ currentUser: currentUser }} />
+        )}
+      </AuthenticationStack.Screen>
+    </AuthenticationStack.Navigator>
   );
 }
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState(null);
+  const [currentUserIsNew, setCurrentUserIsNew] = useState(true);
+  const { userData } = useUserData(currentUser && currentUser.email);
 
   useEffect(() => {
     onAuthStateChanged(FIREBASE_AUTH, (user) => {
@@ -39,45 +94,29 @@ export default function App() {
     });
   }, []);
 
+  useEffect(() => {
+    if (currentUser && userData) {
+      setCurrentUserIsNew(userData.userIsNew);
+      console.log("user is new: ", userData.userIsNew);
+      console.log("userData: ", userData);
+    }
+  }, [currentUser, userData]);
+
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        {/* IF CURRENT USER EXISTS, TAKE THEM TO A LANDING SCREEN */}
-        {/* OTHERWISE THEY CHOOSE TO LOGIN OR SIGNUP */}
-        {currentUser ? (
-          <>
-            <Stack.Screen name="InsideLayout" options={{ headerShown: false }}>
-              {(props) => (
-                <InsideLayout
-                  {...props}
-                  {...{
-                    currentUser: currentUser,
-                  }}
-                />
-              )}
-            </Stack.Screen>
-            <Stack.Screen name="Tabs" component={Tabs} options={{ headerShown: false }} />
-          </>
+      {/* IF CURRENT USER EXISTS, TAKE THEM TO LANDING SCREEN (which uses tab navigation) */}
+      {/* OTHERWISE THEY CHOOSE TO LOGIN OR SIGNUP */}
+      {/* is there a current user? if not, authentication layout. */}
+      {/* is the current user new? If not, home tabs. If yes, onboarding stack */}
+      {currentUser ? (
+        currentUserIsNew ? (
+          <OnboardingLayout />
         ) : (
-          <>
-            <Stack.Screen
-              name="LoginOrSignUp"
-              component={LoginOrSignUp}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="Login"
-              component={Login}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="SignUp"
-              component={SignUp}
-              options={{ headerShown: false }}
-            />
-          </>
-        )}
-      </Stack.Navigator>
+          <Tabs />
+        )
+      ) : (
+        <AuthenticationLayout />
+      )}
     </NavigationContainer>
   );
 }

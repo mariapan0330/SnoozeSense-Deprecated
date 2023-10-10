@@ -1,5 +1,6 @@
 import {
   View,
+  Image,
   Text,
   StyleSheet,
   TextInput,
@@ -9,6 +10,8 @@ import {
 import React, { useState } from "react";
 import { FIREBASE_AUTH } from "../../services/FirebaseConfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import { colors } from "../../utils/colors";
+import { text } from "../../utils/text";
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -18,42 +21,53 @@ const Login = ({ navigation }) => {
   const auth = FIREBASE_AUTH;
 
   const handleLogin = async () => {
-    setLoading(true);
-    try {
-      const res = await signInWithEmailAndPassword(auth, email, password);
-      console.log(res);
-    } catch (err) {
-      console.log(err);
-      if (err.message === "Firebase: Error (auth/invalid-login-credentials).") {
-        alert(
-          'Invalid Login Credentials. Click "Create Account" if you are new!'
-        );
-      } else {
-        alert("Sign In failed!" + err);
+    if (email + password !== "") {
+      setLoading(true);
+      try {
+        const res = await signInWithEmailAndPassword(auth, email, password);
+        console.log(res);
+      } catch (err) {
+        console.log(err);
+        if (
+          err.message === "Firebase: Error (auth/invalid-login-credentials)."
+        ) {
+          alert(
+            'Invalid Login Credentials. Click "Create Account" if you are new!'
+          );
+        } else {
+          alert("Sign In failed!" + err);
+        }
+      } finally {
+        setLoading(false);
       }
-    } finally {
-      setLoading(false);
     }
   };
 
   return (
     <View style={styles.container}>
-      <Text>Login</Text>
+      <Image source={require("../../assets/logo.png")} style={styles.icon} />
+      <Text style={text.heroText}>Welcome to SnoozeSense</Text>
+      <Text style={[text.subtitle, styles.subtitle]}>
+        Helping you reach your sleep goals
+      </Text>
+      <Text style={styles.inputLabel}>{"\n"}Email</Text>
       <TextInput
         style={styles.input}
-        placeholder="Email"
+        placeholder="example@snooze.com"
         autoCapitalize="none"
         value={email}
         onChangeText={(text) => setEmail(text)}
       />
+      <Text style={styles.inputLabel}>{"\n"}Password</Text>
       <TextInput
         style={styles.input}
-        placeholder="Password"
+        placeholder="******"
         autoCapitalize="none"
         value={password}
         secureTextEntry={true}
         onChangeText={(text) => setPassword(text)}
       />
+      <Text style={styles.forgotPw}>Forgot Password?{"\n"}</Text>
 
       {loading ? (
         <ActivityIndicator size="large" color="white" />
@@ -61,12 +75,15 @@ const Login = ({ navigation }) => {
         <View style={styles.buttonContainer}>
           <Pressable onPress={() => handleLogin()}>
             <View style={[styles.button, styles.loginButton]}>
-              <Text>Login</Text>
+              <Text style={{ color: colors.mainButtonText }}>Sign In</Text>
             </View>
           </Pressable>
           <Pressable onPress={() => navigation.navigate("SignUp")}>
-            <View style={[styles.button, styles.signUpButton]}>
-              <Text style={{ color: "white" }}>Go to Create Account</Text>
+            <View style={styles.signUpContainer}>
+              <Text style={styles.text}>
+                {"\n\n"}Don't have an account?{" "}
+                <Text style={styles.signUpButton}>Sign Up</Text>
+              </Text>
             </View>
           </Pressable>
         </View>
@@ -80,32 +97,67 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-  },
-  input: {
-    marginVertical: 4,
-    width: "80%",
-    height: 50,
-    borderWidth: 1,
-    borderRadius: 4,
-    padding: 10,
-    backgroundColor: "white",
+    paddingHorizontal: 40,
+    backgroundColor: colors.background,
+    width: "100%",
   },
   buttonContainer: {
-    width: "60%",
+    width: "100%",
+    flex: 0.5,
+    justifyContent: "start",
   },
   button: {
     alignItems: "center",
     padding: 10,
     paddingVertical: 10,
-    margin: 5,
+    marginTop: 5,
     borderRadius: 30,
-    borderWidth: 2,
+    width: "100%",
+  },
+  forgotPw: {
+    alignSelf: "flex-end",
+    color: colors.textWhite,
+    textDecorationLine: "underline",
+    fontSize: 12,
+  },
+  icon: {
+    width: 150,
+    height: 150,
+    marginBottom: 10,
+  },
+  input: {
+    marginVertical: 4,
+    width: "100%",
+    height: 40,
+    borderWidth: 1,
+    borderRadius: 20,
+    padding: 10,
+    paddingHorizontal: 20,
+    borderColor: "transparent",
+    backgroundColor: colors.textWhite,
+  },
+  inputLabel: {
+    alignSelf: "flex-start",
+    color: colors.textWhite,
   },
   loginButton: {
-    backgroundColor: "white",
+    backgroundColor: colors.mainButton,
   },
   signUpButton: {
-    backgroundColor: "black",
+    textDecorationLine: "underline",
+    fontWeight: "bold",
+  },
+  signUpContainer: {
+    alignself: "flex-end",
+    flexDirection: "row",
+    width: "100%",
+  },
+  subtitle: {
+    paddingBottom: 50,
+  },
+  text: {
+    alignSelf: "center",
+    color: colors.textWhite,
   },
 });
 

@@ -21,6 +21,7 @@ export const createNewUserWithDefaultValues = async (username, email) => {
       soundChoice: "",
       soundOn: true,
       vibrationOn: true,
+      userIsNew: true,
       sleepDurationGoal: 8,
       mondaySleepTime: "2100",
       tuesdaySleepTime: "2100",
