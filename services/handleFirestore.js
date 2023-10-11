@@ -9,17 +9,19 @@
 
   updateUserFields = (email, objToUpdate)
       - Validates and merges the object you provide with the data of user with the provided email
-      - Can include 1 to all fields
+      - You can include 1 to all fields that you want to update in the object
 
   addTask = (email, taskToAdd)
-      - Validates and adds a NEW task to the task list of the user with the provided email
-      - Task object you provide must include ALL task fields
-      - DOES NOT create duplicates for two tasks with the same title. 
-         -> If there's already a task with the given title, it updates that task with the new values and does not add a new one (TODO: change this?)
+  addChallenge = (email, challengeToAdd)
+      - Both functions validate your object and add a NEW item to the task/challenge list of the user with the provided email
+      - Object you provide must include ALL necessary fields (it'll tell you if it's missing something)
+      - DOES NOT create duplicates for two tasks(/challenges) with the same title. 
+         -> If there's already an entry with the given title, it updates that entry with the new values and does not add a new one (TODO: change this?)
   
   updateTask = (email, taskTitle, taskObjToUpdate)
-      - Validates and merges the provided task object with the task data of the provided title (belonging to user with the provided email)
-      - Can include 1 to all fields
+  updateChallenge = (email, challengeTitle, challengeObjToUpdate)
+      - Both functions validate your object and merge the provided data object with the item data that has the provided title (belonging to user with the provided email)
+      - You can include 1 to all fields that you want to update in the object
 */
 
 import { FIREBASE_DB } from "./FirebaseConfig";
