@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -9,20 +9,22 @@ import {
   Modal,
   FlatList,
   ScrollView,
-} from 'react-native';
-import { TabView, TabBar } from 'react-native-tab-view';
+} from "react-native";
+import { TabView, TabBar } from "react-native-tab-view";
+import useUserData from "../hooks/useUserData";
+import { addChallenge, updateChallenge } from "../../services/handleFirestore";
 
 const challengeList = [
-  'Challenge 1',
-  'Challenge 2',
-  'Challenge 3',
-  'Challenge 4',
-  'Challenge 5',
-  'Challenge 6',
-  'Challenge 7',
-  'Challenge 8',
-  'Challenge 9',
-  'Challenge 10',
+  "Challenge 1",
+  "Challenge 2",
+  "Challenge 3",
+  "Challenge 4",
+  "Challenge 5",
+  "Challenge 6",
+  "Challenge 7",
+  "Challenge 8",
+  "Challenge 9",
+  "Challenge 10",
 ];
 
 const CurrentTab = ({ challenges, onComplete, onAdd }) => (
@@ -30,15 +32,15 @@ const CurrentTab = ({ challenges, onComplete, onAdd }) => (
     {challenges.length > 0 ? (
       challenges.map((challenge, index) => (
         <TouchableOpacity key={index} onPress={() => onComplete(challenge)}>
-          <Text>{challenge}</Text>
+          <Text>{challenge.challengeTitle}</Text>
         </TouchableOpacity>
       ))
     ) : (
       <View style={styles.emptyContent}>
         <Text>You currently have no challenges</Text>
-        <Button title="Add Challenges" onPress={onAdd} />
       </View>
     )}
+    <Button title="Add Challenges" onPress={onAdd} />
   </View>
 );
 
@@ -57,19 +59,22 @@ const SavedTab = () => (
   </View>
 );
 
-export default function App() {
+export default function App({ currentUser }) {
   const [index, setIndex] = useState(0);
   const [routes] = useState([
-    { key: 'current', title: 'Current' },
-    { key: 'completed', title: 'Completed' },
-    { key: 'saved', title: 'Saved' },
+    { key: "current", title: "Current" },
+    { key: "completed", title: "Completed" },
+    { key: "saved", title: "Saved" },
   ]);
-  const [challenges, setChallenges] = useState(['Challenge 1', 'Challenge 2']);
+  // const [challenges, setChallenges] = useState(["Challenge 1", "Challenge 2"]);
   const [completedChallenges, setCompletedChallenges] = useState([]);
+  const { challenges } = useUserData(currentUser.email);
 
   const onComplete = (challenge) => {
-    setChallenges(challenges.filter((item) => item !== challenge));
-    setCompletedChallenges([...completedChallenges, challenge]);
+    // setChallenges(challenges.filter((item) => item !== challenge));
+    updateChallenge(currentUser.email, challenge.challengeTitle, { isComplete: true });
+    // MP TODO: should delete challenge from the list
+    setCompletedChallenges([...completedChallenges, challenge.challengeTitle]);
   };
 
   const [isModalVisible, setModalVisible] = useState(false);
@@ -79,23 +84,26 @@ export default function App() {
   };
 
   const onSelectChallenge = (challenge) => {
-    setChallenges([...challenges, challenge]);
+    // setChallenges([...challenges, challenge]);
     setModalVisible(false);
+    addChallenge(currentUser.email, {
+      challengeTitle: challenge,
+      challengeStartDate: "",
+      isComplete: false,
+      isCurrent: false,
+      isSaved: true,
+    });
   };
 
   const renderScene = ({ route }) => {
     switch (route.key) {
-      case 'current':
+      case "current":
         return (
-          <CurrentTab
-            challenges={challenges}
-            onComplete={onComplete}
-            onAdd={onAdd}
-          />
+          <CurrentTab challenges={challenges} onComplete={onComplete} onAdd={onAdd} />
         );
-      case 'completed':
+      case "completed":
         return <CompletedTab completedChallenges={completedChallenges} />;
-      case 'saved':
+      case "saved":
         return <SavedTab />;
       default:
         return null;
@@ -115,9 +123,9 @@ export default function App() {
         renderTabBar={(props) => (
           <TabBar
             {...props}
-            indicatorStyle={{ backgroundColor: 'blue' }}
-            labelStyle={{ color: 'black' }}
-            style={{ backgroundColor: 'white' }}
+            indicatorStyle={{ backgroundColor: "blue" }}
+            labelStyle={{ color: "black" }}
+            style={{ backgroundColor: "white" }}
           />
         )}
       />
@@ -125,7 +133,8 @@ export default function App() {
         visible={isModalVisible}
         transparent={true}
         animationType="slide"
-        onRequestClose={() => setModalVisible(false)}>
+        onRequestClose={() => setModalVisible(false)}
+      >
         <View style={styles.modalContent}>
           <FlatList
             data={challengeList}
@@ -139,9 +148,7 @@ export default function App() {
         </View>
       </Modal>
       <View style={styles.suggestedChallengesContainer}>
-        <Text style={styles.suggestedChallengesHeader}>
-          Suggested Challenges
-        </Text>
+        <Text style={styles.suggestedChallengesHeader}>Suggested Challenges</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           {shuffledChallenges.map((challenge, index) => (
             <View style={styles.challengeItem} key={index}>
@@ -161,36 +168,36 @@ const styles = StyleSheet.create({
   },
   tabContent: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   emptyContent: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   modalContent: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     padding: 20,
   },
   listItem: {
     padding: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
+    borderBottomColor: "#ccc",
   },
   suggestedChallengesContainer: {
     padding: 10,
   },
   suggestedChallengesHeader: {
     fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 10,  
-    textAlign: 'left',
+    fontWeight: "bold",
+    marginBottom: 10,
+    textAlign: "left",
   },
   challengeItem: {
-    backgroundColor: '#f0f0f0',
+    backgroundColor: "#f0f0f0",
     borderRadius: 10,
     padding: 10,
-    marginRight: 10,  
+    marginRight: 10,
   },
 });

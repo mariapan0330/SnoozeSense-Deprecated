@@ -13,10 +13,14 @@ import {
 const useUserData = (email) => {
   const [userData, setUserData] = useState({});
   const [userTasks, setUserTasks] = useState({});
+  const [userChallenges, setUserChallenges] = useState({});
 
   const db = FIREBASE_DB;
 
   useEffect(() => {
+    /************ FETCH DATA ********************
+     * initial fetch on component mount
+     */
     const fetchFieldData = async () => {
       try {
         const docRef = doc(db, "users", email);
@@ -33,30 +37,39 @@ const useUserData = (email) => {
       }
     };
 
-    const fetchTaskData = async () => {
+    const fetchTaskAndChallengeData = async (subcollection) => {
       try {
-        const tasksRef = collection(db, "users", email, "tasks");
-        const q = query(tasksRef);
+        const docRef = collection(db, "users", email, subcollection);
+        const q = query(docRef);
         const querySnapshot = await getDocs(q);
-        const tasks = [];
+        const result = [];
         querySnapshot.forEach((doc) => {
-          const taskData = doc.data();
-          tasks.push({
+          const data = doc.data();
+          result.push({
             id: doc.id,
-            ...taskData,
+            ...data,
           });
         });
-        setUserTasks(tasks);
-        // console.log(tasks);
+        // subcollection === "challenges" && console.log(result);
+        return result;
       } catch (error) {
-        console.error("Error getting tasks: ", error);
+        console.error(`Error getting ${subcollection}:`, error);
       }
     };
 
     if (email) {
+      /**
+       * Call initial fetches
+       */
       fetchFieldData();
-      fetchTaskData();
+      setUserTasks(fetchTaskAndChallengeData("tasks"));
+      setUserChallenges(fetchTaskAndChallengeData("challenges"));
       // console.log("USER DATA FROM HOOK", userData);
+
+      /************ SUBSCRIPTION ********************
+       * Subscription setup monitors real-time updates to data changes in Firestore
+       */
+      const unsubscribeFunctions = [];
 
       const unsubscribe = onSnapshot(doc(db, "users", email), (snapshot) => {
         if (snapshot.exists()) {
@@ -65,30 +78,46 @@ const useUserData = (email) => {
           console.log("no snapshot doc available.");
         }
       });
-      const unsubscribeTasks = onSnapshot(
-        collection(db, "users", email, "tasks"),
-        (snapshot) => {
-          const tasks = [];
-          snapshot.forEach((doc) => {
-            const taskData = doc.data();
-            tasks.push({
-              id: doc.id,
-              ...taskData,
+      unsubscribeFunctions.push(unsubscribe);
+
+      const unsubscribeSubcollections = [
+        { collectionName: "tasks", setFn: setUserTasks },
+        { collectionName: "challenges", setFn: setUserChallenges },
+      ];
+
+      unsubscribeSubcollections.forEach((collectionData) => {
+        const { collectionName, setFn } = collectionData;
+        const unsubscribeCollection = onSnapshot(
+          collection(db, "users", email, collectionName),
+          (snapshot) => {
+            const items = [];
+            snapshot.forEach((doc) => {
+              const itemData = doc.data();
+              items.push({
+                id: doc.id,
+                ...itemData,
+              });
             });
-          });
-          setUserTasks(tasks);
-        }
-      );
+            setFn(items);
+          }
+        );
+        unsubscribeFunctions.push(unsubscribeCollection);
+      });
+
       return () => {
-        unsubscribe();
-        unsubscribeTasks();
+        /**
+         * call subscriptions
+         */
+        unsubscribeFunctions.forEach((fn) => {
+          fn();
+        });
       };
     } else {
       console.log("User with userID [", email, "] does not exist!!");
     }
   }, [db]);
 
-  return { userData, tasks: userTasks };
+  return { userData, tasks: userTasks, challenges: userChallenges };
 };
 
 export default useUserData;
