@@ -8,11 +8,14 @@ import OnboardingStep4 from "./app/screens/onboarding/OnboardingStep4.js";
 import OnboardingStep5 from "./app/screens/onboarding/OnboardingStep5.js";
 import React, { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
-import { FIREBASE_AUTH } from "./services/FirebaseConfig.js";
+import { FIREBASE_AUTH, FIREBASE_DB } from "./services/FirebaseConfig.js";
 import Home from "./app/screens/Home.js";
 import Tabs from "./app/navigation/tabs.js";
 import useUserData from "./app/hooks/useUserData";
 import { Text } from "react-native";
+import { getFirestore,collection, doc, getDoc } from "@firebase/firestore";
+
+const db= getFirestore();
 
 const Stack = createNativeStackNavigator();
 const InsideStack = createNativeStackNavigator();
@@ -68,6 +71,24 @@ function AuthenticationLayout({ currentUser }) {
   );
 }
 
+async function checkIfUserIsOnboarded(userId) {
+  console.log("Checking if user is onboarded for userId: ", userId);
+  try {
+    console.log('FIREBASE_DB inside App.js:', FIREBASE_DB);
+
+    const userDoc = await getDoc(doc(db, 'users', userId));
+    console.log("Fetched user doc: ", userDoc);
+    const userData = userDoc.data();
+    console.log("User data: ", userData);
+    return userData ? userData.userIsNew : null;
+  } catch (error) {
+    console.error("There was an error fetching user data: ", error);
+    return null;
+  }
+}
+
+
+
 export default function App() {
   const [currentUser, setCurrentUser] = useState(null);
   const [currentUserIsNew, setCurrentUserIsNew] = useState(true);
@@ -81,10 +102,15 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    if (currentUser && userData != {}) {
-      setCurrentUserIsNew(userData.userIsNew);
+    if (currentUser && currentUser.uid) {
+      checkIfUserIsOnboarded(currentUser.uid).then((isNew) => {
+        setCurrentUserIsNew(isNew);
+      }).catch((err) => {
+        console.error("Error checking if user is onboarded: ", err);
+      });
     }
-  }, [currentUser, userData]);
+  }, [currentUser]);
+  
 
   return (
     <NavigationContainer>
