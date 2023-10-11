@@ -1,12 +1,7 @@
-import {
-  Text,
-  SafeAreaView,
-  StyleSheet,
-  View,
-  TouchableOpacity,
-} from "react-native";
+import { Text, SafeAreaView, StyleSheet, View, TouchableOpacity } from "react-native";
+import { FIREBASE_AUTH } from "../../services/FirebaseConfig";
 
-const Account = () => {
+const Account = ({ currentUser }) => {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.header}>Account Settings</Text>
@@ -20,17 +15,17 @@ const Account = () => {
         {renderCard("Alarm Settings")}
       </View>
       <View style={styles.separator} />
-      {renderCard("Sign Out")}
+      {renderCard("Sign Out", () => FIREBASE_AUTH.signOut())}
     </SafeAreaView>
   );
 };
 
-function renderCard(text) {
+function renderCard(text, handlePress) {
   return (
     <View style={styles.cardContainer}>
       <View style={styles.card}>
         <Text style={styles.username}>{text}</Text>
-        <TouchableOpacity onPress={() => alert(`${text} clicked`)}>
+        <TouchableOpacity onPress={handlePress}>
           <Text style={styles.arrow}>&gt;</Text>
         </TouchableOpacity>
       </View>

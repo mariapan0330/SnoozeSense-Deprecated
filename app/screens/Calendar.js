@@ -12,16 +12,9 @@ import useUserData from "../hooks/useUserData";
 import { calculateTime } from "../../services/handleTime";
 import { updateTask } from "../../services/handleFirestore";
 
-const tasks = [
-  { task: "Reading", timeframe: "5:00 PM - 5:15 PM" },
-  { task: "Start Skincare", timeframe: "6:15 PM - 6:45 PM" },
-  { task: "Go on phone", timeframe: "6:15 PM - 6:45 PM" },
-];
-
 function MyCalendar({ currentUser }) {
   const [selected, setSelected] = useState("");
-  const [checked, setChecked] = useState([false, false, false]);
-  const { tasks } = useUserData(currentUser.email);
+  const { userData, tasks } = useUserData(currentUser.email);
 
   const handlePress = (taskTitle, changeTo) => {
     updateTask(currentUser.email, taskTitle, { isComplete: changeTo });
@@ -43,11 +36,12 @@ function MyCalendar({ currentUser }) {
           }}
         />
         <View style={styles.goalContainer}>
-          {/* <Image source={require('./moonicon.png')} style={styles.icon} /> */}
-          <Text styles={styles.goalText}> Sleep Goal: 8 Hours</Text>
+          <Text styles={styles.goalText}>
+            {userData.username}'s Sleep Goal: {userData.sleepDurationGoal} Hours
+          </Text>
         </View>
         <View>
-          <Text> Today's Task </Text>
+          <Text>{tasks.length > 0 ? "Today's Tasks" : "Today's Task"} </Text>
         </View>
 
         <View style={styles.container}>

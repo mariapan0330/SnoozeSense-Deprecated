@@ -28,6 +28,6 @@ export const calculateTime = (time, hoursToAdd, minutesToAdd) => {
 
     return `${hours}:${minutes} ${period}`;
   } catch (error) {
-    console.warn("Error calculating time: ", error);
+    console.log("There was an error with calculating time.");
   }
 };

@@ -120,11 +120,11 @@ const Home = ({ navigation, currentUser }) => {
           {/* TASKS COMPONENT */}
           <PlaceholderTasks currentUser={currentUser} />
 
-          <TouchableOpacity style={styles.button}>
+          {/* <TouchableOpacity style={styles.button}>
             <Text style={styles.buttonText} onPress={() => FIREBASE_AUTH.signOut()}>
               Log Out
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </View>
     </ScrollView>

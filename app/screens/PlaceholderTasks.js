@@ -12,7 +12,7 @@ const PlaceholderTasks = ({ currentUser }) => {
       taskTitle: "abcd",
       taskDuration: 20,
       isComplete: false,
-      taskStartTime: "2200", // times must be string of exactly 4 numbers in military time
+      taskStartTime: "10 00 PM", // times must be string of HH MM AA where AA is AM or PM
       enableNotification: true,
     });
   };

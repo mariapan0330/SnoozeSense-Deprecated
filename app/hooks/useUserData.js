@@ -50,7 +50,7 @@ const useUserData = (email) => {
             ...data,
           });
         });
-        subcollection === "challenges" && console.log(result);
+        // subcollection === "challenges" && console.log(result);
         return result;
       } catch (error) {
         console.error(`Error getting ${subcollection}:`, error);
