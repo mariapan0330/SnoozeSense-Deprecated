@@ -47,7 +47,7 @@ const useUserData = (email) => {
           });
         });
         setUserTasks(tasks);
-        console.log(tasks);
+        // console.log(tasks);
       } catch (error) {
         console.error("Error getting tasks: ", error);
       }

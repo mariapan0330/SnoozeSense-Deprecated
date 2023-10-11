@@ -12,6 +12,7 @@ import { FIREBASE_AUTH } from "./services/FirebaseConfig.js";
 import Home from "./app/screens/Home.js";
 import Tabs from "./app/navigation/tabs.js";
 import useUserData from "./app/hooks/useUserData";
+import { Text } from "react-native";
 
 const Stack = createNativeStackNavigator();
 const InsideStack = createNativeStackNavigator();
@@ -73,7 +74,7 @@ function AuthenticationLayout({ currentUser }) {
         )}
         {/* </OnboardingStack.Screen> */}
       </AuthenticationStack.Screen>
-      <AuthenticationStack.Screen name="Onboarding">
+      <AuthenticationStack.Screen name="Step2">
         {(props) => (
           <OnboardingLayout {...props} {...{ currentUser: currentUser }} />
         )}
@@ -95,10 +96,8 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    if (currentUser && userData) {
+    if (currentUser && userData != {}) {
       setCurrentUserIsNew(userData.userIsNew);
-      console.log("user is new: ", userData.userIsNew);
-      console.log("userData: ", userData);
     }
   }, [currentUser, userData]);
 
@@ -110,12 +109,12 @@ export default function App() {
       {/* is the current user new? If not, home tabs. If yes, onboarding stack */}
       {currentUser ? (
         currentUserIsNew ? (
-          <OnboardingLayout />
+          <OnboardingLayout currentUser={currentUser} />
         ) : (
-          <Tabs />
+          <Tabs currentUser={currentUser} />
         )
       ) : (
-        <AuthenticationLayout />
+        <AuthenticationLayout currentUser={currentUser} />
       )}
     </NavigationContainer>
   );

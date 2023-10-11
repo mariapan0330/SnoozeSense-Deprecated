@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Switch,
@@ -10,6 +10,10 @@ import {
   ScrollView,
 } from "react-native";
 import { FIREBASE_AUTH } from "../../services/FirebaseConfig";
+import { addTask } from "../../services/handleFirestore";
+import useUserData from "../hooks/useUserData";
+import { calculateTime } from "../../services/handleTime";
+import PlaceholderTasks from "./PlaceholderTasks";
 
 const getNext14Days = () => {
   const abbreviatedDays = ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"];
@@ -24,13 +28,28 @@ const getNext14Days = () => {
   });
 };
 
-const Home = () => {
+const Home = ({ currentUser }) => {
+  const { userData } = useUserData(currentUser.email);
+  const dayRef = ["sun", "mon", "tues", "wednes", "thurs", "fri", "satur"];
+  const today = new Date();
+  const dayOfWeek = dayRef[today.getDay()];
+
   const [isBedtimeEnabled, setIsBedtimeEnabled] = useState(false);
-  const [bedtime, setBedtime] = useState("10:00 PM");
+  const [bedtime, setBedtime] = useState("");
 
   const [isWakeUpEnabled, setIsWakeUpEnabled] = useState(false);
   const [wakeUpTime, setWakeUpTime] = useState("7:00 AM");
   const days = getNext14Days();
+
+  useEffect(() => {
+    if (userData) {
+      let time = userData[`${dayOfWeek}daySleepTime`];
+      // calls calculateTime which converts the time stored in db to human readable 12H format
+      // also accepts argument for # hours to add to the given time
+      setBedtime(calculateTime(time));
+      setWakeUpTime(calculateTime(time, userData.sleepDurationGoal));
+    }
+  }, [userData]);
 
   return (
     <ScrollView style={{ flex: 1 }}>
@@ -49,7 +68,9 @@ const Home = () => {
       <View style={styles.mainContainer}>
         <View style={styles.goalContainer}>
           {/* <Image source={require('./moonicon.png')} style={styles.icon} /> */}
-          <Text styles={styles.goalText}> Sleep Goal: 8 Hours</Text>
+          <Text styles={styles.goalText}>
+            {userData.username}'s Sleep Goal: {userData.sleepDurationGoal} hours
+          </Text>
         </View>
         <View style={styles.container}>
           <View style={[styles.switchContainer, styles.bedtimeContainer]}>
@@ -90,12 +111,10 @@ const Home = () => {
             <Text style={styles.headerText}>Night Routine</Text>
             {/* <Image source={require('./moonicon.png')} style={styles.icon} /> */}
           </View>
-          <Text style={styles.message}>
-            You currently have no night routine task
-          </Text>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Add a Task</Text>
-          </TouchableOpacity>
+
+          {/* TASKS COMPONENT */}
+          <PlaceholderTasks currentUser={currentUser} />
+
           <TouchableOpacity style={styles.button}>
             <Text
               style={styles.buttonText}
@@ -160,12 +179,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
   },
-  message: {
-    fontSize: 16,
-    textAlign: "center",
-    marginVertical: 20,
-    color: "gray",
-  },
+
   button: {
     backgroundColor: "black",
     padding: 10,
