@@ -1,5 +1,12 @@
 import { FIREBASE_DB } from "./FirebaseConfig";
-import { arrayUnion, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import {
+  arrayUnion,
+  collection,
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore";
 
 const db = FIREBASE_DB;
 
@@ -23,16 +30,13 @@ export const createNewUserWithDefaultValues = async (username, email) => {
       vibrationOn: true,
       userIsNew: true,
       sleepDurationGoal: 8,
-      mondaySleepTime: "2100",
-      tuesdaySleepTime: "2100",
-      wednesdaySleepTime: "2100",
-      thursdaySleepTime: "2100",
-      fridaySleepTime: "2100",
-      saturdaySleepTime: "2100",
-      sundaySleepTime: "2100",
-      tasks: {},
-      sleepLogs: {},
-      challenges: {},
+      sundaySleepTime: "10 00 PM",
+      mondaySleepTime: "10 00 PM",
+      tuesdaySleepTime: "10 00 PM",
+      wednesdaySleepTime: "10 00 PM",
+      thursdaySleepTime: "10 00 PM",
+      fridaySleepTime: "10 00 PM",
+      saturdaySleepTime: "10 00 PM",
     });
   } catch (error) {
     console.error("Error Creating New User: ", error);
@@ -114,15 +118,16 @@ const userFieldsReference = {
   sleepReminderOffset: "number",
   soundChoice: "string",
   soundOn: "boolean",
+  userIsNew: "boolean",
   vibrationOn: "boolean",
   sleepDurationGoal: "number",
+  sundaySleepTime: "string",
   mondaySleepTime: "string",
   tuesdaySleepTime: "string",
   wednesdaySleepTime: "string",
   thursdaySleepTime: "string",
   fridaySleepTime: "string",
   saturdaySleepTime: "string",
-  sundaySleepTime: "string",
 };
 
 const taskReference = {
@@ -146,8 +151,15 @@ const validateObjToUpdate = (objToUpdate, fieldsReference) => {
       if (typeof objToUpdate[key] !== fieldsReference[key]) {
         return `Invalid data type for key "${key}". "${key}" is a ${fieldsReference[key]}.`;
       }
+      // if you are trying to set a time, it should only be 4 numbers long.
+      if (key.endsWith("Time")) {
+        const timeRegex = /^\d{1,2} \d{2} [apAP][mM]$/;
+        if (!timeRegex.test(objToUpdate[key])) {
+          return `Invalid value for key ${key}. ${key} should be a string of "HH MM AA" where HH is 1 or 2 numbers and AA is AM or PM`;
+        }
+      }
     } else {
-      return `Key "${key}" is field does not exist.`;
+      return `"${key}" field does not exist.`;
     }
   }
   return null;
@@ -157,10 +169,16 @@ const validateTaskToAdd = (taskToAdd) => {
   /* 
     Validates that ALL task fields exist.
   */
+  const timeRegex = /^\d{4}$/;
   for (const field of Object.keys(taskReference)) {
     if (!taskToAdd.hasOwnProperty(field)) {
       return `Task to add is missing field: ${field}.`;
+    } else if (field.endsWith("Time")) {
+      if (!timeRegex.test(taskToAdd[field])) {
+        return `Invalid value for field ${field}. ${field} should be a string of exactly 4 numbers (military time)`;
+      }
     }
+
     if (typeof taskToAdd[field] !== taskReference[field]) {
       return `Data type invalid for field ${field}. ${field} is a ${taskReference[field]}.`;
     }
