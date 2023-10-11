@@ -9,7 +9,7 @@ const PlaceholderTasks = ({ currentUser }) => {
   const handleAddATask = () => {
     // TODO: this is how you add a task. Change out hardcoded vals for some input form vals maybe?
     addTask(currentUser.email, {
-      taskTitle: "aaabc",
+      taskTitle: "abcd",
       taskDuration: 20,
       isComplete: false,
       taskStartTime: "2200", // times must be string of exactly 4 numbers in military time

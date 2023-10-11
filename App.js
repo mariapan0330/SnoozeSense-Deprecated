@@ -33,24 +33,16 @@ function OnboardingLayout({ currentUser }) {
   return (
     <OnboardingStack.Navigator initialRouteName="Step2">
       <OnboardingStack.Screen name="Step2" options={{ headerShown: false }}>
-        {(props) => (
-          <OnboardingStep2 {...props} {...{ currentUser: currentUser }} />
-        )}
+        {(props) => <OnboardingStep2 {...props} {...{ currentUser: currentUser }} />}
       </OnboardingStack.Screen>
       <OnboardingStack.Screen name="Step3" options={{ headerShown: false }}>
-        {(props) => (
-          <OnboardingStep3 {...props} {...{ currentUser: currentUser }} />
-        )}
+        {(props) => <OnboardingStep3 {...props} {...{ currentUser: currentUser }} />}
       </OnboardingStack.Screen>
       <OnboardingStack.Screen name="Step4" options={{ headerShown: false }}>
-        {(props) => (
-          <OnboardingStep4 {...props} {...{ currentUser: currentUser }} />
-        )}
+        {(props) => <OnboardingStep4 {...props} {...{ currentUser: currentUser }} />}
       </OnboardingStack.Screen>
       <OnboardingStack.Screen name="Step5" options={{ headerShown: false }}>
-        {(props) => (
-          <OnboardingStep5 {...props} {...{ currentUser: currentUser }} />
-        )}
+        {(props) => <OnboardingStep5 {...props} {...{ currentUser: currentUser }} />}
       </OnboardingStack.Screen>
     </OnboardingStack.Navigator>
   );
@@ -64,20 +56,13 @@ function AuthenticationLayout({ currentUser }) {
         component={Login}
         options={{ headerShown: false }}
       />
-      <AuthenticationStack.Screen
-        name="SignUp"
-        options={{ headerShown: false }}
-      >
+      <AuthenticationStack.Screen name="SignUp" options={{ headerShown: false }}>
         {/* <OnboardingStack.Screen name="Step1" options={{ headerShown: false }}> */}
-        {(props) => (
-          <OnboardingStep1 {...props} {...{ currentUser: currentUser }} />
-        )}
+        {(props) => <OnboardingStep1 {...props} {...{ currentUser: currentUser }} />}
         {/* </OnboardingStack.Screen> */}
       </AuthenticationStack.Screen>
       <AuthenticationStack.Screen name="Step2">
-        {(props) => (
-          <OnboardingLayout {...props} {...{ currentUser: currentUser }} />
-        )}
+        {(props) => <OnboardingLayout {...props} {...{ currentUser: currentUser }} />}
       </AuthenticationStack.Screen>
     </AuthenticationStack.Navigator>
   );

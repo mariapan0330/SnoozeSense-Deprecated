@@ -28,7 +28,7 @@ const getNext14Days = () => {
   });
 };
 
-const Home = ({ currentUser }) => {
+const Home = ({ navigation, currentUser }) => {
   const { userData } = useUserData(currentUser.email);
   const dayRef = ["sun", "mon", "tues", "wednes", "thurs", "fri", "satur"];
   const today = new Date();
@@ -102,7 +102,12 @@ const Home = ({ currentUser }) => {
             {/* <Image source={require("./moonicon.png")} style={styles.icon} /> */}
           </View>
           <Text style={styles.message}>You currently have no challenges</Text>
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              navigation.navigate("Challenges");
+            }}
+          >
             <Text style={styles.buttonText}>Add a Challenge</Text>
           </TouchableOpacity>
         </View>
@@ -116,10 +121,7 @@ const Home = ({ currentUser }) => {
           <PlaceholderTasks currentUser={currentUser} />
 
           <TouchableOpacity style={styles.button}>
-            <Text
-              style={styles.buttonText}
-              onPress={() => FIREBASE_AUTH.signOut()}
-            >
+            <Text style={styles.buttonText} onPress={() => FIREBASE_AUTH.signOut()}>
               Log Out
             </Text>
           </TouchableOpacity>
