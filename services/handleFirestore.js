@@ -231,14 +231,14 @@ const validateObjToAdd = (objToAdd, subcollection) => {
   } else if (subcollection === "challenge") {
     reference = challengeReference;
   }
-  const timeRegex = /^\d{4}$/;
+  const timeRegex = /^\d{1,2} \d{2} [apAP][mM]$/;
   for (const field of Object.keys(reference)) {
     if (!objToAdd.hasOwnProperty(field)) {
       return `${subcollection} to add is missing field: ${field}.`;
     } else if (field.endsWith("Time")) {
       // extra validation for time objects
       if (!timeRegex.test(objToAdd[field])) {
-        return `Invalid value for field ${field}. ${field} should be a string of exactly 4 numbers (military time)`;
+        return `Invalid value for field ${field}. ${field} should be a string of "HH MM AA" where HH is 1 or 2 numbers and AA is AM or PM`;
       }
     }
 
