@@ -13,6 +13,7 @@ import { FIREBASE_AUTH } from "../../services/FirebaseConfig";
 import { addTask } from "../../services/handleFirestore";
 import useUserData from "../hooks/useUserData";
 import { calculateTime } from "../../services/handleTime";
+import PlaceholderTasks from "./PlaceholderTasks";
 
 const getNext14Days = () => {
   const abbreviatedDays = ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"];
@@ -39,17 +40,6 @@ const Home = ({ currentUser }) => {
   const [isWakeUpEnabled, setIsWakeUpEnabled] = useState(false);
   const [wakeUpTime, setWakeUpTime] = useState("7:00 AM");
   const days = getNext14Days();
-
-  const handleAddATask = () => {
-    // TODO: this is how you add a task. Change out hardcoded vals for some input form vals maybe?
-    addTask(currentUser.email, {
-      taskTitle: "aaab",
-      taskDuration: 20,
-      isComplete: false,
-      taskStartTime: "2200", // times must be string of exactly 4 numbers in military time
-      enableNotification: true,
-    });
-  };
 
   useEffect(() => {
     if (userData) {
@@ -121,12 +111,10 @@ const Home = ({ currentUser }) => {
             <Text style={styles.headerText}>Night Routine</Text>
             {/* <Image source={require('./moonicon.png')} style={styles.icon} /> */}
           </View>
-          <Text style={styles.message}>
-            You currently have no night routine task
-          </Text>
-          <TouchableOpacity style={styles.button} onPress={handleAddATask}>
-            <Text style={styles.buttonText}>Add a Task</Text>
-          </TouchableOpacity>
+
+          {/* TASKS COMPONENT */}
+          <PlaceholderTasks currentUser={currentUser} />
+
           <TouchableOpacity style={styles.button}>
             <Text
               style={styles.buttonText}
@@ -191,12 +179,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
   },
-  message: {
-    fontSize: 16,
-    textAlign: "center",
-    marginVertical: 20,
-    color: "gray",
-  },
+
   button: {
     backgroundColor: "black",
     padding: 10,

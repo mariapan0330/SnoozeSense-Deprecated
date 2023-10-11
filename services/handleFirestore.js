@@ -1,12 +1,5 @@
 import { FIREBASE_DB } from "./FirebaseConfig";
-import {
-  arrayUnion,
-  collection,
-  doc,
-  getDoc,
-  setDoc,
-  updateDoc,
-} from "firebase/firestore";
+import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 
 const db = FIREBASE_DB;
 
@@ -85,7 +78,7 @@ export const addTask = async (email, taskToAdd) => {
   }
 };
 
-export const updateTask = (email, taskIndex, taskObjToUpdate) => {
+export const updateTask = (email, taskTitle, taskObjToUpdate) => {
   /* 
     Calls a validation before attempting.  
     Attempts to MERGE the given object to the existing tasks
@@ -96,7 +89,7 @@ export const updateTask = (email, taskIndex, taskObjToUpdate) => {
     console.error(validationError);
   } else {
     try {
-      const ref = doc(db, "users", email, "tasks", taskIndex);
+      const ref = doc(db, "users", email, "tasks", taskTitle);
       updateDoc(ref, taskObjToUpdate);
       console.log("Successfully updated task");
     } catch (error) {
