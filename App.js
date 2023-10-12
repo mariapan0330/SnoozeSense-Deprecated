@@ -14,39 +14,7 @@ import Tabs from "./app/navigation/tabs.js";
 import useUserData from "./app/hooks/useUserData";
 import { Text } from "react-native";
 
-const Stack = createNativeStackNavigator();
-const InsideStack = createNativeStackNavigator();
 const AuthenticationStack = createNativeStackNavigator();
-const OnboardingStack = createNativeStackNavigator();
-
-function InsideLayout({ currentUser }) {
-  return (
-    <InsideStack.Navigator>
-      <InsideStack.Screen name="Home" options={{ headerShown: false }}>
-        {(props) => <Home {...props} {...{ currentUser: currentUser }} />}
-      </InsideStack.Screen>
-    </InsideStack.Navigator>
-  );
-}
-
-function OnboardingLayout({ currentUser }) {
-  return (
-    <OnboardingStack.Navigator initialRouteName="Step2">
-      <OnboardingStack.Screen name="Step2" options={{ headerShown: false }}>
-        {(props) => <OnboardingStep2 {...props} {...{ currentUser: currentUser }} />}
-      </OnboardingStack.Screen>
-      <OnboardingStack.Screen name="Step3" options={{ headerShown: false }}>
-        {(props) => <OnboardingStep3 {...props} {...{ currentUser: currentUser }} />}
-      </OnboardingStack.Screen>
-      <OnboardingStack.Screen name="Step4" options={{ headerShown: false }}>
-        {(props) => <OnboardingStep4 {...props} {...{ currentUser: currentUser }} />}
-      </OnboardingStack.Screen>
-      <OnboardingStack.Screen name="Step5" options={{ headerShown: false }}>
-        {(props) => <OnboardingStep5 {...props} {...{ currentUser: currentUser }} />}
-      </OnboardingStack.Screen>
-    </OnboardingStack.Navigator>
-  );
-}
 
 function AuthenticationLayout({ currentUser }) {
   return (
@@ -57,12 +25,19 @@ function AuthenticationLayout({ currentUser }) {
         options={{ headerShown: false }}
       />
       <AuthenticationStack.Screen name="SignUp" options={{ headerShown: false }}>
-        {/* <OnboardingStack.Screen name="Step1" options={{ headerShown: false }}> */}
         {(props) => <OnboardingStep1 {...props} {...{ currentUser: currentUser }} />}
-        {/* </OnboardingStack.Screen> */}
       </AuthenticationStack.Screen>
       <AuthenticationStack.Screen name="Step2">
-        {(props) => <OnboardingLayout {...props} {...{ currentUser: currentUser }} />}
+        {(props) => <OnboardingStep2 {...props} {...{ currentUser: currentUser }} />}
+      </AuthenticationStack.Screen>
+      <AuthenticationStack.Screen name="Step3">
+        {(props) => <OnboardingStep3 {...props} {...{ currentUser: currentUser }} />}
+      </AuthenticationStack.Screen>
+      <AuthenticationStack.Screen name="Step4">
+        {(props) => <OnboardingStep4 {...props} {...{ currentUser: currentUser }} />}
+      </AuthenticationStack.Screen>
+      <AuthenticationStack.Screen name="Step5">
+        {(props) => <OnboardingStep5 {...props} {...{ currentUser: currentUser }} />}
       </AuthenticationStack.Screen>
     </AuthenticationStack.Navigator>
   );
@@ -92,12 +67,8 @@ export default function App() {
       {/* OTHERWISE THEY CHOOSE TO LOGIN OR SIGNUP */}
       {/* is there a current user? if not, authentication layout. */}
       {/* is the current user new? If not, home tabs. If yes, onboarding stack */}
-      {currentUser ? (
-        currentUserIsNew ? (
-          <OnboardingLayout currentUser={currentUser} />
-        ) : (
-          <Tabs currentUser={currentUser} />
-        )
+      {currentUserIsNew ? (
+        <Tabs currentUser={currentUser} currentUserIsNew={currentUserIsNew} />
       ) : (
         <AuthenticationLayout currentUser={currentUser} />
       )}
