@@ -1,5 +1,13 @@
-import { Text, SafeAreaView, StyleSheet, View, TouchableOpacity } from "react-native";
+import {
+  Text,
+  SafeAreaView,
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  SafeAreaViewBase,
+} from "react-native";
 import { FIREBASE_AUTH } from "../../services/FirebaseConfig";
+import React from "react";
 
 const Account = ({ currentUser }) => {
   return (
@@ -20,7 +28,7 @@ const Account = ({ currentUser }) => {
   );
 };
 
-function renderCard(text, handlePress) {
+function renderCard(text: string, handlePress?) {
   return (
     <View style={styles.cardContainer}>
       <View style={styles.card}>

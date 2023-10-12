@@ -67,7 +67,7 @@ export default function App({ currentUser }) {
     { key: "saved", title: "Saved" },
   ]);
   // const [challenges, setChallenges] = useState(["Challenge 1", "Challenge 2"]);
-  const [completedChallenges, setCompletedChallenges] = useState([]);
+  const [completedChallenges, setCompletedChallenges] = useState<string[]>([]);
   const { challenges } = useUserData(currentUser.email);
 
   const onComplete = (challenge) => {

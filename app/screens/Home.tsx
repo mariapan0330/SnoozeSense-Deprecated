@@ -9,8 +9,6 @@ import {
   FlatList,
   ScrollView,
 } from "react-native";
-import { FIREBASE_AUTH } from "../../services/FirebaseConfig";
-import { addTask } from "../../services/handleFirestore";
 import useUserData from "../hooks/useUserData";
 import { calculateTime } from "../../services/handleTime";
 import PlaceholderTasks from "./PlaceholderTasks";
@@ -35,7 +33,7 @@ const Home = ({ navigation, currentUser }) => {
   const dayOfWeek = dayRef[today.getDay()];
 
   const [isBedtimeEnabled, setIsBedtimeEnabled] = useState(false);
-  const [bedtime, setBedtime] = useState("");
+  const [bedtime, setBedtime] = useState<string>("");
 
   const [isWakeUpEnabled, setIsWakeUpEnabled] = useState(false);
   const [wakeUpTime, setWakeUpTime] = useState("7:00 AM");
@@ -46,8 +44,8 @@ const Home = ({ navigation, currentUser }) => {
       let time = userData[`${dayOfWeek}daySleepTime`];
       // calls calculateTime which converts the time stored in db to human readable 12H format
       // also accepts argument for # hours to add to the given time
-      setBedtime(calculateTime(time));
-      setWakeUpTime(calculateTime(time, userData.sleepDurationGoal));
+      setBedtime(calculateTime(time) || "");
+      setWakeUpTime(calculateTime(time, userData.sleepDurationGoal) || "");
     }
   }, [userData]);
 
@@ -68,7 +66,7 @@ const Home = ({ navigation, currentUser }) => {
       <View style={styles.mainContainer}>
         <View style={styles.goalContainer}>
           {/* <Image source={require('./moonicon.png')} style={styles.icon} /> */}
-          <Text styles={styles.goalText}>
+          <Text style={styles.goalText}>
             {userData.username}'s Sleep Goal: {userData.sleepDurationGoal} hours
           </Text>
         </View>
@@ -132,56 +130,6 @@ const Home = ({ navigation, currentUser }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  mainContainer: {
-    flex: 1,
-    justifyContent: "center",
-  },
-  challengesContainer: {
-    flex: 1,
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 20,
-  },
-  switchContainer: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 20,
-    borderRadius: 8,
-    margin: 10,
-  },
-  bedtimeContainer: {
-    backgroundColor: "#f1f1f1",
-  },
-  wakeUpContainer: {
-    backgroundColor: "#f1f1f1",
-  },
-  timeText: {
-    fontSize: 18,
-    marginBottom: 10,
-    color: "black",
-  },
-  icon: {
-    width: 24,
-    height: 24,
-    marginBottom: 10,
-  },
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  headerText: {
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-
   button: {
     backgroundColor: "black",
     padding: 10,
@@ -192,6 +140,21 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 18,
   },
+  bedtimeContainer: {
+    backgroundColor: "#f1f1f1",
+  },
+  challengesContainer: {
+    flex: 1,
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 20,
+  },
+  container: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
   goalContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -199,10 +162,10 @@ const styles = StyleSheet.create({
     marginBottom: 0,
     marginTop: 40,
   },
-  goalText: {
-    fontSize: 20,
+  dateText: {
+    fontSize: 14,
     textAlign: "center",
-    marginTop: 50,
+    color: "gray",
   },
   dayContainer: {
     padding: 10,
@@ -213,10 +176,50 @@ const styles = StyleSheet.create({
   dayText: {
     fontSize: 16,
   },
-  dateText: {
-    fontSize: 14,
+  goalText: {
+    fontSize: 20,
     textAlign: "center",
+    marginTop: 50,
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  headerText: {
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+  icon: {
+    width: 24,
+    height: 24,
+    marginBottom: 10,
+  },
+  mainContainer: {
+    flex: 1,
+    justifyContent: "center",
+  },
+  message: {
+    fontSize: 16,
+    textAlign: "center",
+    marginVertical: 20,
     color: "gray",
+  },
+  switchContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 20,
+    borderRadius: 8,
+    margin: 10,
+  },
+  timeText: {
+    fontSize: 18,
+    marginBottom: 10,
+    color: "black",
+  },
+  wakeUpContainer: {
+    backgroundColor: "#f1f1f1",
   },
 });
 

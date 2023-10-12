@@ -12,13 +12,14 @@ import { FIREBASE_AUTH, FIREBASE_DB } from "./services/FirebaseConfig.js";
 import Tabs from "./app/navigation/tabs.js";
 import { Text } from "react-native";
 import { getFirestore, doc, getDoc } from "@firebase/firestore";
+import { AppNavProps } from "./types/indexTypes";
 
 const db = getFirestore();
 
 const AuthenticationStack = createNativeStackNavigator();
 const OnboardingStack = createNativeStackNavigator();
 
-function OnboardingLayout({ currentUser, setCurrentUserIsNew }) {
+function OnboardingLayout({ currentUser, setCurrentUserIsNew }: AppNavProps) {
   return (
     <OnboardingStack.Navigator initialRouteName="Step2">
       <OnboardingStack.Screen name="Step2" options={{ headerShown: false }}>
@@ -43,7 +44,7 @@ function OnboardingLayout({ currentUser, setCurrentUserIsNew }) {
   );
 }
 
-function AuthenticationLayout({ currentUser, setCurrentUserIsNew }) {
+function AuthenticationLayout({ currentUser, setCurrentUserIsNew }: AppNavProps) {
   return (
     <AuthenticationStack.Navigator>
       <AuthenticationStack.Screen

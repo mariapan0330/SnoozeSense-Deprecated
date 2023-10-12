@@ -10,12 +10,12 @@ const LoginOrSignUp = ({ navigation }) => {
     <View style={styles.container}>
       <View style={styles.buttonContainer}>
         <Pressable onPress={() => navigation.navigate("Login")}>
-          <View title="Login" style={[styles.button, styles.loginButton]}>
+          <View style={[styles.button, styles.loginButton]}>
             <Text style={{ color: "black" }}>Login</Text>
           </View>
         </Pressable>
         <Pressable onPress={() => navigation.navigate("SignUp")}>
-          <View title="Sign Up" style={[styles.button, styles.signUpButton]}>
+          <View style={[styles.button, styles.signUpButton]}>
             <Text style={{ color: "white" }}>Create Account</Text>
           </View>
         </Pressable>

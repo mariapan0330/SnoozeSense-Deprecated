@@ -22,7 +22,7 @@ function MyCalendar({ currentUser }) {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView styles={styles.calendarContainer}>
+      <ScrollView style={styles.calendarContainer}>
         <Calendar
           onDayPress={(day) => {
             setSelected(day.dateString);
@@ -31,12 +31,12 @@ function MyCalendar({ currentUser }) {
             [selected]: {
               selected: true,
               disableTouchEvent: true,
-              selectedDotColor: "orange",
+              selectedColor: "orange", // ts says "selectedDotColor" doesn't exist
             },
           }}
         />
         <View style={styles.goalContainer}>
-          <Text styles={styles.goalText}>
+          <Text style={styles.goalText}>
             {userData.username}'s Sleep Goal: {userData.sleepDurationGoal} Hours
           </Text>
         </View>

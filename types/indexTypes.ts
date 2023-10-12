@@ -19,4 +19,29 @@ export type User = {
   saturdaySleepTime: string;
 };
 
-export const AppNavProps = {};
+export type Task = {
+  taskTitle: string;
+  taskStartTime: string;
+  taskDuration: number;
+  enableNotification: boolean;
+  isComplete: boolean;
+};
+
+export type Challenge = {
+  challengeTitle: string;
+  challengeStartDate: string;
+  isComplete: boolean;
+  isCurrent: boolean;
+  isSaved: boolean;
+};
+
+export type AppNavProps = {
+  currentUser: any;
+  setCurrentUserIsNew: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export type UserDataResponse = {
+  userData: User | any;
+  tasks: Task[] | any;
+  challenges: Challenge[] | any;
+};
