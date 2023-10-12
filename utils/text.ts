@@ -11,4 +11,4 @@ export const text = {
     fontSize: 14,
     color: colors.textWhite,
   },
-};
+} as const;

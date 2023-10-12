@@ -9,4 +9,4 @@ export const colors = {
   secondaryButtonText: "#F2F2F2",
   background: "#0E1438",
   progressBarBg: "#525B82",
-};
+} as const;
