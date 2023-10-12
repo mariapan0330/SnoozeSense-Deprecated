@@ -67,7 +67,7 @@ const Home = ({ navigation, currentUser }) => {
       />
       <View style={styles.mainContainer}>
         <View style={styles.goalContainer}>
-          {/* <Image source={require('./moonicon.png')} style={styles.icon} /> */}
+          <Image source={require('../images/nighttime.png')} style={styles.icon} />
           <Text styles={styles.goalText}>
             {userData.username}'s Sleep Goal: {userData.sleepDurationGoal} hours
           </Text>
