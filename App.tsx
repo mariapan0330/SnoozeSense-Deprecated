@@ -1,15 +1,15 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Login from "./app/screens/Login";
-import OnboardingStep1 from "./app/screens/onboarding/OnboardingStep1.js";
-import OnboardingStep2 from "./app/screens/onboarding/OnboardingStep2.js";
-import OnboardingStep3 from "./app/screens/onboarding/OnboardingStep3.js";
-import OnboardingStep4 from "./app/screens/onboarding/OnboardingStep4.js";
-import OnboardingStep5 from "./app/screens/onboarding/OnboardingStep5.js";
+import OnboardingStep1 from "./app/screens/onboarding/OnboardingStep1";
+import OnboardingStep2 from "./app/screens/onboarding/OnboardingStep2";
+import OnboardingStep3 from "./app/screens/onboarding/OnboardingStep3";
+import OnboardingStep4 from "./app/screens/onboarding/OnboardingStep4";
+import OnboardingStep5 from "./app/screens/onboarding/OnboardingStep5";
 import React, { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
-import { FIREBASE_AUTH, FIREBASE_DB } from "./services/FirebaseConfig.js";
-import Tabs from "./app/navigation/tabs.js";
+import { FIREBASE_AUTH, FIREBASE_DB } from "./services/FirebaseConfig";
+import Tabs from "./app/navigation/tabs";
 import { Text } from "react-native";
 import { getFirestore, doc, getDoc } from "@firebase/firestore";
 import { AppNavProps } from "./types/indexTypes";
@@ -100,7 +100,7 @@ export default function App() {
           setCurrentUserIsNew(isNew);
         })
         .catch((err) => {
-          console.error("Error checking if user is onboarded: ", err);
+          console.warn("Error checking if user is onboarded: ", err);
         });
     }
   }, [currentUser]);

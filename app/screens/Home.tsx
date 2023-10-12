@@ -4,7 +4,6 @@ import {
   Switch,
   Text,
   StyleSheet,
-  Image,
   TouchableOpacity,
   FlatList,
   ScrollView,
@@ -12,8 +11,9 @@ import {
 import useUserData from "../hooks/useUserData";
 import { calculateTime } from "../../services/handleTime";
 import PlaceholderTasks from "./PlaceholderTasks";
+import { NavAndUserProps } from "../../types/componentTypes";
 
-const getNext14Days = () => {
+const getNext14Days: () => { day: string; date: number }[] = () => {
   const abbreviatedDays = ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"];
   const today = new Date();
   return Array.from({ length: 14 }).map((_, index) => {
@@ -26,9 +26,9 @@ const getNext14Days = () => {
   });
 };
 
-const Home = ({ navigation, currentUser }) => {
+const Home: React.FC<NavAndUserProps> = ({ navigation, currentUser }) => {
   const { userData } = useUserData(currentUser.email);
-  const dayRef = ["sun", "mon", "tues", "wednes", "thurs", "fri", "satur"];
+  const dayRef: string[] = ["sun", "mon", "tues", "wednes", "thurs", "fri", "satur"];
   const today = new Date();
   const dayOfWeek = dayRef[today.getDay()];
 
@@ -130,6 +130,9 @@ const Home = ({ navigation, currentUser }) => {
 };
 
 const styles = StyleSheet.create({
+  bedtimeContainer: {
+    backgroundColor: "#f1f1f1",
+  },
   button: {
     backgroundColor: "black",
     padding: 10,
@@ -139,9 +142,6 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "white",
     fontSize: 18,
-  },
-  bedtimeContainer: {
-    backgroundColor: "#f1f1f1",
   },
   challengesContainer: {
     flex: 1,
@@ -154,13 +154,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-  },
-  goalContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 0,
-    marginTop: 40,
   },
   dateText: {
     fontSize: 14,
@@ -175,6 +168,13 @@ const styles = StyleSheet.create({
   },
   dayText: {
     fontSize: 16,
+  },
+  goalContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 0,
+    marginTop: 40,
   },
   goalText: {
     fontSize: 20,
