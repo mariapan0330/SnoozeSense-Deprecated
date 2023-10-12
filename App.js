@@ -32,7 +32,7 @@ function InsideLayout({ currentUser }) {
   );
 }
 
-function OnboardingLayout({ currentUser }) {
+function OnboardingLayout({ currentUser, setCurrentUserIsNew }) {
   return (
     <OnboardingStack.Navigator initialRouteName="Step2">
       <OnboardingStack.Screen name="Step2" options={{ headerShown: false }}>
