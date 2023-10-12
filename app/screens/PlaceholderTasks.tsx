@@ -25,21 +25,22 @@ const PlaceholderTasks = ({ currentUser }) => {
   return (
     <View style={styles.container}>
       <Text>
-        {tasks.length > 0
-          ? tasks.map((item: Task, i: number) => (
-              <Text key={`task-${i}`}>
-                {item.taskTitle}
-                <Button
-                  title={item.isComplete.toString()}
-                  onPress={() =>
-                    handleToggleTaskComplete(item.taskTitle, !item.isComplete)
-                  }
-                />
-                {"\n"}
-              </Text>
-            ))
-          : "You currently have no tasks"}
-      </Text>
+  {tasks && tasks.length > 0
+    ? tasks.map((item: Task, i: number) => (
+        <Text key={`task-${i}`}>
+          {item.taskTitle}
+          <Button
+            title={item.isComplete.toString()}
+            onPress={() =>
+              handleToggleTaskComplete(item.taskTitle, !item.isComplete)
+            }
+          />
+          {"\n"}
+        </Text>
+      ))
+    : "You currently have no tasks"}
+</Text>
+
       <Text style={styles.message}></Text>
       <TouchableOpacity style={styles.button} onPress={handleAddATask}>
         <Text style={styles.buttonText}>Add a Task</Text>
