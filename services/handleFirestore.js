@@ -71,13 +71,17 @@ export const updateUserFields = (email, fieldsToUpdate) => {
   const validationError = validateObjToUpdate(fieldsToUpdate, userFieldsReference);
   if (validationError) {
     console.error(validationError);
+    return Promise.reject(validationError);  // Reject promise if validation fails
   } else {
     try {
       const ref = doc(db, "users", email);
-      setDoc(ref, fieldsToUpdate, { merge: true });
-      console.log("Successfully updated db");
+      return setDoc(ref, fieldsToUpdate, { merge: true }) // Note the return here
+        .then(() => {
+          console.log("Successfully updated db");
+        });
     } catch (error) {
       console.error(error);
+      return Promise.reject(error);  // Reject promise if Firestore operation fails
     }
   }
 };
