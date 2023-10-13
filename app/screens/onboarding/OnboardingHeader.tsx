@@ -3,7 +3,7 @@ import React from "react";
 import ProgressBar from "../ProgressBar";
 import { colors } from "../../../utils/colors";
 
-const OnboardingHeader = ({ navigation, progressPercent }) => {
+const OnboardingHeader = ({ navigation, progressPercent, page, prevPageNavigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -11,12 +11,13 @@ const OnboardingHeader = ({ navigation, progressPercent }) => {
           source={require("../../../assets/logo.png")}
           style={styles.icon}
         /> */}
-        <Text style={{ color: colors.textWhite }}>Step 1 of 6</Text>
+        <Image source={require("../../images/logo.png")} style={styles.icon} />
+        <Text style={{ color: colors.textWhite }}>Step {page} of 6</Text>
       </View>
       <View style={styles.progressView}>
         <ProgressBar progress={progressPercent} />
       </View>
-      <Pressable onPress={() => navigation.navigate("Login")}>
+      <Pressable onPress={() => navigation.navigate(prevPageNavigation)}>
         <Text style={styles.backButton}>{"\n<<"} Back</Text>
       </Pressable>
     </View>

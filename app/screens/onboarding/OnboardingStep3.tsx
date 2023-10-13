@@ -1,13 +1,201 @@
-import { View, Text, Button } from "react-native";
-import React from "react";
+import { View, Text, StyleSheet, TextInput, ActivityIndicator } from "react-native";
+import React, { useEffect, useState } from "react";
+import { updateUserFields } from "../../../services/handleFirestore";
+import { colors } from "../../../utils/colors";
+import { text } from "../../../utils/text";
+import OnboardingHeader from "./OnboardingHeader";
+import ContinueButton from "./ContinueButton";
+import useUserData from "../../hooks/useUserData";
 
-const OnboardingStep3 = ({ navigation }) => {
+const calculateAgeBasedSleepGoal = (age: number) => {
+  switch (true) {
+    case age < 1:
+      return "12";
+    case age < 3:
+      return "11";
+    case age < 6:
+      return "10";
+    case age < 13:
+      return "8";
+    case age < 18:
+      return "9";
+    // default:
+    //   return "7";
+  }
+};
+
+// START COMPONENT
+const OnboardingStep3 = ({ navigation, currentUser }) => {
+  /**
+   * This is onboarding for SLEEP DURATION GOAL
+   */
+  const [goalHours, setGoalHours] = useState<string>();
+  const [allFieldsFilled, setAllFieldsFilled] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const { userData } = useUserData(currentUser.email);
+  const currentYear = new Date().getFullYear();
+
+  useEffect(() => {
+    if (userData) {
+      let [_, birthYear] = userData.birthday.split(" ");
+      console.log("age: ", currentYear - birthYear);
+      setGoalHours(calculateAgeBasedSleepGoal(currentYear - birthYear));
+    }
+  }, [userData]);
+
+  const handleSubmitGoalHours = async () => {
+    if (goalHours !== "") {
+      setLoading(true);
+      try {
+        if (parseInt(goalHours) > 0 && parseInt(goalHours) <= 24) {
+          updateUserFields(currentUser.email, { sleepDurationGoal: parseInt(goalHours) });
+          navigation.navigate("Step4");
+        } else
+          throw {
+            message: `goal hours must be between 0 and 24.`,
+          };
+      } catch (error) {
+        console.error("Error submitting goal hours: ", error);
+        alert("Whoa, " + error.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
+  useEffect(() => {
+    setAllFieldsFilled(goalHours !== "");
+  }, [goalHours]);
+
   return (
-    <View>
-      <Text>OnboardingStep3{"\n\n"}</Text>
-      <Button title="continue" onPress={() => navigation.navigate("Step4")} />
-    </View>
+    <>
+      <View style={styles.container}>
+        {/* HEADER */}
+        <OnboardingHeader
+          page={"3"}
+          navigation={navigation}
+          progressPercent={(3 / 6) * 100}
+          prevPageNavigation={"Step2"}
+        />
+        {/* SLEEP GOAL */}
+        <View style={styles.loginForm}>
+          <Text style={text.heroText}>
+            Based on your age, you should be aiming for this much sleep:
+          </Text>
+
+          {/* INPUT LABELS */}
+          <View style={styles.inputContainer}>
+            <View style={styles.tapToEditContainer}>
+              <Text style={styles.inputLabel}>{"\n"}Tap to Edit</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="00"
+                autoCapitalize="none"
+                value={goalHours}
+                keyboardType="numeric"
+                onChangeText={(text) => {
+                  if (text.length <= 2 && (parseInt(text) <= 24 || text == "")) {
+                    setGoalHours(text);
+                  }
+                }}
+              />
+            </View>
+            <Text style={[{ color: colors.themeWhite, paddingTop: 30 }, text.heroText]}>
+              Hours
+            </Text>
+          </View>
+        </View>
+        <View style={styles.container}>
+          {loading ? (
+            <ActivityIndicator size="large" color="white" />
+          ) : (
+            <View style={styles.buttonContainer}>
+              <ContinueButton
+                activeCondition={allFieldsFilled}
+                onPressFn={handleSubmitGoalHours}
+              />
+            </View>
+          )}
+        </View>
+      </View>
+    </>
   );
 };
+
+const styles = StyleSheet.create({
+  backToLogin: {
+    alignSelf: "center",
+    color: colors.textWhite,
+    textDecorationLine: "underline",
+    fontWeight: "bold",
+  },
+  buttonContainer: {
+    width: "100%",
+    padding: 40,
+  },
+  button: {
+    alignItems: "center",
+    padding: 10,
+    paddingVertical: 10,
+    marginTop: 5,
+    borderRadius: 30,
+  },
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    backgroundColor: colors.background,
+  },
+  heroText: {
+    fontWeight: "bold",
+    alignSelf: "center",
+    fontSize: 20,
+    color: colors.textWhite,
+  },
+  input: {
+    color: colors.textWhite,
+    alignSelf: "center",
+    flexDirection: "row",
+    display: "flex",
+    justifyContent: "space-around",
+    textAlign: "center",
+    marginVertical: 4,
+    height: 40,
+    borderRadius: 20,
+    padding: 10,
+    paddingHorizontal: 50,
+    marginHorizontal: 10,
+    backgroundColor: colors.themeAccent4,
+  },
+  inputContainer: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    alignSelf: "center",
+    justifyContent: "space-around",
+    // width: "50%",
+    paddingVertical: 10,
+  },
+  inputLabelContainer: {
+    display: "flex",
+    justifyContent: "space-around",
+    flexDirection: "row",
+    width: "60%",
+    alignSelf: "center",
+  },
+  inputLabel: {
+    color: colors.textWhite,
+  },
+  loginButton: {
+    backgroundColor: colors.mainButton,
+  },
+  loginForm: {
+    padding: 40,
+  },
+  tapToEditContainer: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
 
 export default OnboardingStep3;
