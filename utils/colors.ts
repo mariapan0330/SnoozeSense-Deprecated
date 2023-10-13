@@ -9,4 +9,13 @@ export const colors = {
   secondaryButtonText: "#F2F2F2",
   background: "#0E1438",
   progressBarBg: "#525B82",
+  // Theme colors, probably more reliable. Lea notes the specific colors in the figma:
+  themeBlack: "#151515",
+  themeBackground: "#0A0C1A",
+  themeCTAColor: "#9174D0",
+  themeWhite: "#F2F2F2",
+  themeAccent1: "#525B82",
+  themeAccent2: "#EBB980",
+  themeAccent3: "#2C2432",
+  themeAccent4: "#534992",
 } as const;

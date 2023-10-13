@@ -11,12 +11,13 @@ import React, { useState } from "react";
 import useUserData from "../hooks/useUserData";
 import { calculateTime } from "../../services/handleTime";
 import { updateTask } from "../../services/handleFirestore";
+import { Task } from "../../types/indexTypes";
 
 function MyCalendar({ currentUser }) {
   const [selected, setSelected] = useState("");
   const { userData, tasks } = useUserData(currentUser.email);
 
-  const handlePress = (taskTitle, changeTo) => {
+  const handlePress = (taskTitle: string, changeTo: boolean) => {
     updateTask(currentUser.email, taskTitle, { isComplete: changeTo });
   };
 
@@ -37,16 +38,21 @@ function MyCalendar({ currentUser }) {
         />
         <View style={styles.goalContainer}>
           <Text style={styles.goalText}>
-            {userData.username}'s Sleep Goal: {userData.sleepDurationGoal} Hours
+            {userData
+              ? `${userData.username}'s Sleep Goal: ${userData.sleepDurationGoal} Hours`
+              : "Loading..."}
           </Text>
         </View>
         <View>
-          <Text>{tasks.length > 0 ? "Today's Tasks" : "Today's Task"} </Text>
+          <Text>
+            {tasks ? (tasks.length > 0 ? "Today's Tasks" : "Today's Task") : "Loading..."}{" "}
+          </Text>
         </View>
 
         <View style={styles.container}>
-          {tasks.length > 0 &&
-            tasks.map((task, index) => (
+          {tasks ? (
+            tasks.length > 0 &&
+            tasks.map((task: Task, index: number) => (
               <View style={styles.card} key={index}>
                 <View style={styles.textContainer}>
                   <Text style={styles.taskText}>{task.taskTitle}</Text>
@@ -62,7 +68,10 @@ function MyCalendar({ currentUser }) {
                   {task.isComplete && <Text style={styles.checkMark}>✔</Text>}
                 </TouchableOpacity>
               </View>
-            ))}
+            ))
+          ) : (
+            <Text>Loading...</Text>
+          )}
         </View>
       </ScrollView>
     </SafeAreaView>

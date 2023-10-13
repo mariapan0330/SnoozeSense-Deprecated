@@ -15,6 +15,9 @@ import OnboardingHeader from "./OnboardingHeader";
 import ContinueButton from "./ContinueButton";
 
 const OnboardingStep1 = ({ navigation, currentUser }) => {
+  /**
+   * This is onboarding for AUTHENTICATION CREDENTIALS
+   */
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -58,10 +61,14 @@ const OnboardingStep1 = ({ navigation, currentUser }) => {
     <>
       <View style={styles.container}>
         {/* HEADER */}
-        <OnboardingHeader navigation={navigation} progressPercent={20} />
+        <OnboardingHeader
+          page={"1"}
+          navigation={navigation}
+          progressPercent={(1 / 6) * 100}
+          prevPageNavigation="Login"
+        />
         {/* LOGIN FORM */}
         <View style={styles.loginForm}>
-          <View style={{ alignSelf: "flex-start" }}></View>
           <Text style={styles.heroText}>Create An Account</Text>
           <Text style={styles.inputLabel}>{"\n"}Name</Text>
           <TextInput
