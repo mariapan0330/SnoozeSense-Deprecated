@@ -13,6 +13,7 @@ import {
 import { TabView, TabBar } from "react-native-tab-view";
 import useUserData from "../hooks/useUserData";
 import { addChallenge, updateChallenge } from "../../services/handleFirestore";
+import { Challenge } from "../../types/indexTypes";
 
 const challengeList = [
   "Challenge 1",
@@ -29,16 +30,20 @@ const challengeList = [
 
 const CurrentTab = ({ challenges, onComplete, onAdd }) => (
   <View style={styles.tabContent}>
-    {challenges.length > 0 ? (
-      challenges.map((challenge, index) => (
-        <TouchableOpacity key={index} onPress={() => onComplete(challenge)}>
-          <Text>{challenge.challengeTitle}</Text>
-        </TouchableOpacity>
-      ))
+    {challenges ? (
+      challenges.length > 0 ? (
+        challenges.map((challenge: Challenge, index: number) => (
+          <TouchableOpacity key={index} onPress={() => onComplete(challenge)}>
+            <Text>{challenge.challengeTitle}</Text>
+          </TouchableOpacity>
+        ))
+      ) : (
+        <View style={styles.emptyContent}>
+          <Text>You currently have no challenges</Text>
+        </View>
+      )
     ) : (
-      <View style={styles.emptyContent}>
-        <Text>You currently have no challenges</Text>
-      </View>
+      <Text>Loading...</Text>
     )}
     <Button title="Add Challenges" onPress={onAdd} />
   </View>
@@ -46,7 +51,7 @@ const CurrentTab = ({ challenges, onComplete, onAdd }) => (
 
 const CompletedTab = ({ completedChallenges }) => (
   <View style={styles.tabContent}>
-    {completedChallenges.map((challenge, index) => (
+    {completedChallenges.map((challenge: string, index: number) => (
       <Text key={index}>{challenge}</Text>
     ))}
   </View>

@@ -41,7 +41,7 @@ const Login = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Image source={require("../images/favicon.png")} style={styles.icon} />
+      <Image source={require("../images/logo.png")} style={styles.icon} />
       <Text style={text.heroText}>Welcome to SnoozeSense</Text>
       <Text style={[text.subtitle, styles.subtitle]}>
         Helping you reach your sleep goals
