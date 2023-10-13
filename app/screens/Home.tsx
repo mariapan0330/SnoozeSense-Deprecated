@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Switch,
@@ -67,9 +67,8 @@ const Home: React.FC<NavAndUserProps> = ({ navigation, currentUser }) => {
         <View style={styles.goalContainer}>
           {/* <Image source={require('./moonicon.png')} style={styles.icon} /> */}
           <Text style={styles.goalText}>
-            {userData.username}'s Sleep Goal: {userData.sleepDurationGoal} hours
-          </Text>
-          {/* <Image source={require('../images/edit.png')} style={styles.icon} /> */}
+  {userData ? `${userData.username}'s Sleep Goal: ${userData.sleepDurationGoal} hours` : 'Loading...'}
+</Text>
         </View>
         <View style={styles.container}>
           <View style={[styles.switchContainer, styles.bedtimeContainer]}>
