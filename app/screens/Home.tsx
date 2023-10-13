@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import {
   View,
   Switch,
@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   FlatList,
   ScrollView,
+  Image,
 } from "react-native";
 import useUserData from "../hooks/useUserData";
 import { calculateTime } from "../../services/handleTime";
@@ -65,14 +66,16 @@ const Home: React.FC<NavAndUserProps> = ({ navigation, currentUser }) => {
       />
       <View style={styles.mainContainer}>
         <View style={styles.goalContainer}>
-          {/* <Image source={require('./moonicon.png')} style={styles.icon} /> */}
+          <Image source={require("../images/clock.png")} style={styles.icon} />
           <Text style={styles.goalText}>
-  {userData ? `${userData.username}'s Sleep Goal: ${userData.sleepDurationGoal} hours` : 'Loading...'}
-</Text>
+            {userData
+              ? `${userData.username}'s Sleep Goal: ${userData.sleepDurationGoal} hours`
+              : "Loading..."}
+          </Text>
         </View>
         <View style={styles.container}>
           <View style={[styles.switchContainer, styles.bedtimeContainer]}>
-            {/* <Image source={require('../images/night.png')} style={styles.icon} /> */}
+            <Image source={require("../images/night.png")} style={styles.icon} />
             <Text style={styles.timeText}>{bedtime}</Text>
             <Switch
               trackColor={{ false: "#767577", true: "#81b0ff" }}
@@ -83,7 +86,7 @@ const Home: React.FC<NavAndUserProps> = ({ navigation, currentUser }) => {
             <Text>Bedtime</Text>
           </View>
           <View style={[styles.switchContainer, styles.wakeUpContainer]}>
-            {/* <Image source={require("../images/sun.png")} style={styles.icon} /> */}
+            <Image source={require("../images/sun.png")} style={styles.icon} />
             <Text style={styles.timeText}>{wakeUpTime}</Text>
             <Switch
               trackColor={{ false: "#767577", true: "#ffd700" }}
@@ -97,7 +100,6 @@ const Home: React.FC<NavAndUserProps> = ({ navigation, currentUser }) => {
         <View style={styles.challengesContainer}>
           <View style={styles.header}>
             <Text style={styles.headerText}>Challenges</Text>
-            {/* <Image source={require("./moonicon.png")} style={styles.icon} /> */}
           </View>
           <Text style={styles.message}>You currently have no challenges</Text>
           <TouchableOpacity
