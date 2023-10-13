@@ -25,6 +25,9 @@ const OnboardingStep4 = ({ navigation, currentUser }) => {
   // if bedTimeSelected is false, defaults to wake time is selected
   const [bedTimeSelected, setBedTimeSelected] = useState<boolean>(true);
   const [allFieldsFilled, setAllFieldsFilled] = useState<boolean>(false);
+  const [hours, setHours] = useState<string>("09");
+  const [minutes, setMinutes] = useState<string>("00");
+  const [AMOrPM, setAMOrPM] = useState<string>("PM");
   const [loading, setLoading] = useState<boolean>(false);
   const { userData } = useUserData(currentUser.email);
 
@@ -67,10 +70,16 @@ const OnboardingStep4 = ({ navigation, currentUser }) => {
           </View>
 
           {/* BED TIME OR WAKE UP TIME SELECTOR */}
-          <Text style={[text.subtitle, { textAlign: "left", fontWeight: "bold" }]}>
+          <Text
+            style={[
+              text.subtitle,
+              { textAlign: "left", fontWeight: "bold", paddingTop: 20 },
+            ]}
+          >
             1. Select One {"\n"}
           </Text>
           <View style={styles.bedOrWakeSelector}>
+            {/* Bedtime Box: */}
             <Pressable
               style={[
                 styles.bedOrWakeBox,
@@ -79,8 +88,10 @@ const OnboardingStep4 = ({ navigation, currentUser }) => {
               onPress={() => setBedTimeSelected((prev) => !prev)}
             >
               <Image source={require("../../images/night.png")} style={styles.icon} />
-              <Text style={{ color: colors.textWhite }}>Bedtime</Text>
+              <Text style={{ color: colors.textWhite }}>Bed Time At</Text>
             </Pressable>
+
+            {/* Wake Up Box: */}
             <Pressable
               style={[
                 styles.bedOrWakeBox,
@@ -89,7 +100,7 @@ const OnboardingStep4 = ({ navigation, currentUser }) => {
               onPress={() => setBedTimeSelected((prev) => !prev)}
             >
               <Image source={require("../../images/sun.png")} style={styles.icon} />
-              <Text style={{ color: colors.textWhite }}>Wake Up</Text>
+              <Text style={{ color: colors.textWhite }}>Wake Up At</Text>
             </Pressable>
           </View>
 
@@ -97,7 +108,61 @@ const OnboardingStep4 = ({ navigation, currentUser }) => {
           <Text style={[text.subtitle, { textAlign: "left", fontWeight: "bold" }]}>
             {"\n\n"}2. Select Time {"\n"}
           </Text>
-          <View style={styles.timeSelectorContainer}></View>
+          <View style={styles.timeSelectorContainer}>
+            {/* 4 columns: HOURS, colon, MINUTES, AM/PM */}
+
+            {/* COL 1: HOURS (rows: inc, hours, dec) */}
+            <View style={styles.timeCol}>
+              <Pressable
+                onPress={() => setHours((h) => ((parseInt(h) + 1) % 12).toString())}
+              >
+                <Text style={styles.arrowToggle}>^</Text>
+              </Pressable>
+              <Text style={styles.timeDisplay}>{hours}</Text>
+              <Pressable
+                onPress={() => setHours((h) => ((parseInt(h) - 1) % 12).toString())}
+              >
+                <Text style={styles.arrowToggle}>v</Text>
+              </Pressable>
+            </View>
+
+            {/* COL 2: colon :) */}
+            <Text
+              style={[
+                styles.timeCol,
+                { justifyContent: "center", alignContent: "center" },
+              ]}
+            >
+              :
+            </Text>
+
+            {/* COL 3: MINUTES (rows: inc, minutes, dec) */}
+            <View style={styles.timeCol}>
+              <Pressable
+                onPress={() => setMinutes((m) => ((parseInt(m) + 1) % 60).toString())}
+              >
+                <Text style={styles.arrowToggle}>^</Text>
+              </Pressable>
+              <Text style={styles.timeDisplay}>{minutes}</Text>
+              <Pressable
+                onPress={() => setMinutes((m) => ((parseInt(m) - 1) % 60).toString())}
+              >
+                <Text style={styles.arrowToggle}>v</Text>
+              </Pressable>
+            </View>
+            <Text> </Text>
+
+            {/* COL 4: AM/PM (rows: toggle, AM/PM, toggle) */}
+            <View style={styles.timeCol}>
+              <Pressable onPress={() => setAMOrPM((a) => (a === "AM" ? "PM" : "AM"))}>
+                <Text style={styles.arrowToggle}>^</Text>
+              </Pressable>
+              <Text style={styles.timeDisplay}>{AMOrPM}</Text>
+              <Pressable onPress={() => setAMOrPM((a) => (a === "AM" ? "PM" : "AM"))}>
+                <Text style={styles.arrowToggle}>v</Text>
+              </Pressable>
+            </View>
+          </View>
         </View>
 
         {/* CONTINUE BUTTON OR LOADING INDICATOR */}
@@ -119,6 +184,10 @@ const OnboardingStep4 = ({ navigation, currentUser }) => {
 };
 
 const styles = StyleSheet.create({
+  arrowToggle: {
+    fontSize: 20,
+    padding: 10,
+  },
   backToLogin: {
     alignSelf: "center",
     color: colors.textWhite,
@@ -218,17 +287,31 @@ const styles = StyleSheet.create({
     backgroundColor: colors.mainButton,
   },
   loginForm: {
-    padding: 40,
+    paddingHorizontal: 40,
   },
   tapToEditContainer: {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
   },
+  timeCol: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  timeDisplay: {
+    fontSize: 20,
+    fontWeight: "bold",
+  },
   timeSelectorContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
     backgroundColor: colors.themeWhite,
-    height: 10,
     borderRadius: 20,
+    padding: 20,
   },
 });
 
