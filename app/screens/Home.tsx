@@ -69,10 +69,11 @@ const Home: React.FC<NavAndUserProps> = ({ navigation, currentUser }) => {
           <Text style={styles.goalText}>
             {userData.username}'s Sleep Goal: {userData.sleepDurationGoal} hours
           </Text>
+          {/* <Image source={require('../images/edit.png')} style={styles.icon} /> */}
         </View>
         <View style={styles.container}>
           <View style={[styles.switchContainer, styles.bedtimeContainer]}>
-            {/* <Image source={require('./moonicon.png')} style={styles.icon} /> */}
+            {/* <Image source={require('../images/night.png')} style={styles.icon} /> */}
             <Text style={styles.timeText}>{bedtime}</Text>
             <Switch
               trackColor={{ false: "#767577", true: "#81b0ff" }}
@@ -83,7 +84,7 @@ const Home: React.FC<NavAndUserProps> = ({ navigation, currentUser }) => {
             <Text>Bedtime</Text>
           </View>
           <View style={[styles.switchContainer, styles.wakeUpContainer]}>
-            {/* <Image source={require('./sunicon.png')} style={styles.icon} /> */}
+            {/* <Image source={require("../images/sun.png")} style={styles.icon} /> */}
             <Text style={styles.timeText}>{wakeUpTime}</Text>
             <Switch
               trackColor={{ false: "#767577", true: "#ffd700" }}

@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import { View, Text, Image } from "react-native";
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "../screens/Home";
@@ -12,7 +12,25 @@ const Tab = createBottomTabNavigator();
 
 const Tabs = ({ currentUser }) => {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused }) => {
+          let iconName;
+
+          if (route.name === 'Home') {
+            iconName = require('../images/home.png');
+          } else if (route.name === 'Calendar') {
+            iconName = require('../images/calendar.png');
+          } else if (route.name === 'Challenges') {
+            iconName = require('../images/challenges.png');
+          } else if (route.name === 'Account') {
+            iconName = require('../images/account.png');
+          }
+
+          return <Image source={iconName} style={{ width: 24, height: 24 }} />;
+        },
+      })}
+    >
       <Tab.Screen name="Home">
         {(props) => <HomeScreen {...props} {...{ currentUser: currentUser }} />}
       </Tab.Screen>
