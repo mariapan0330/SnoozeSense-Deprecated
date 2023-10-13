@@ -35,6 +35,7 @@ const OnboardingStep4 = ({ navigation, currentUser }) => {
     if (goalTime !== "") {
       setLoading(true);
       try {
+        navigation.navigate("Step5");
       } catch (error) {
         console.error("Error submitting sleep schedule: ", error);
         alert("Whoa, " + error.message);
