@@ -6,7 +6,6 @@ const ContinueButton = ({ activeCondition, onPressFn }) => {
   return (
     <Pressable onPress={onPressFn}>
       <View
-        title="Sign Up"
         style={{
           ...styles.button,
           backgroundColor: activeCondition

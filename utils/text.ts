@@ -7,8 +7,8 @@ export const text = {
     fontSize: 20,
   },
   subtitle: {
-    fontWeight: 200,
+    fontWeight: "200",
     fontSize: 14,
     color: colors.textWhite,
   },
-};
+} as const;

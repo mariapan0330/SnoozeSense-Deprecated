@@ -25,14 +25,14 @@
 */
 
 import { FIREBASE_DB } from "./FirebaseConfig";
-import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { doc, setDoc, updateDoc } from "firebase/firestore";
 
 const db = FIREBASE_DB;
 
 /***********************************
  *    USEABLE FUNCTIONS            *
  ***********************************/
-export const createNewUserWithDefaultValues = async (username, email) => {
+export const createNewUserWithDefaultValues = async (username: string, email: string) => {
   /* 
     Creates a new user with a userID of their email address. Fills in default values. 
   */
@@ -62,7 +62,7 @@ export const createNewUserWithDefaultValues = async (username, email) => {
   }
 };
 
-export const updateUserFields = (email, fieldsToUpdate) => {
+export const updateUserFields = async (email, fieldsToUpdate) => {
   /* 
     Calls a validation before attempting.  
     Attempts to MERGE the given object to the existing user data
@@ -71,17 +71,15 @@ export const updateUserFields = (email, fieldsToUpdate) => {
   const validationError = validateObjToUpdate(fieldsToUpdate, userFieldsReference);
   if (validationError) {
     console.error(validationError);
-    return Promise.reject(validationError);  // Reject promise if validation fails
+    return Promise.reject(validationError); // Reject promise if validation fails
   } else {
     try {
       const ref = doc(db, "users", email);
-      return setDoc(ref, fieldsToUpdate, { merge: true }) // Note the return here
-        .then(() => {
-          console.log("Successfully updated db");
-        });
+      await setDoc(ref, fieldsToUpdate, { merge: true }); // Note the return here
+      console.log("Successfully updated db");
     } catch (error) {
       console.error(error);
-      return Promise.reject(error);  // Reject promise if Firestore operation fails
+      return Promise.reject(error); // Reject promise if Firestore operation fails
     }
   }
 };

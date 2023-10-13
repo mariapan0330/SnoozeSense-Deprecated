@@ -29,11 +29,7 @@ const OnboardingStep1 = ({ navigation, currentUser }) => {
       if (retypePassword === password) {
         setLoading(true);
         try {
-          const res = await createUserWithEmailAndPassword(
-            auth,
-            email,
-            password
-          );
+          const res = await createUserWithEmailAndPassword(auth, email, password);
           navigation.navigate("Step2", {
             navigation: navigation,
             currentUser: currentUser,
@@ -54,10 +50,7 @@ const OnboardingStep1 = ({ navigation, currentUser }) => {
 
   useEffect(() => {
     setAllFieldsFilled(
-      username !== "" &&
-        email !== "" &&
-        password !== "" &&
-        retypePassword !== ""
+      username !== "" && email !== "" && password !== "" && retypePassword !== ""
     );
   }, [username, email, password, retypePassword]);
 

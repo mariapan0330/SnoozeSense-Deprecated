@@ -28,12 +28,8 @@ const Login = ({ navigation }) => {
         console.log(res);
       } catch (err) {
         console.log(err);
-        if (
-          err.message === "Firebase: Error (auth/invalid-login-credentials)."
-        ) {
-          alert(
-            'Invalid Login Credentials. Click "Create Account" if you are new!'
-          );
+        if (err.message === "Firebase: Error (auth/invalid-login-credentials).") {
+          alert('Invalid Login Credentials. Click "Create Account" if you are new!');
         } else {
           alert("Sign In failed!" + err);
         }
@@ -104,7 +100,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     width: "100%",
     flex: 0.5,
-    justifyContent: "start",
+    justifyContent: "flex-start",
   },
   button: {
     alignItems: "center",
@@ -148,7 +144,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   signUpContainer: {
-    alignself: "flex-end",
+    alignSelf: "flex-end",
     flexDirection: "row",
     width: "100%",
   },

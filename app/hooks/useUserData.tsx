@@ -1,19 +1,12 @@
 import { useState, useEffect } from "react";
 import { FIREBASE_DB } from "../../services/FirebaseConfig";
-import {
-  QuerySnapshot,
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  onSnapshot,
-  query,
-} from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, onSnapshot, query } from "firebase/firestore";
+import { Challenge, Task, User, UserDataResponse } from "../../types/indexTypes";
 
-const useUserData = (email) => {
-  const [userData, setUserData] = useState({});
-  const [userTasks, setUserTasks] = useState({});
-  const [userChallenges, setUserChallenges] = useState({});
+const useUserData = (email: string): UserDataResponse => {
+  const [userData, setUserData] = useState<User | any>();
+  const [userTasks, setUserTasks] = useState<Task[] | any>();
+  const [userChallenges, setUserChallenges] = useState<Challenge[] | any>();
 
   const db = FIREBASE_DB;
 
@@ -28,7 +21,7 @@ const useUserData = (email) => {
 
         if (docSnap.exists()) {
           console.log("USER DATA:", docSnap.data());
-          setUserData(docSnap.data());
+          setUserData(docSnap.data() as User);
         } else {
           console.log("No such document!!");
         }
@@ -37,14 +30,16 @@ const useUserData = (email) => {
       }
     };
 
-    const fetchTaskAndChallengeData = async (subcollection) => {
+    const fetchTaskAndChallengeData = async <T,>(
+      subcollection: string
+    ): Promise<T[] | undefined> => {
       try {
         const docRef = collection(db, "users", email, subcollection);
         const q = query(docRef);
         const querySnapshot = await getDocs(q);
-        const result = [];
+        const result: T[] = [];
         querySnapshot.forEach((doc) => {
-          const data = doc.data();
+          const data = doc.data() as T;
           result.push({
             id: doc.id,
             ...data,
@@ -61,19 +56,24 @@ const useUserData = (email) => {
       /**
        * Call initial fetches
        */
-      fetchFieldData();
-      setUserTasks(fetchTaskAndChallengeData("tasks"));
-      setUserChallenges(fetchTaskAndChallengeData("challenges"));
+      const setData = async () => {
+        fetchFieldData();
+        const tasks = await fetchTaskAndChallengeData<Task>("tasks");
+        const challenges = await fetchTaskAndChallengeData<Challenge>("challenges");
+        setUserTasks(tasks);
+        setUserChallenges(challenges);
+      };
+      setData();
       // console.log("USER DATA FROM HOOK", userData);
 
       /************ SUBSCRIPTION ********************
        * Subscription setup monitors real-time updates to data changes in Firestore
        */
-      const unsubscribeFunctions = [];
+      const unsubscribeFunctions: (() => void)[] = [];
 
-      const unsubscribe = onSnapshot(doc(db, "users", email), (snapshot) => {
+      const unsubscribe: () => void = onSnapshot(doc(db, "users", email), (snapshot) => {
         if (snapshot.exists()) {
-          setUserData(snapshot.data());
+          setUserData(snapshot.data() as User);
         } else {
           console.log("no snapshot doc available.");
         }
@@ -90,15 +90,15 @@ const useUserData = (email) => {
         const unsubscribeCollection = onSnapshot(
           collection(db, "users", email, collectionName),
           (snapshot) => {
-            const items = [];
+            const items: Task[] | Challenge[] = [];
             snapshot.forEach((doc) => {
-              const itemData = doc.data();
+              const itemData = doc.data() as Task | Challenge | any;
               items.push({
                 id: doc.id,
                 ...itemData,
               });
             });
-            setFn(items);
+            setFn(items as any);
           }
         );
         unsubscribeFunctions.push(unsubscribeCollection);
