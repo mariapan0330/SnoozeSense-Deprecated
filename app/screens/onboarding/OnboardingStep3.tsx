@@ -41,14 +41,16 @@ const OnboardingStep3 = ({ navigation, currentUser }) => {
       console.log("age: ", currentYear - birthYear);
       setGoalHours(calculateAgeBasedSleepGoal(currentYear - birthYear));
     }
-  }, [userData]);
+  }, []);
 
   const handleSubmitGoalHours = async () => {
     if (goalHours !== "") {
       setLoading(true);
       try {
-        if (parseInt(goalHours) > 0 && parseInt(goalHours) <= 24) {
-          updateUserFields(currentUser.email, { sleepDurationGoal: parseInt(goalHours) });
+        if (parseFloat(goalHours) > 0 && parseFloat(goalHours) <= 24) {
+          updateUserFields(currentUser.email, {
+            sleepDurationGoal: parseFloat(goalHours),
+          });
           navigation.navigate("Step4");
         } else
           throw {
@@ -77,16 +79,17 @@ const OnboardingStep3 = ({ navigation, currentUser }) => {
           progressPercent={(3 / 6) * 100}
           prevPageNavigation={"Step2"}
         />
-        {/* SLEEP GOAL */}
+        {/* SLEEP GOAL TITLE */}
         <View style={styles.loginForm}>
           <Text style={text.heroText}>
             Based on your age, you should be aiming for this much sleep:
           </Text>
 
-          {/* INPUT LABELS */}
           <View style={styles.inputContainer}>
             <View style={styles.tapToEditContainer}>
+              {/* INPUT LABELS */}
               <Text style={styles.inputLabel}>{"\n"}Tap to Edit</Text>
+              {/* INPUT OWN GOAL HOURS */}
               <TextInput
                 style={styles.input}
                 placeholder="00"
@@ -94,7 +97,7 @@ const OnboardingStep3 = ({ navigation, currentUser }) => {
                 value={goalHours}
                 keyboardType="numeric"
                 onChangeText={(text) => {
-                  if (text.length <= 2 && (parseInt(text) <= 24 || text == "")) {
+                  if (text.length <= 3 && (parseFloat(text) <= 24 || text == "")) {
                     setGoalHours(text);
                   }
                 }}

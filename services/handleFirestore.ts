@@ -24,6 +24,7 @@
       - You can include 1 to all fields that you want to update in the object
 */
 
+import { User } from "../types/indexTypes";
 import { FIREBASE_DB } from "./FirebaseConfig";
 import { doc, setDoc, updateDoc } from "firebase/firestore";
 
@@ -37,9 +38,9 @@ export const createNewUserWithDefaultValues = async (username: string, email: st
     Creates a new user with a userID of their email address. Fills in default values. 
   */
   try {
-    await setDoc(doc(db, "users", email), {
+    await setDoc(doc(db, "users", email.toLowerCase()), {
       username: username,
-      email: email,
+      email: email.toLowerCase(),
       birthday: "01 90",
       enableNotifications: true,
       sleepStreak: 0,
@@ -49,6 +50,8 @@ export const createNewUserWithDefaultValues = async (username: string, email: st
       vibrationOn: true,
       userIsNew: true,
       sleepDurationGoal: 8,
+      generalSleepTime: "10 00 PM",
+      generalWakeTime: "06 00 AM",
       sundaySleepTime: "10 00 PM",
       mondaySleepTime: "10 00 PM",
       tuesdaySleepTime: "10 00 PM",
@@ -56,13 +59,13 @@ export const createNewUserWithDefaultValues = async (username: string, email: st
       thursdaySleepTime: "10 00 PM",
       fridaySleepTime: "10 00 PM",
       saturdaySleepTime: "10 00 PM",
-    });
+    } as User);
   } catch (error) {
     console.error("Error Creating New User: ", error);
   }
 };
 
-export const updateUserFields = async (email, fieldsToUpdate) => {
+export const updateUserFields = async (email: string, fieldsToUpdate) => {
   /* 
     Calls a validation before attempting.  
     Attempts to MERGE the given object to the existing user data
@@ -174,6 +177,8 @@ const userFieldsReference = {
   userIsNew: "boolean",
   vibrationOn: "boolean",
   sleepDurationGoal: "number",
+  generalSleepTime: "string",
+  generalWakeTime: "string",
   sundaySleepTime: "string",
   mondaySleepTime: "string",
   tuesdaySleepTime: "string",
