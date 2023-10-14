@@ -1,17 +1,17 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
-import { KEYS } from "./keys";
+import { KEY } from "./key";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: KEYS.APIKEY,
-  authDomain: KEYS.AUTHDOMAIN,
-  projectId: KEYS.PROJECTID,
-  storageBucket: KEYS.STORAGEBUCKET,
-  messagingSenderId: KEYS.MESSAGESENDERID,
-  appId: KEYS.APPID,
+  apiKey: KEY.APIKEY,
+  authDomain: KEY.AUTHDOMAIN,
+  projectId: KEY.PROJECTID,
+  storageBucket: KEY.STORAGEBUCKET,
+  messagingSenderId: KEY.MESSAGESENDERID,
+  appId: KEY.APPID,
 };
 
 // Initialize Firebase

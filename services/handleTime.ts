@@ -12,20 +12,27 @@ export const calculateTime = (
     //  -> add addMinutes to minutes
     //  -> if the resulting minutes are > 60, subtract 60 minutes & add 1 to hours
     // if the resulting hours are > 12, subtract 12 and swap AM & PM
+    // if the original hours were 12 don't swap AM and PM
+    const origHours = parseInt(hours);
     hours = hoursToAdd ? (parseInt(hours) + hoursToAdd).toString() : hours;
     if (minutesToAdd) {
       minutes = (parseInt(minutes) + minutesToAdd).toString();
-      if (parseInt(minutes) > 60) {
+      if (parseInt(minutes) >= 60) {
         minutes = (parseInt(minutes) - 60).toString();
         hours = (parseInt(hours) + 1).toString();
       }
     }
     if (parseInt(hours) > 12) {
       hours = (parseInt(hours) - 12).toString();
+    }
+    if (origHours !== 12 && hoursToAdd > 0) {
       period = period === "AM" ? "PM" : "AM";
     }
+    if (parseInt(minutes) === 60) {
+      minutes = "00";
+    }
 
-    return `${hours}:${minutes.padStart(2, "0")} ${period}`;
+    return `${hours.padStart(2, "0")}:${minutes.padStart(2, "0")} ${period}`;
   } catch (error) {
     console.log("There was an error calculating time.");
   }
@@ -60,8 +67,11 @@ export const calculateTimeWithSubtraction = (
     } else if (parseInt(hours) == 0) {
       hours = "12";
     }
+    if (parseInt(minutes) === 60) {
+      minutes = "0";
+    }
 
-    return `${hours}:${minutes.padStart(2, "0")} ${period}`;
+    return `${hours.padStart(2, "0")}:${minutes.padStart(2, "0")} ${period}`;
   } catch (error) {
     console.log("There was an error subtracting time.");
   }

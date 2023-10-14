@@ -2,7 +2,6 @@ import {
   View,
   Text,
   StyleSheet,
-  TextInput,
   ActivityIndicator,
   Image,
   Pressable,
@@ -18,7 +17,6 @@ import { text } from "../../../utils/text";
 import OnboardingHeader from "./OnboardingHeader";
 import ContinueButton from "./ContinueButton";
 import useUserData from "../../hooks/useUserData";
-import { Switch } from "react-native-gesture-handler";
 import TimeSelector from "./TimeSelector";
 
 // START COMPONENT
@@ -27,6 +25,8 @@ const OnboardingStep4 = ({ navigation, currentUser }) => {
    * This is onboarding for SLEEP SCHEDULE
    */
   const [goalTime, setGoalTime] = useState<string>();
+  const [bedTime, setBedTime] = useState<string>();
+  const [wakeTime, setWakeTime] = useState<string>();
 
   // if bedTimeSelected is false, defaults to wake time is selected
   const [bedTimeSelected, setBedTimeSelected] = useState<boolean>(true);
@@ -38,7 +38,10 @@ const OnboardingStep4 = ({ navigation, currentUser }) => {
     if (goalTime !== "") {
       setLoading(true);
       try {
-        updateUserFields(currentUser.email, { generalSleepTime: goalTime });
+        updateUserFields(currentUser.email, {
+          generalSleepTime: `${bedTime[0]}${bedTime[1]} ${bedTime[3]}${bedTime[4]} ${bedTime[6]}${bedTime[7]}`,
+          generalWakeTime: `${wakeTime[0]}${wakeTime[1]} ${wakeTime[3]}${wakeTime[4]} ${wakeTime[6]}${wakeTime[7]}`,
+        });
         navigation.navigate("Step5");
       } catch (error) {
         console.error("Error submitting sleep schedule: ", error);
@@ -48,6 +51,34 @@ const OnboardingStep4 = ({ navigation, currentUser }) => {
       }
     }
   };
+
+  useEffect(() => {
+    if (bedTimeSelected) {
+      setBedTime(calculateTime(goalTime));
+      const wake = userData
+        ? calculateTime(
+            goalTime,
+            Math.floor(userData.sleepDurationGoal),
+            Math.floor(
+              (userData.sleepDurationGoal - Math.floor(userData.sleepDurationGoal)) * 60
+            )
+          )
+        : "";
+      setWakeTime(wake);
+    } else {
+      setWakeTime(calculateTime(goalTime));
+      const sleep = userData
+        ? calculateTimeWithSubtraction(
+            goalTime,
+            Math.floor(userData.sleepDurationGoal),
+            Math.floor(
+              (userData.sleepDurationGoal - Math.floor(userData.sleepDurationGoal)) * 60
+            )
+          )
+        : "";
+      setBedTime(sleep);
+    }
+  });
 
   useEffect(() => {
     setAllFieldsFilled(goalTime !== "");
@@ -67,7 +98,7 @@ const OnboardingStep4 = ({ navigation, currentUser }) => {
         <View style={styles.formContainer}>
           <Text style={text.heroText}>{"\n"}Create Sleep Schedule</Text>
           <View style={styles.hoursRecommendation}>
-            <Image source={require("../../images/clock.png")} style={styles.icon} />
+            <Image source={require("../../images/white_clock.png")} style={styles.icon} />
             <Text style={text.subtitle}>
               {"\t"}
               {userData && userData.sleepDurationGoal} Hours
@@ -92,7 +123,7 @@ const OnboardingStep4 = ({ navigation, currentUser }) => {
               ]}
               onPress={() => setBedTimeSelected((prev) => !prev)}
             >
-              <Image source={require("../../images/night.png")} style={styles.icon} />
+              <Image source={require("../../images/blue_moon.png")} style={styles.icon} />
               <Text style={{ color: colors.textWhite }}>Bed Time At</Text>
             </Pressable>
 
@@ -104,7 +135,10 @@ const OnboardingStep4 = ({ navigation, currentUser }) => {
               ]}
               onPress={() => setBedTimeSelected((prev) => !prev)}
             >
-              <Image source={require("../../images/sun.png")} style={styles.icon} />
+              <Image
+                source={require("../../images/yellow_sun.png")}
+                style={styles.icon}
+              />
               <Text style={{ color: colors.textWhite }}>Wake Up At</Text>
             </Pressable>
           </View>
@@ -117,32 +151,12 @@ const OnboardingStep4 = ({ navigation, currentUser }) => {
             <Text style={{ color: colors.textWhite, textAlign: "center" }}>
               Calculated Wake Up Time:{" "}
               {/* calculate the wake up time by the hours + durationgoal */}
-              {userData &&
-                calculateTime(
-                  goalTime,
-                  Math.floor(userData.sleepDurationGoal),
-                  Math.floor(
-                    (userData.sleepDurationGoal -
-                      Math.floor(userData.sleepDurationGoal)) *
-                      60
-                  )
-                )}
-              .
+              {wakeTime}.
             </Text>
           ) : (
             <Text style={{ color: colors.textWhite, textAlign: "center" }}>
               Calculated Bed Time: {/* calculate bed time by the hours - durationgoal */}
-              {userData &&
-                calculateTimeWithSubtraction(
-                  goalTime,
-                  Math.floor(userData.sleepDurationGoal),
-                  Math.floor(
-                    (userData.sleepDurationGoal -
-                      Math.floor(userData.sleepDurationGoal)) *
-                      60
-                  )
-                )}
-              .
+              {bedTime}.
             </Text>
           )}
         </View>
@@ -214,9 +228,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   icon: {
-    height: 30,
-    width: 30,
-    backgroundColor: "magenta",
+    height: 20,
+    width: 20,
   },
 });
 
