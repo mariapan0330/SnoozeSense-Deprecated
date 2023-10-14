@@ -134,13 +134,6 @@ const styles = StyleSheet.create({
   buttonContainer: {
     width: "100%",
   },
-  button: {
-    alignItems: "center",
-    padding: 10,
-    paddingVertical: 10,
-    marginTop: 5,
-    borderRadius: 30,
-  },
   container: {
     flex: 1,
     justifyContent: "center",
@@ -164,9 +157,6 @@ const styles = StyleSheet.create({
   inputLabel: {
     alignSelf: "flex-start",
     color: colors.textWhite,
-  },
-  loginButton: {
-    backgroundColor: colors.mainButton,
   },
   loginForm: {
     padding: 40,
