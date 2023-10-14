@@ -59,7 +59,7 @@ const OnboardingStep2 = ({ navigation, currentUser }) => {
           prevPageNavigation={"Step1"}
         />
         {/* BIRTHDAY FORM */}
-        <View style={styles.loginForm}>
+        <View style={styles.formContainer}>
           <Text style={text.heroText}>{"\n"}Add Your Birthday</Text>
           <Text style={[text.subtitle]}>
             We use your age to estimate the amount of hours of sleep you need.{"\n"}
@@ -119,33 +119,14 @@ const OnboardingStep2 = ({ navigation, currentUser }) => {
 };
 
 const styles = StyleSheet.create({
-  backToLogin: {
-    alignSelf: "center",
-    color: colors.textWhite,
-    textDecorationLine: "underline",
-    fontWeight: "bold",
-  },
   buttonContainer: {
     width: "100%",
     padding: 40,
-  },
-  button: {
-    alignItems: "center",
-    padding: 10,
-    paddingVertical: 10,
-    marginTop: 5,
-    borderRadius: 30,
   },
   container: {
     flex: 1,
     justifyContent: "center",
     backgroundColor: colors.background,
-  },
-  heroText: {
-    fontWeight: "bold",
-    alignSelf: "center",
-    fontSize: 20,
-    color: colors.textWhite,
   },
   input: {
     color: colors.textWhite,
@@ -160,10 +141,7 @@ const styles = StyleSheet.create({
   inputLabel: {
     color: colors.textWhite,
   },
-  loginButton: {
-    backgroundColor: colors.mainButton,
-  },
-  loginForm: {
+  formContainer: {
     padding: 40,
   },
   pillShape: {

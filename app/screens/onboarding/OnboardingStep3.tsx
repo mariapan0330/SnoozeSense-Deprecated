@@ -41,14 +41,16 @@ const OnboardingStep3 = ({ navigation, currentUser }) => {
       console.log("age: ", currentYear - birthYear);
       setGoalHours(calculateAgeBasedSleepGoal(currentYear - birthYear));
     }
-  }, [userData]);
+  }, []);
 
   const handleSubmitGoalHours = async () => {
     if (goalHours !== "") {
       setLoading(true);
       try {
-        if (parseInt(goalHours) > 0 && parseInt(goalHours) <= 24) {
-          updateUserFields(currentUser.email, { sleepDurationGoal: parseInt(goalHours) });
+        if (parseFloat(goalHours) > 0 && parseFloat(goalHours) <= 24) {
+          updateUserFields(currentUser.email, {
+            sleepDurationGoal: parseFloat(goalHours),
+          });
           navigation.navigate("Step4");
         } else
           throw {
@@ -77,16 +79,17 @@ const OnboardingStep3 = ({ navigation, currentUser }) => {
           progressPercent={(3 / 6) * 100}
           prevPageNavigation={"Step2"}
         />
-        {/* SLEEP GOAL */}
-        <View style={styles.loginForm}>
+        {/* SLEEP GOAL TITLE */}
+        <View style={styles.formContainer}>
           <Text style={text.heroText}>
             Based on your age, you should be aiming for this much sleep:
           </Text>
 
-          {/* INPUT LABELS */}
           <View style={styles.inputContainer}>
             <View style={styles.tapToEditContainer}>
+              {/* INPUT LABELS */}
               <Text style={styles.inputLabel}>{"\n"}Tap to Edit</Text>
+              {/* INPUT OWN GOAL HOURS */}
               <TextInput
                 style={styles.input}
                 placeholder="00"
@@ -94,7 +97,7 @@ const OnboardingStep3 = ({ navigation, currentUser }) => {
                 value={goalHours}
                 keyboardType="numeric"
                 onChangeText={(text) => {
-                  if (text.length <= 2 && (parseInt(text) <= 24 || text == "")) {
+                  if (text.length <= 3 && (parseFloat(text) <= 24 || text == "")) {
                     setGoalHours(text);
                   }
                 }}
@@ -123,33 +126,14 @@ const OnboardingStep3 = ({ navigation, currentUser }) => {
 };
 
 const styles = StyleSheet.create({
-  backToLogin: {
-    alignSelf: "center",
-    color: colors.textWhite,
-    textDecorationLine: "underline",
-    fontWeight: "bold",
-  },
   buttonContainer: {
     width: "100%",
     padding: 40,
-  },
-  button: {
-    alignItems: "center",
-    padding: 10,
-    paddingVertical: 10,
-    marginTop: 5,
-    borderRadius: 30,
   },
   container: {
     flex: 1,
     justifyContent: "center",
     backgroundColor: colors.background,
-  },
-  heroText: {
-    fontWeight: "bold",
-    alignSelf: "center",
-    fontSize: 20,
-    color: colors.textWhite,
   },
   input: {
     color: colors.textWhite,
@@ -175,20 +159,10 @@ const styles = StyleSheet.create({
     // width: "50%",
     paddingVertical: 10,
   },
-  inputLabelContainer: {
-    display: "flex",
-    justifyContent: "space-around",
-    flexDirection: "row",
-    width: "60%",
-    alignSelf: "center",
-  },
   inputLabel: {
     color: colors.textWhite,
   },
-  loginButton: {
-    backgroundColor: colors.mainButton,
-  },
-  loginForm: {
+  formContainer: {
     padding: 40,
   },
   tapToEditContainer: {

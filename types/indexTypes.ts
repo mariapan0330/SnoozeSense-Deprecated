@@ -10,6 +10,8 @@ export type User = {
   userIsNew: boolean;
   vibrationOn: boolean;
   sleepDurationGoal: number;
+  generalSleepTime: string;
+  generalWakeTime: string;
   sundaySleepTime: string;
   mondaySleepTime: string;
   tuesdaySleepTime: string;
@@ -17,6 +19,29 @@ export type User = {
   thursdaySleepTime: string;
   fridaySleepTime: string;
   saturdaySleepTime: string;
+};
+
+export type UserFields = {
+  username?: string;
+  email?: string;
+  birthday?: string;
+  enableNotifications?: boolean;
+  sleepStreak?: number;
+  sleepReminderOffset?: number;
+  soundChoice?: string;
+  soundOn?: boolean;
+  userIsNew?: boolean;
+  vibrationOn?: boolean;
+  sleepDurationGoal?: number;
+  generalSleepTime?: string;
+  generalWakeTime?: string;
+  sundaySleepTime?: string;
+  mondaySleepTime?: string;
+  tuesdaySleepTime?: string;
+  wednesdaySleepTime?: string;
+  thursdaySleepTime?: string;
+  fridaySleepTime?: string;
+  saturdaySleepTime?: string;
 };
 
 export type Task = {

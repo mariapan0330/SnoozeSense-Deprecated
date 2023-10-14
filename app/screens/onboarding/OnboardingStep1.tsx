@@ -16,7 +16,7 @@ import ContinueButton from "./ContinueButton";
 
 const OnboardingStep1 = ({ navigation, currentUser }) => {
   /**
-   * This is onboarding for AUTHENTICATION CREDENTIALS
+   * This is onboarding for CREATE AN ACCOUNT screen
    */
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -59,14 +59,14 @@ const OnboardingStep1 = ({ navigation, currentUser }) => {
 
   return (
     <>
+      {/* HEADER */}
+      <OnboardingHeader
+        page={"1"}
+        navigation={navigation}
+        progressPercent={(1 / 6) * 100}
+        prevPageNavigation="Login"
+      />
       <View style={styles.container}>
-        {/* HEADER */}
-        <OnboardingHeader
-          page={"1"}
-          navigation={navigation}
-          progressPercent={(1 / 6) * 100}
-          prevPageNavigation="Login"
-        />
         {/* LOGIN FORM */}
         <View style={styles.loginForm}>
           <Text style={styles.heroText}>Create An Account</Text>
@@ -134,13 +134,6 @@ const styles = StyleSheet.create({
   buttonContainer: {
     width: "100%",
   },
-  button: {
-    alignItems: "center",
-    padding: 10,
-    paddingVertical: 10,
-    marginTop: 5,
-    borderRadius: 30,
-  },
   container: {
     flex: 1,
     justifyContent: "center",
@@ -164,9 +157,6 @@ const styles = StyleSheet.create({
   inputLabel: {
     alignSelf: "flex-start",
     color: colors.textWhite,
-  },
-  loginButton: {
-    backgroundColor: colors.mainButton,
   },
   loginForm: {
     padding: 40,
