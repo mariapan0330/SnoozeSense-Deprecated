@@ -3,6 +3,8 @@ import {
   Text,
   StyleSheet,
   ActivityIndicator,
+  KeyboardAvoidingView,
+  Platform,
   Image,
   Pressable,
 } from "react-native";
@@ -15,6 +17,7 @@ import OnboardingHeader from "./OnboardingHeader";
 import ContinueButton from "./ContinueButton";
 import useUserData from "../../hooks/useUserData";
 import { RepeatsPopup } from "../RepeatsPopup";
+import { commonStyles } from "../../../utils/commonStyles";
 
 // START COMPONENT
 const OnboardingStep5 = ({ navigation, currentUser, setCurrentUserIsNew }) => {
@@ -71,8 +74,12 @@ const OnboardingStep5 = ({ navigation, currentUser, setCurrentUserIsNew }) => {
   }, [repeats]);
 
   return (
-    <>
-      <View style={styles.container}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "position"}
+      keyboardVerticalOffset={-50}
+      style={{ flex: 1 }}
+    >
+      <View style={commonStyles.onboardingContainer}>
         {/* HEADER */}
         <OnboardingHeader
           page={"5"}
@@ -194,7 +201,7 @@ const OnboardingStep5 = ({ navigation, currentUser, setCurrentUserIsNew }) => {
         </View>
         <RepeatsPopup popupOpen={popupOpen} setPopupOpen={setPopupOpen} />
       </View>
-    </>
+    </KeyboardAvoidingView>
   );
 };
 

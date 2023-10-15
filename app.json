@@ -1,13 +1,14 @@
 {
   "expo": {
     "name": "SnoozeSense",
-    "slug": "SnoozeSense",
+    "slug": "snoozesense",
+    "description": "SnoozeSense helps you achieve your sleep goals!",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "icon": "./app/images/logo.png",
+    "userInterfaceStyle": "dark",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./app/images/loading.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -19,12 +20,19 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./app/images/logo.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.mariapan0330.snoozesense"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "b7dad17a-df9e-4316-a37b-a73a13c48120"
+      }
+    },
+    "owner": "mariapan0330"
   }
 }

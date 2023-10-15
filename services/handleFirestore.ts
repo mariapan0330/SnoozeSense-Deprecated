@@ -41,7 +41,7 @@ export const createNewUserWithDefaultValues = async (username: string, email: st
     await setDoc(doc(db, "users", email.toLowerCase()), {
       username: username,
       email: email.toLowerCase(),
-      birthday: "01 90",
+      birthday: "01 1990",
       enableNotifications: true,
       sleepStreak: 0,
       sleepReminderOffset: 20,

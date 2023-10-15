@@ -1,10 +1,19 @@
-import { View, Text, StyleSheet, TextInput, ActivityIndicator } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  ActivityIndicator,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { updateUserFields } from "../../../services/handleFirestore";
 import { colors } from "../../../utils/colors";
 import { text } from "../../../utils/text";
 import OnboardingHeader from "./OnboardingHeader";
 import ContinueButton from "./ContinueButton";
+import { commonStyles } from "../../../utils/commonStyles";
 
 const OnboardingStep2 = ({ navigation, currentUser }) => {
   /**
@@ -49,8 +58,12 @@ const OnboardingStep2 = ({ navigation, currentUser }) => {
   }, [birthMonth, birthYear]);
 
   return (
-    <>
-      <View style={styles.container}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "position"}
+      keyboardVerticalOffset={-50}
+      style={{ flex: 1 }}
+    >
+      <View style={commonStyles.onboardingContainer}>
         {/* HEADER */}
         <OnboardingHeader
           page={"2"}
@@ -101,7 +114,7 @@ const OnboardingStep2 = ({ navigation, currentUser }) => {
             />
           </View>
         </View>
-        <View style={styles.container}>
+        <View style={commonStyles.onboardingContainer}>
           {loading ? (
             <ActivityIndicator size="large" color="white" />
           ) : (
@@ -114,19 +127,14 @@ const OnboardingStep2 = ({ navigation, currentUser }) => {
           )}
         </View>
       </View>
-    </>
+    </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
   buttonContainer: {
     width: "100%",
-    padding: 40,
-  },
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    backgroundColor: colors.background,
+    paddingHorizontal: 40,
   },
   input: {
     color: colors.textWhite,
