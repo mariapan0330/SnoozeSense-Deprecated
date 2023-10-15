@@ -5,6 +5,8 @@ import {
   TextInput,
   ActivityIndicator,
   Pressable,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { FIREBASE_AUTH } from "../../../services/FirebaseConfig";
@@ -13,6 +15,7 @@ import { createNewUserWithDefaultValues } from "../../../services/handleFirestor
 import { colors } from "../../../utils/colors";
 import OnboardingHeader from "./OnboardingHeader";
 import ContinueButton from "./ContinueButton";
+import { commonStyles } from "../../../utils/commonStyles";
 
 const OnboardingStep1 = ({ navigation, currentUser }) => {
   /**
@@ -58,15 +61,20 @@ const OnboardingStep1 = ({ navigation, currentUser }) => {
   }, [username, email, password, retypePassword]);
 
   return (
-    <>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "position"}
+      keyboardVerticalOffset={-50}
+      style={{ flex: 1 }}
+    >
       {/* HEADER */}
+      {/* <View style={{ flex: 1 }}> */}
       <OnboardingHeader
         page={"1"}
         navigation={navigation}
         progressPercent={(1 / 6) * 100}
         prevPageNavigation="Login"
       />
-      <View style={styles.container}>
+      <View style={commonStyles.onboardingContainer}>
         {/* LOGIN FORM */}
         <View style={styles.loginForm}>
           <Text style={styles.heroText}>Create An Account</Text>
@@ -120,7 +128,7 @@ const OnboardingStep1 = ({ navigation, currentUser }) => {
           )}
         </View>
       </View>
-    </>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -130,14 +138,10 @@ const styles = StyleSheet.create({
     color: colors.textWhite,
     textDecorationLine: "underline",
     fontWeight: "bold",
+    paddingTop: 20,
   },
   buttonContainer: {
     width: "100%",
-  },
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    backgroundColor: colors.background,
   },
   heroText: {
     fontWeight: "bold",
