@@ -36,10 +36,7 @@ const OnboardingStep1 = ({ navigation, currentUser }) => {
         setLoading(true);
         try {
           const res = await createUserWithEmailAndPassword(auth, email, password);
-          navigation.navigate("Step2", {
-            navigation: navigation,
-            currentUser: currentUser,
-          });
+          navigation.navigate("Step2");
           console.log(res);
           createNewUserWithDefaultValues(username, email);
         } catch (err) {
