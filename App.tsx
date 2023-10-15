@@ -13,6 +13,8 @@
  *
  * 7. Enter that link into the Expo Go "Enter URL Manually" input box
  *
+ * from this:
+ * https://github.com/expo/expo/issues/16360
  */
 
 import { NavigationContainer } from "@react-navigation/native";
