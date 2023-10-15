@@ -1,3 +1,20 @@
+/**
+ * TO RUN THIS APP ON EXPO GO ON ANDROID SIMULATOR:
+ *
+ * 1. download the APK from this link to your computer:
+ * https://expo.dev/accounts/mariapan0330/projects/snoozesense/builds/8a981c9c-e7ca-4385-9b05-e5de28b857e4
+ *
+ * 2. Move that APK file into the folder of the Android Simulator.
+ * 3. Start the simulator and find the Expo Go app in the app locker
+ *
+ * 4. Dev starts the project with npx expo start --tunnel
+ * 5. Dev presses 's' to switch to Expo Go mode
+ * 6. Dev shares the link that starts with 'Metro waiting on exp://etc'
+ *
+ * 7. Enter that link into the Expo Go "Enter URL Manually" input box
+ *
+ */
+
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Login from "./app/screens/Login";
