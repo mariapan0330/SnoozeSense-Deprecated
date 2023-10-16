@@ -13,6 +13,7 @@ import useUserData from "../hooks/useUserData";
 import { calculateTime } from "../../services/handleTime";
 import PlaceholderTasks from "./PlaceholderTasks";
 import { NavAndUserProps } from "../../types/componentTypes";
+import { colors } from "../../utils/colors";
 
 const getNext14Days: () => { day: string; date: number }[] = () => {
   const abbreviatedDays = ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"];
@@ -27,9 +28,19 @@ const getNext14Days: () => { day: string; date: number }[] = () => {
   });
 };
 
+const todayDate = new Date().getDate(); //Current Date
+
 const Home: React.FC<NavAndUserProps> = ({ navigation, currentUser }) => {
   const { userData } = useUserData(currentUser.email);
-  const dayRef: string[] = ["sun", "mon", "tues", "wednes", "thurs", "fri", "satur"];
+  const dayRef: string[] = [
+    "sun",
+    "mon",
+    "tues",
+    "wednes",
+    "thurs",
+    "fri",
+    "satur",
+  ];
   const today = new Date();
   const dayOfWeek = dayRef[today.getDay()];
 
@@ -39,6 +50,8 @@ const Home: React.FC<NavAndUserProps> = ({ navigation, currentUser }) => {
   const [isWakeUpEnabled, setIsWakeUpEnabled] = useState(false);
   const [wakeUpTime, setWakeUpTime] = useState("7:00 AM");
   const days = getNext14Days();
+  const monthNames = ["January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November", "December"];
+  const currentMonth = monthNames[new Date().getMonth()];
 
   useEffect(() => {
     if (userData) {
@@ -51,50 +64,75 @@ const Home: React.FC<NavAndUserProps> = ({ navigation, currentUser }) => {
   }, [userData]);
 
   return (
-    <ScrollView style={{ flex: 1 }}>
+    <ScrollView style={[{ flex: 1 }, styles.backgroundContainer]}>
+      <Text style={styles.currentMonthText}>{currentMonth}</Text>
       <FlatList
         data={days}
         horizontal
         showsHorizontalScrollIndicator={false}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
-          <View style={styles.dayContainer}>
+          <View
+            style={[
+              styles.dayContainer,
+              {
+                backgroundColor:
+                  item.date === todayDate ? "#534992" : "#212121",
+              },
+            ]}
+          >
             <Text style={styles.dayText}>{item.day}</Text>
             <Text style={styles.dateText}>{item.date}</Text>
           </View>
         )}
       />
       <View style={styles.mainContainer}>
+      <Text style={styles.sleepscheduletext}>Sleep Schedule</Text>
         <View style={styles.goalContainer}>
-          <Image source={require("../images/clock.png")} style={styles.icon} />
+          <Image
+            source={require("../images/sleep_white.png")}
+            style={styles.icon}
+          />
           <Text style={styles.goalText}>
             {userData
               ? `${userData.username}'s Sleep Goal: ${userData.sleepDurationGoal} hours`
               : "Loading..."}
           </Text>
+          <Image
+            source={require("../images/editwhite.png")}
+            style={styles.icon}
+          />
         </View>
         <View style={styles.container}>
           <View style={[styles.switchContainer, styles.bedtimeContainer]}>
-            <Image source={require("../images/night.png")} style={styles.icon} />
-            <Text style={styles.timeText}>{bedtime}</Text>
+            <Image
+              source={require("../images/blue_moon.png")}
+              style={styles.icon}
+            />
+            <Text style={styles.timeText}>Bedtime</Text>
+            <Text style={styles.timetime}>{bedtime}</Text>
             <Switch
-              trackColor={{ false: "#767577", true: "#81b0ff" }}
-              thumbColor={isBedtimeEnabled ? "#f5dd4b" : "#f4f3f4"}
+              trackColor={{ false: "#767577", true: "#686868" }}
+              thumbColor={isBedtimeEnabled ? "#9174D0" : "#f4f3f4"}
               onValueChange={() => setIsBedtimeEnabled((prev) => !prev)}
               value={isBedtimeEnabled}
+              style={styles.switches}
             />
-            <Text>Bedtime</Text>
           </View>
           <View style={[styles.switchContainer, styles.wakeUpContainer]}>
-            <Image source={require("../images/sun.png")} style={styles.icon} />
-            <Text style={styles.timeText}>{wakeUpTime}</Text>
+            <Image
+              source={require("../images/sunyellow.png")}
+              style={styles.icon}
+            />
+            <Text style={styles.timeText}>Wake Up</Text>
+            <Text style={styles.timetime}>{wakeUpTime}</Text>
             <Switch
-              trackColor={{ false: "#767577", true: "#ffd700" }}
-              thumbColor={isWakeUpEnabled ? "#f5dd4b" : "#f4f3f4"}
+              trackColor={{ false: "#767577", true: "#686868" }}
+              thumbColor={isWakeUpEnabled ? "#9174D0" : "#f4f3f4"}
               onValueChange={() => setIsWakeUpEnabled((prev) => !prev)}
               value={isWakeUpEnabled}
+              style={styles.switches}
             />
-            <Text>Wake Up</Text>
           </View>
         </View>
         <View style={styles.challengesContainer}>
@@ -114,7 +152,6 @@ const Home: React.FC<NavAndUserProps> = ({ navigation, currentUser }) => {
         <View style={styles.challengesContainer}>
           <View style={styles.header}>
             <Text style={styles.headerText}>Night Routine</Text>
-            {/* <Image source={require('./moonicon.png')} style={styles.icon} /> */}
           </View>
 
           {/* TASKS COMPONENT */}
@@ -132,25 +169,30 @@ const Home: React.FC<NavAndUserProps> = ({ navigation, currentUser }) => {
 };
 
 const styles = StyleSheet.create({
+  backgroundContainer: {
+    backgroundColor: colors.background,
+  },
   bedtimeContainer: {
-    backgroundColor: "#f1f1f1",
+    backgroundColor: "#252A49",
   },
   button: {
-    backgroundColor: "black",
+    backgroundColor: "#9174D0",
     padding: 10,
-    borderRadius: 8,
+    borderRadius: 20,
     alignItems: "center",
+    width: 240,
   },
   buttonText: {
-    color: "white",
+    color: "black",
     fontSize: 18,
   },
   challengesContainer: {
     flex: 1,
     flexDirection: "column",
-    alignItems: "center",
     justifyContent: "center",
+    alignItems: "center",
     padding: 20,
+    color: colors.textWhite,
   },
   container: {
     flexDirection: "row",
@@ -164,38 +206,48 @@ const styles = StyleSheet.create({
   },
   dayContainer: {
     padding: 10,
-    marginTop: 50,
+    marginTop: 5,
     borderRadius: 5,
-    backgroundColor: "#f0f0f0",
+    backgroundColor: "#212121",
+    marginHorizontal: 5,
+    width: 54,
+    height: 58,
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
   },
   dayText: {
-    fontSize: 16,
+    fontSize: 12,
+    color: colors.textWhite,
   },
   goalContainer: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 0,
     marginTop: 40,
+    marginBottom: 50,
   },
   goalText: {
     fontSize: 20,
     textAlign: "center",
-    marginTop: 50,
+    color: colors.textWhite,
   },
   header: {
     flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
   },
   headerText: {
     fontSize: 20,
     fontWeight: "bold",
+    color: colors.textWhite,
+    textAlign: "left",  // Align text to the left
   },
   icon: {
-    width: 24,
-    height: 24,
-    marginBottom: 10,
+    width: 30,
+    height: 30,
+    resizeMode: "contain",
+    marginHorizontal: 15,
   },
   mainContainer: {
     flex: 1,
@@ -214,14 +266,39 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 8,
     margin: 10,
+    backgroundColor: "#252A49",
   },
   timeText: {
-    fontSize: 18,
+    fontSize: 12,
     marginBottom: 10,
-    color: "black",
+    color: colors.textWhite,
+  },
+  timetime:{
+    fontSize: 16,
+    color: colors.textWhite,
   },
   wakeUpContainer: {
-    backgroundColor: "#f1f1f1",
+    backgroundColor: "#252A49",
+  },
+  currentMonthText: {
+    color: '#f2f2f2',
+    fontFamily: 'inter',
+    fontSize: 18,
+    textAlign: 'left',
+    marginBottom: 0,
+    marginLeft: 7,
+  },
+  sleepscheduletext:{
+    color: '#f2f2f2',
+    fontFamily: 'inter',
+    fontSize: 18,
+    textAlign: 'left',
+    marginBottom: 0,
+    marginLeft: 7,
+    marginTop: 30,
+  },
+  switches: {
+    transform: [{ scaleX: 1.1 }, { scaleY: 1.1 }],  // Scaling to 1.5 times the original size
   },
 });
 
