@@ -8,71 +8,73 @@ export const RepeatsPopup = ({ popupOpen, setPopupOpen }) => {
   const [customPopupOpen, setCustomPopupOpen] = useState<boolean>(false);
   const [selected, setSelected] = useState<string>("");
   return (
-    <View style={styles.container}>
-      {popupOpen && (
-        <View style={styles.menuContainer}>
-          {/* ROWS
-          exit
-          title
-          Everyday --- checkmark
-          Weekdays --- checkmark
-          Weekend ---- checkmark
-          Custom ----- RepeatsCustomPopup
-        */}
-          <Pressable onPress={() => setPopupOpen(false)}>
-            <Text style={styles.exitBtn}>Exit</Text>
-          </Pressable>
-          <Text style={text.heroText}>Alarm Repeats</Text>
-          <Pressable onPress={() => setSelected("everyday")}>
-            <Text
-              style={
-                selected == "everyday"
-                  ? styles.repeatsOptionTrue
-                  : styles.repeatsOptionFalse
-              }
-            >
-              Everyday
-            </Text>
-          </Pressable>
-          <Pressable onPress={() => setSelected("weekday")}>
-            <Text
-              style={
-                selected == "weekday"
-                  ? styles.repeatsOptionTrue
-                  : styles.repeatsOptionFalse
-              }
-            >
-              Weekday
-            </Text>
-          </Pressable>
-          <Pressable onPress={() => setSelected("weekend")}>
-            <Text
-              style={
-                selected == "weekend"
-                  ? styles.repeatsOptionTrue
-                  : styles.repeatsOptionFalse
-              }
-            >
-              Weekend
-            </Text>
-          </Pressable>
-          <Pressable
-            onPress={() => {
-              setCustomPopupOpen(true);
-            }}
-          >
-            <Text style={styles.repeatsOptionFalse}>Custom {`\u3009`}</Text>
-          </Pressable>
-          <Pressable
-            onPress={() => {
-              setPopupOpen(false);
-            }}
-          >
-            <Text style={styles.doneBtn}>Done</Text>
-          </Pressable>
-        </View>
-      )}
-    </View>
+    // <View style={styles.container}>
+    //   {popupOpen && (
+    //     <View style={styles.menuContainer}>
+    //       {/* ROWS
+    //       exit
+    //       title
+    //       Everyday --- checkmark
+    //       Weekdays --- checkmark
+    //       Weekend ---- checkmark
+    //       Custom ----- RepeatsCustomPopup
+    //     */}
+    //       <Pressable onPress={() => setPopupOpen(false)}>
+    //         <Text style={styles.exitBtn}>Exit</Text>
+    //       </Pressable>
+    //       <Text style={text.heroText}>Alarm Repeats</Text>
+    //       <Pressable onPress={() => setSelected("everyday")}>
+    //         <Text
+    //           style={
+    //             selected == "everyday"
+    //               ? styles.repeatsOptionTrue
+    //               : styles.repeatsOptionFalse
+    //           }
+    //         >
+    //           Everyday
+    //         </Text>
+    //       </Pressable>
+    //       <Pressable onPress={() => setSelected("weekday")}>
+    //         <Text
+    //           style={
+    //             selected == "weekday"
+    //               ? styles.repeatsOptionTrue
+    //               : styles.repeatsOptionFalse
+    //           }
+    //         >
+    //           Weekday
+    //         </Text>
+    //       </Pressable>
+    //       <Pressable onPress={() => setSelected("weekend")}>
+    //         <Text
+    //           style={
+    //             selected == "weekend"
+    //               ? styles.repeatsOptionTrue
+    //               : styles.repeatsOptionFalse
+    //           }
+    //         >
+    //           Weekend
+    //         </Text>
+    //       </Pressable>
+    //       <Pressable
+    //         onPress={() => {
+    //           setCustomPopupOpen(true);
+    //         }}
+    //       >
+    //         <Text style={styles.repeatsOptionFalse}>Custom {`\u3009`}</Text>
+    //       </Pressable>
+    //       <Pressable
+    //         onPress={() => {
+    //           setPopupOpen(false);
+    //         }}
+    //       >
+    //         <Text style={styles.doneBtn}>Done</Text>
+    //       </Pressable>
+    //     </View>
+    //   )}
+    // </View>
+
+    <View></View>
   );
 };
 

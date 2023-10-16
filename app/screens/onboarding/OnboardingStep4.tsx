@@ -4,6 +4,8 @@ import {
   StyleSheet,
   ActivityIndicator,
   Image,
+  KeyboardAvoidingView,
+  Platform,
   Pressable,
 } from "react-native";
 import React, { useEffect, useState } from "react";
@@ -18,6 +20,7 @@ import OnboardingHeader from "./OnboardingHeader";
 import ContinueButton from "./ContinueButton";
 import useUserData from "../../hooks/useUserData";
 import TimeSelector from "./TimeSelector";
+import { commonStyles } from "../../../utils/commonStyles";
 
 // START COMPONENT
 const OnboardingStep4 = ({ navigation, currentUser }) => {
@@ -85,8 +88,12 @@ const OnboardingStep4 = ({ navigation, currentUser }) => {
   }, [goalTime]);
 
   return (
-    <>
-      <View style={styles.container}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "position"}
+      keyboardVerticalOffset={50}
+      style={{ flex: 1, backgroundColor: colors.background }}
+    >
+      <View style={commonStyles.onboardingContainer}>
         {/* HEADER */}
         <OnboardingHeader
           page={"4"}
@@ -148,13 +155,13 @@ const OnboardingStep4 = ({ navigation, currentUser }) => {
 
           {/* CALCULATE WAKE HOURS */}
           {bedTimeSelected ? (
-            <Text style={{ color: colors.textWhite, textAlign: "center" }}>
+            <Text style={styles.calculateOtherTime}>
               Calculated Wake Up Time:{" "}
               {/* calculate the wake up time by the hours + durationgoal */}
               {wakeTime}.
             </Text>
           ) : (
-            <Text style={{ color: colors.textWhite, textAlign: "center" }}>
+            <Text style={styles.calculateOtherTime}>
               Calculated Bed Time: {/* calculate bed time by the hours - durationgoal */}
               {bedTime}.
             </Text>
@@ -162,7 +169,7 @@ const OnboardingStep4 = ({ navigation, currentUser }) => {
         </View>
 
         {/* CONTINUE BUTTON OR LOADING INDICATOR */}
-        <View style={styles.container}>
+        <View style={commonStyles.onboardingContainer}>
           {loading ? (
             <ActivityIndicator size="large" color="white" />
           ) : (
@@ -175,7 +182,7 @@ const OnboardingStep4 = ({ navigation, currentUser }) => {
           )}
         </View>
       </View>
-    </>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -205,12 +212,13 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     width: "100%",
-    padding: 40,
+    paddingHorizontal: 40,
   },
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    backgroundColor: colors.background,
+  calculateOtherTime: {
+    color: colors.textWhite,
+    textAlign: "center",
+    width: "150%",
+    alignSelf: "center",
   },
   formContainer: {
     paddingHorizontal: 70,
