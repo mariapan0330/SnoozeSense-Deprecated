@@ -14,6 +14,8 @@ const Tabs = ({ currentUser }) => {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
+        tabBarStyle: {backgroundColor: '#121524'},
+        tabBarIconStyle:{color: '#C6C6C6'},
         tabBarIcon: ({ focused }) => {
           let iconName;
 
@@ -26,8 +28,8 @@ const Tabs = ({ currentUser }) => {
           } else if (route.name === 'Account') {
             iconName = require('../images/account.png');
           }
-
-          return <Image source={iconName} style={{ width: 24, height: 24 }} />;
+          const tintColor = focused ? '#9174D0': '#C6C6C6'
+          return <Image source={iconName} style={{ width: 24, height: 24, tintColor: tintColor }} />;
         },
       })}
     >
