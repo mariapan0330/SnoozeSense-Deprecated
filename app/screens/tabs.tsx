@@ -1,12 +1,12 @@
 import { View, Text, Image, ImageSourcePropType } from "react-native";
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import HomeScreen from "../screens/Home";
-import CalendarScreen from "../screens/Calendar";
-import ChallengesScreen from "../screens/Challenges";
-import AccountScreen from "../screens/Account";
+import HomeScreen from "./Home";
+import CalendarScreen from "./Calendar";
+import ChallengesScreen from "./Challenges";
+import AccountScreen from "./Account";
 import { Calendar } from "react-native-calendars";
-import Challenges from "../screens/Challenges";
+import Challenges from "./Challenges";
 
 const Tab = createBottomTabNavigator();
 
