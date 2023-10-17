@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import useUserData from "../hooks/useUserData";
 import { calculateTime } from "../../services/handleTime";
-import PlaceholderTasks from "./PlaceholderTasks";
+import TaskList from "./TaskList";
 import { NavAndUserProps } from "../../types/componentTypes";
 import { colors } from "../../utils/colors";
 
@@ -60,7 +60,7 @@ const Home: React.FC<NavAndUserProps> = ({ navigation, currentUser }) => {
 
   useEffect(() => {
     if (userData) {
-      let time = userData[`${dayOfWeek}daySleepTime`];
+      let time = userData[`generalSleepTime`];
       // calls calculateTime which converts the time stored in db to human readable 12H format
       // also accepts argument for # hours to add to the given time
       setBedtime(calculateTime(time) || "");
@@ -147,7 +147,7 @@ const Home: React.FC<NavAndUserProps> = ({ navigation, currentUser }) => {
           </View>
 
           {/* TASKS COMPONENT */}
-          <PlaceholderTasks currentUser={currentUser} />
+          <TaskList currentUser={currentUser} />
         </View>
       </View>
     </ScrollView>
