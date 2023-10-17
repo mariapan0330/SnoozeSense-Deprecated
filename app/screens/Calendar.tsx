@@ -12,6 +12,7 @@ import useUserData from "../hooks/useUserData";
 import { calculateTime } from "../../services/handleTime";
 import { updateTask } from "../../services/handleFirestore";
 import { Task } from "../../types/indexTypes";
+import { colors } from "../../utils/colors";
 
 function MyCalendar({ currentUser }) {
   const [selected, setSelected] = useState("");
@@ -22,8 +23,15 @@ function MyCalendar({ currentUser }) {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{flex:1}}>
       <ScrollView style={styles.calendarContainer}>
+      <View style={styles.goalContainer}>
+          <Text style={styles.goalText}>
+            {userData
+              ? `${userData.username}'s Sleep Goal: ${userData.sleepDurationGoal} Hours`
+              : "Loading..."}
+          </Text>
+        </View>
         <Calendar
           onDayPress={(day) => {
             setSelected(day.dateString);
@@ -36,13 +44,6 @@ function MyCalendar({ currentUser }) {
             },
           }}
         />
-        <View style={styles.goalContainer}>
-          <Text style={styles.goalText}>
-            {userData
-              ? `${userData.username}'s Sleep Goal: ${userData.sleepDurationGoal} Hours`
-              : "Loading..."}
-          </Text>
-        </View>
         <View>
           <Text>
             {tasks ? (tasks.length > 0 ? "Today's Tasks" : "Today's Task") : "Loading..."}{" "}
@@ -78,8 +79,12 @@ function MyCalendar({ currentUser }) {
   );
 }
 const styles = StyleSheet.create({
+  mainContainer:{
+    backgroundColor: colors.background,
+  },
   calendarContainer: {
-    marginTop: 50,
+    backgroundColor: colors.background,
+    color: colors.textWhite,
   },
   goalContainer: {
     flexDirection: "row",
@@ -92,6 +97,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: "center",
     marginTop: 50,
+    color: colors.textWhite,
   },
   container: {
     flex: 1,
@@ -108,14 +114,16 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     flex: 1,
+    color: colors.textWhite,
   },
   taskText: {
     fontSize: 16,
     marginBottom: 5,
+    color: colors.textWhite,
   },
   timeframeText: {
     fontSize: 14,
-    color: "#666",
+    color: colors.textWhite,
   },
   circle: {
     width: 40,
