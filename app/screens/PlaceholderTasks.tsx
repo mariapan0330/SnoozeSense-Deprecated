@@ -24,7 +24,7 @@ const PlaceholderTasks = ({ currentUser }) => {
 
   return (
     <View style={styles.container}>
-      <Text>
+      <Text style={styles.tasktext}>
   {tasks && tasks.length > 0
     ? tasks.map((item: Task, i: number) => (
         <Text key={`task-${i}`}>
@@ -53,13 +53,14 @@ export default PlaceholderTasks;
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: "black",
+    backgroundColor: "#9174D0",
     padding: 10,
-    borderRadius: 8,
+    borderRadius: 20,
     alignItems: "center",
+    width: 240,
   },
   buttonText: {
-    color: "white",
+    color: "black",
     fontSize: 18,
   },
   container: {
@@ -68,6 +69,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     padding: 20,
+    color: "white",
   },
   message: {
     fontSize: 16,
@@ -75,4 +77,7 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     color: "gray",
   },
+  tasktext:{
+    color: "white",
+  }
 });
