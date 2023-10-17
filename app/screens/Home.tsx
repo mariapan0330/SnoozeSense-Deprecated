@@ -14,7 +14,7 @@ import { calculateTime } from "../../services/handleTime";
 import PlaceholderTasks from "./PlaceholderTasks";
 import { NavAndUserProps } from "../../types/componentTypes";
 import { colors } from "../../utils/colors";
-import ScreenBrightness from 'react-native-screen-brightness'
+import ScreenBrightness from "react-native-screen-brightness";
 
 const getNext14Days: () => { day: string; date: number }[] = () => {
   const abbreviatedDays = ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"];
@@ -75,7 +75,7 @@ const Home: React.FC<NavAndUserProps> = ({ navigation, currentUser }) => {
         const currentTime = new Date();
         const [bedHour, bedMinute] = bedtime.split(":").map(Number);
         const [wakeHour, wakeMinute] = wakeUpTime.split(":").map(Number);
-        
+
         const bedtimeDate = new Date();
         bedtimeDate.setHours(bedHour, bedMinute);
 
@@ -85,7 +85,7 @@ const Home: React.FC<NavAndUserProps> = ({ navigation, currentUser }) => {
         if (currentTime >= bedtimeDate && currentTime <= wakeTimeDate) {
           ScreenBrightness.setBrightness(0.1); // Setting screen brightness to low (dim)
         } else {
-          ScreenBrightness.setBrightness(1);  // Resetting screen brightness to default
+          ScreenBrightness.setBrightness(1); // Resetting screen brightness to default
         }
       };
 
