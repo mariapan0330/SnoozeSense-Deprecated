@@ -14,7 +14,7 @@ import { calculateTime } from "../../services/handleTime";
 import PlaceholderTasks from "./PlaceholderTasks";
 import { NavAndUserProps } from "../../types/componentTypes";
 import { colors } from "../../utils/colors";
-import ScreenBrightness from 'react-native-screen-brightness'
+import * as Brightness from "expo-brightness";
 
 const getNext14Days: () => { day: string; date: number }[] = () => {
   const abbreviatedDays = ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"];
@@ -70,32 +70,24 @@ const Home: React.FC<NavAndUserProps> = ({ navigation, currentUser }) => {
   }, [userData]);
 
   useEffect(() => {
-    if (isBedtimeEnabled) {
-      const checkTime = () => {
-        const currentTime = new Date();
-        const [bedHour, bedMinute] = bedtime.split(":").map(Number);
-        const [wakeHour, wakeMinute] = wakeUpTime.split(":").map(Number);
-        
-        const bedtimeDate = new Date();
-        bedtimeDate.setHours(bedHour, bedMinute);
+    (async () => {
+      const { status } = await Brightness.requestPermissionsAsync();
+      if (status !== 'granted') {
+        alert('Brightness permission is required');
+      }
+    })();
+  }, []);
 
-        const wakeTimeDate = new Date();
-        wakeTimeDate.setHours(wakeHour, wakeMinute);
+  useEffect(() => {
+    (async () => {
+      if (isBedtimeEnabled) {
+        await Brightness.setSystemBrightnessAsync(0.1);  // Set brightness to low (dim)
+      } else {
+        await Brightness.setSystemBrightnessAsync(1);  // Reset brightness to default
+      }
+    })();
+  }, [isBedtimeEnabled]);
 
-        if (currentTime >= bedtimeDate && currentTime <= wakeTimeDate) {
-          ScreenBrightness.setBrightness(0.1); // Setting screen brightness to low (dim)
-        } else {
-          ScreenBrightness.setBrightness(1);  // Resetting screen brightness to default
-        }
-      };
-
-      const intervalId = setInterval(checkTime, 60000); // Checking every minute
-
-      return () => {
-        clearInterval(intervalId); // Cleanup interval on component unmount
-      };
-    }
-  }, [isBedtimeEnabled, bedtime, wakeUpTime]);
 
   return (
     <ScrollView style={[{ flex: 1 }, styles.backgroundContainer]}>
