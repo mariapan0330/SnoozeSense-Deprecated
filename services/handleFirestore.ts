@@ -97,6 +97,11 @@ export const addChallenge = async (email: string, challengeToAdd) => {
   addToSubcollection(email, challengeToAdd, "challenge");
 };
 
+export const addSleepLog = async (email: string, sleepLogToAdd) => {
+  // Attempts to APPEND a new Challenge to the existing Challenge list.
+  addToSubcollection(email, sleepLogToAdd, "sleepLog");
+};
+
 const addToSubcollection = async (email: string, objToAdd, subcollection: string) => {
   /*
       Handles all adding to subcollection one step in from user profile
@@ -111,7 +116,7 @@ const addToSubcollection = async (email: string, objToAdd, subcollection: string
       "users",
       email,
       `${subcollection}s`, // enters the provided subcollection
-      objToAdd[`${subcollection}Title`]
+      objToAdd[`${subcollection}${subcollection === "sleepLog" ? "Date" : "Title"}`]
     );
     // gets the current user data to generate a ChallengeID that is its Challenge index
     // const userDocSnapshot = await getDoc(userDocRef);
@@ -214,6 +219,11 @@ const challengeReference = {
   isSaved: "boolean",
 };
 
+const sleepLogReference = {
+  sleepLogDate: "string",
+  userCompletedEverything: "boolean",
+};
+
 const validateObjToUpdate = (objToUpdate, fieldsReference) => {
   /* 
     Validates that the field exists on the user object and is the correct data type.
@@ -231,6 +241,12 @@ const validateObjToUpdate = (objToUpdate, fieldsReference) => {
         const timeRegex = /^\d{1,2} \d{2} [apAP][mM]$/;
         if (!timeRegex.test(objToUpdate[key])) {
           return `Invalid value for key ${key}. ${key} should be a string of "HH MM AA" where HH is 1 or 2 numbers and AA is AM or PM`;
+        }
+      }
+      if (key.endsWith("Date")) {
+        const dateRegex = /^(0[1-9]|1[0-2]) (0[1-9]|[12][0-9]|3[01]) \d{4}$/;
+        if (!dateRegex.test(objToUpdate[key])) {
+          return `Invalid value for key ${key}. ${key} should be a string of "DD MM YYYY"`;
         }
       }
     } else {
