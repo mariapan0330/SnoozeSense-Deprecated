@@ -7,6 +7,8 @@ import {
   Platform,
   Image,
   Pressable,
+  ScrollView,
+  SafeAreaView,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { updateUserFields } from "../../../services/handleFirestore";
@@ -33,11 +35,35 @@ const OnboardingStep5 = ({ navigation, currentUser, setCurrentUserIsNew }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const { userData } = useUserData(currentUser.email);
 
+  // TODO: I don't think this does what it's supposed to do.
   const handleSubmitAlarm = async () => {
     if (repeats !== "") {
       setLoading(true);
       try {
-        // updateUserFields(currentUser.email, { generalSleepTime: goalTime });
+        if (repeats === "Everyday") {
+          updateUserFields(currentUser.email, {
+            sundaySleepTime: userData.generalSleepTime,
+            mondaySleepTime: userData.generalSleepTime,
+            tuesdaySleepTime: userData.generalSleepTime,
+            wednesdaySleepTime: userData.generalSleepTime,
+            thursdaySleepTime: userData.generalSleepTime,
+            fridaySleepTime: userData.generalSleepTime,
+            saturdaySleepTime: userData.generalSleepTime,
+          });
+        } else if (repeats === "Weekdays") {
+          updateUserFields(currentUser.email, {
+            mondaySleepTime: userData.generalSleepTime,
+            tuesdaySleepTime: userData.generalSleepTime,
+            wednesdaySleepTime: userData.generalSleepTime,
+            thursdaySleepTime: userData.generalSleepTime,
+            fridaySleepTime: userData.generalSleepTime,
+          });
+        } else if (repeats === "Weekends") {
+          updateUserFields(currentUser.email, {
+            sundaySleepTime: userData.generalSleepTime,
+            saturdaySleepTime: userData.generalSleepTime,
+          });
+        }
         navigation.navigate("Step5");
       } catch (error) {
         console.error("Error submitting sleep schedule: ", error);
@@ -74,134 +100,154 @@ const OnboardingStep5 = ({ navigation, currentUser, setCurrentUserIsNew }) => {
   }, [repeats]);
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "position"}
-      keyboardVerticalOffset={-50}
-      style={{ flex: 1 }}
-    >
-      <View style={commonStyles.onboardingContainer}>
-        {/* HEADER */}
-        <OnboardingHeader
-          page={"5"}
-          navigation={navigation}
-          progressPercent={(5 / 6) * 100}
-          prevPageNavigation={"Step4"}
-        />
-        {/* LOGIN FORM */}
-        <View style={styles.formContainer}>
-          <Text style={text.heroText}>{"\n"}Create Alarm</Text>
-          <View style={styles.hoursRecommendation}>
-            <Image source={require("../../images/white_clock.png")} style={styles.icon} />
-            <Text style={text.subtitle}>
-              {"\t"}
-              {userData && userData.sleepDurationGoal} Hours
-            </Text>
-          </View>
+    <SafeAreaView style={{ backgroundColor: colors.background }}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "position"}
+        keyboardVerticalOffset={-50}
+        style={{ display: "flex" }}
+      >
+        <ScrollView style={{ height: "100%" }}>
+          {/* <ScrollView style={{ flex: 1 }}> */}
+          <View style={commonStyles.onboardingContainer}>
+            {/* HEADER */}
+            <OnboardingHeader
+              page={"5"}
+              navigation={navigation}
+              progressPercent={(5 / 6) * 100}
+              prevPageNavigation={"Step4"}
+            />
+            {/* ALARM FORM */}
+            <View style={styles.formContainer}>
+              <Text style={text.heroText}>{"\n"}Create Alarm</Text>
+              <View style={styles.hoursRecommendation}>
+                <Image
+                  source={require("../../images/white_clock.png")}
+                  style={styles.icon}
+                />
+                <Text style={text.subtitle}>
+                  {"\t"}
+                  {userData && userData.sleepDurationGoal} Hours
+                </Text>
+              </View>
 
-          {/* BED TIME AND WAKE UP TIME BOX */}
-          <View style={[styles.bedOrWakeSelector, { paddingTop: 40 }]}>
-            {/* Bedtime Box: */}
-            <Pressable
-              style={styles.bedOrWakeBox}
-              onPress={() => navigation.navigate("Step4")}
-            >
-              <Image source={require("../../images/blue_moon.png")} style={styles.icon} />
-              <Text style={[text.subtitle, { color: colors.textWhite }]}>
-                {userData && calculateTime(userData.generalSleepTime)}
-              </Text>
-              <Text style={{ color: colors.textWhite }}>Bed Time</Text>
-            </Pressable>
-
-            {/* Wake Up Box: */}
-            <Pressable
-              style={styles.bedOrWakeBox}
-              onPress={() => navigation.navigate("Step4")}
-            >
-              <Image
-                source={require("../../images/yellow_sun.png")}
-                style={styles.icon}
-              />
-              <Text style={[text.subtitle, { color: colors.textWhite }]}>
-                {userData && calculateTime(userData.generalWakeTime)}
-              </Text>
-              <Text style={{ color: colors.textWhite }}>Wake Up</Text>
-            </Pressable>
-          </View>
-          <View style={styles.tapToEditContainer}>
-            <Text style={styles.tapToEdit}>Tap to edit</Text>
-            <Text style={styles.tapToEdit}>Tap to edit</Text>
-          </View>
-
-          {/* TOGGLE TIME */}
-          {/* <TimeSelector setGoalTime={setGoalTime} /> */}
-
-          {/* ALARM SETTINGS */}
-          {/* Row 1: Repeats -------------- Everyday > */}
-          {/* Row 2: Bed Time Reminder -------- None > */}
-          {/* Row 3: Sound ---------------------- On > */}
-          <View style={styles.alarmSettingsContainer}>
-            <Pressable style={styles.alarmSettingsRow} onPress={handleRepeatsPress}>
-              <Text style={styles.settingHeader}>Repeats</Text>
-              <Text style={styles.settingValue}>
-                {repeats} <Text style={styles.settingsArrow}> {`\u3009`}</Text>
-              </Text>
-            </Pressable>
-
-            <Pressable
-              style={styles.alarmSettingsRow}
-              onPress={handleBedTimeReminderPress}
-            >
-              <Text style={styles.settingHeader}>Bed Time Reminder</Text>
-              <Text style={styles.settingValue}>
-                {bedtimeReminder} <Text style={styles.settingsArrow}> {`\u3009`}</Text>
-              </Text>
-            </Pressable>
-
-            <Pressable
-              style={styles.alarmSettingsRow}
-              onPress={() => setWithSound((s) => !s)}
-            >
-              <Text style={styles.settingHeader}>Sound</Text>
-              <Text style={styles.settingValue}>
-                {withSound ? "On" : "Off"}{" "}
-                <Text style={styles.settingsArrow}> {`\u3009`}</Text>
-              </Text>
-            </Pressable>
-          </View>
-        </View>
-
-        {/* CONTINUE BUTTON OR LOADING INDICATOR */}
-        <View style={styles.container}>
-          {loading ? (
-            <ActivityIndicator size="large" color="white" />
-          ) : (
-            <View style={styles.buttonContainer}>
-              <Pressable>
-                <View
-                  style={[
-                    styles.button,
-                    {
-                      backgroundColor: colors.secondaryButton,
-                      marginVertical: 10,
-                      marginTop: 50,
-                    },
-                  ]}
+              {/* BED TIME AND WAKE UP TIME BOX */}
+              <View style={[styles.bedOrWakeSelector, { paddingTop: 40 }]}>
+                {/* Bedtime Box: */}
+                <Pressable
+                  style={styles.bedOrWakeBox}
+                  onPress={() => navigation.navigate("Step4")}
                 >
-                  <Text style={{ color: colors.secondaryButtonText }}>
-                    Create Another Timer
+                  <Image
+                    source={require("../../images/blue_moon.png")}
+                    style={styles.icon}
+                  />
+                  <Text style={[text.subtitle, { color: colors.textWhite }]}>
+                    {userData && calculateTime(userData.generalSleepTime)}
                   </Text>
-                </View>
-              </Pressable>
-              <ContinueButton
-                activeCondition={allFieldsFilled}
-                onPressFn={handleNavigateHome}
-              />
+                  <Text style={{ color: colors.textWhite }}>Bed Time</Text>
+                </Pressable>
+
+                {/* Wake Up Box: */}
+                <Pressable
+                  style={styles.bedOrWakeBox}
+                  onPress={() => navigation.navigate("Step4")}
+                >
+                  <Image
+                    source={require("../../images/yellow_sun.png")}
+                    style={styles.icon}
+                  />
+                  <Text style={[text.subtitle, { color: colors.textWhite }]}>
+                    {userData && calculateTime(userData.generalWakeTime)}
+                  </Text>
+                  <Text style={{ color: colors.textWhite }}>Wake Up</Text>
+                </Pressable>
+              </View>
+              <View style={styles.tapToEditContainer}>
+                <Text style={styles.tapToEdit}>Tap to edit</Text>
+                <Text style={styles.tapToEdit}>Tap to edit</Text>
+              </View>
+
+              {/* TOGGLE TIME */}
+              {/* <TimeSelector setGoalTime={setGoalTime} /> */}
+
+              {/* ALARM SETTINGS */}
+              {/* Row 1: Repeats -------------- Everyday > */}
+              {/* Row 2: Bed Time Reminder -------- None > */}
+              {/* Row 3: Sound ---------------------- On > */}
+              <View style={styles.alarmSettingsContainer}>
+                <Pressable style={styles.alarmSettingsRow} onPress={handleRepeatsPress}>
+                  <Text style={styles.settingHeader}>Repeats</Text>
+                  <Text style={styles.settingValue}>
+                    {repeats} <Text style={styles.settingsArrow}> {`\u3009`}</Text>
+                  </Text>
+                </Pressable>
+
+                <Pressable
+                  style={styles.alarmSettingsRow}
+                  onPress={handleBedTimeReminderPress}
+                >
+                  <Text style={styles.settingHeader}>Bed Time Reminder</Text>
+                  <Text style={styles.settingValue}>
+                    {bedtimeReminder}{" "}
+                    <Text style={styles.settingsArrow}> {`\u3009`}</Text>
+                  </Text>
+                </Pressable>
+
+                <Pressable
+                  style={styles.alarmSettingsRow}
+                  onPress={() => setWithSound((s) => !s)}
+                >
+                  <Text style={styles.settingHeader}>Sound</Text>
+                  <Text style={styles.settingValue}>
+                    {withSound ? "On" : "Off"}{" "}
+                    <Text style={styles.settingsArrow}> {`\u3009`}</Text>
+                  </Text>
+                </Pressable>
+              </View>
             </View>
-          )}
-        </View>
-        <RepeatsPopup popupOpen={popupOpen} setPopupOpen={setPopupOpen} />
-      </View>
-    </KeyboardAvoidingView>
+
+            {/* CONTINUE BUTTON OR LOADING INDICATOR */}
+            <View style={styles.container}>
+              {loading ? (
+                <ActivityIndicator size="large" color="white" />
+              ) : (
+                <View style={styles.buttonContainer}>
+                  <Pressable>
+                    <View
+                      style={[
+                        styles.button,
+                        {
+                          backgroundColor: colors.secondaryButton,
+                          marginVertical: 10,
+                          marginTop: 50,
+                        },
+                      ]}
+                    >
+                      <Text style={{ color: colors.secondaryButtonText }}>
+                        Create Another Alarm
+                      </Text>
+                    </View>
+                  </Pressable>
+                  <ContinueButton
+                    activeCondition={allFieldsFilled}
+                    onPressFn={handleNavigateHome}
+                  />
+                </View>
+              )}
+            </View>
+            {popupOpen && (
+              <RepeatsPopup
+                popupOpen={popupOpen}
+                setPopupOpen={setPopupOpen}
+                choice={repeats}
+                setChoice={setRepeats}
+              />
+            )}
+            {/* <RepeatsPopup popupOpen={popupOpen} setPopupOpen={setPopupOpen} /> */}
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 
@@ -243,6 +289,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     width: "100%",
+    height: "100%",
     padding: 40,
   },
   container: {
@@ -252,6 +299,7 @@ const styles = StyleSheet.create({
   },
   formContainer: {
     paddingHorizontal: 40,
+    flex: 1,
   },
   heroText: {
     fontWeight: "bold",

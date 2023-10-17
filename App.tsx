@@ -13,6 +13,8 @@
  *
  * 7. Enter that link into the Expo Go "Enter URL Manually" input box
  *
+ * from this:
+ * https://github.com/expo/expo/issues/16360
  */
 
 import { NavigationContainer } from "@react-navigation/native";
@@ -26,8 +28,7 @@ import OnboardingStep5 from "./app/screens/onboarding/OnboardingStep5";
 import React, { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { FIREBASE_AUTH, FIREBASE_DB } from "./services/FirebaseConfig";
-import Tabs from "./app/navigation/tabs";
-import { Text, View } from "react-native";
+import Tabs from "./app/screens/tabs";
 import { getFirestore, doc, getDoc } from "@firebase/firestore";
 import { AppNavProps } from "./types/indexTypes";
 import LoadingScreen from "./app/screens/LoadingScreen";

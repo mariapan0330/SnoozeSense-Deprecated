@@ -87,17 +87,17 @@ export const updateUserFields = async (email: string, fieldsToUpdate) => {
   }
 };
 
-export const addTask = async (email, taskToAdd) => {
+export const addTask = async (email: string, taskToAdd) => {
   // Attempts to APPEND a new task to the existing task list.
   addToSubcollection(email, taskToAdd, "task");
 };
 
-export const addChallenge = async (email, challengeToAdd) => {
+export const addChallenge = async (email: string, challengeToAdd) => {
   // Attempts to APPEND a new Challenge to the existing Challenge list.
   addToSubcollection(email, challengeToAdd, "challenge");
 };
 
-const addToSubcollection = async (email, objToAdd, subcollection) => {
+const addToSubcollection = async (email: string, objToAdd, subcollection: string) => {
   /*
       Handles all adding to subcollection one step in from user profile
       Validates with appropriate lists beforehand
@@ -125,12 +125,16 @@ const addToSubcollection = async (email, objToAdd, subcollection) => {
   }
 };
 
-export const updateTask = (email, taskTitle, taskFieldsToUpdate) => {
+export const updateTask = (email: string, taskTitle: string, taskFieldsToUpdate) => {
   // Attempts to MERGE the given object to the existing tasks
   updateSubCollection(email, taskTitle, taskFieldsToUpdate, taskReference, "task");
 };
 
-export const updateChallenge = (email, challengeTitle, challengeFieldsToUpdate) => {
+export const updateChallenge = (
+  email: string,
+  challengeTitle: string,
+  challengeFieldsToUpdate
+) => {
   // Attempts to MERGE the given object to the existing challenges
   updateSubCollection(
     email,
@@ -141,7 +145,13 @@ export const updateChallenge = (email, challengeTitle, challengeFieldsToUpdate) 
   );
 };
 
-const updateSubCollection = (email, objTitle, objToUpdate, reference, subcollection) => {
+const updateSubCollection = (
+  email: string,
+  objTitle: string,
+  objToUpdate,
+  reference,
+  subcollection: string
+) => {
   /* 
     Calls a validation before attempting.  
     Attempts to MERGE the given object to the existing subcollection

@@ -1,0 +1,37 @@
+How it work:
+
+- VISUALS: React Native with Typescript
+
+- AUTHENTICATION && DATABASE: Firebase
+    - Created an account with Firebase (Firebase console) & added a new project
+    - Told Firebase console what services we need (auth & DB)
+    - Initialized SnoozeSense as a Firebase app in FirebaseConfig.ts
+    - Initialized the Authentication and Firestore services we requested
+
+- AUTHENTICATION: Firebase Authentication
+    - Upon clicking login or sign up, submitted the given email/pw through Firebase Authentication
+    - FBAuth automatically validates the info you try to send (i.e. email already exists/user doesn't exist, pw too short, etc)
+    - Decided what to show on frontend if submission does/doesn't work
+
+- DATABASE: Firestore (serverless  & NoSQL structure)
+    - Decided how the database should be formatted according to good practice rules for Firestore (it's NoSQL)
+    - Formatted database as a collection of users where each user has field info and also contains subcollections for their sleep logs,
+      tasks, and challenges
+    - **CREATE & UPDATE (future: & DELETE)**: Created methods in handleFirestore.ts that allow devs to change add new items and update
+      existing items in the DB
+        - createNewUserWithDefaultValues
+        - updateUserFields
+        - addTask
+        - addChallenge
+        - updateTask
+        - updateChallenge
+    - Created behind the scenes methods in handleFirestore.ts that validate & submit the arguments a dev passes to the above functions
+        - addToSubcollection
+        - updateSubCollection
+        - validateObjToAdd
+        - validateObjToUpdate
+    - **RETRIEVE Requests**: Created useUserData hook with parameter of a user email 
+        - attempts to return the user data stored under that email
+        - does real-time data synchronization
+
+- NOTIFICATIONS: ... mysterious.. unknown...

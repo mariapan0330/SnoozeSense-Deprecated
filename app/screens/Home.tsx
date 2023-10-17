@@ -32,15 +32,7 @@ const todayDate = new Date().getDate(); //Current Date
 
 const Home: React.FC<NavAndUserProps> = ({ navigation, currentUser }) => {
   const { userData } = useUserData(currentUser.email);
-  const dayRef: string[] = [
-    "sun",
-    "mon",
-    "tues",
-    "wednes",
-    "thurs",
-    "fri",
-    "satur",
-  ];
+  const dayRef: string[] = ["sun", "mon", "tues", "wednes", "thurs", "fri", "satur"];
   const today = new Date();
   const dayOfWeek = dayRef[today.getDay()];
 
@@ -50,7 +42,20 @@ const Home: React.FC<NavAndUserProps> = ({ navigation, currentUser }) => {
   const [isWakeUpEnabled, setIsWakeUpEnabled] = useState(false);
   const [wakeUpTime, setWakeUpTime] = useState("7:00 AM");
   const days = getNext14Days();
-  const monthNames = ["January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November", "December"];
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
   const currentMonth = monthNames[new Date().getMonth()];
 
   useEffect(() => {
@@ -76,8 +81,7 @@ const Home: React.FC<NavAndUserProps> = ({ navigation, currentUser }) => {
             style={[
               styles.dayContainer,
               {
-                backgroundColor:
-                  item.date === todayDate ? "#534992" : "#212121",
+                backgroundColor: item.date === todayDate ? "#534992" : "#212121",
               },
             ]}
           >
@@ -87,28 +91,19 @@ const Home: React.FC<NavAndUserProps> = ({ navigation, currentUser }) => {
         )}
       />
       <View style={styles.mainContainer}>
-      <Text style={styles.sleepscheduletext}>Sleep Schedule</Text>
+        <Text style={styles.sleepscheduletext}>Sleep Schedule</Text>
         <View style={styles.goalContainer}>
-          <Image
-            source={require("../images/sleep_white.png")}
-            style={styles.icon}
-          />
+          <Image source={require("../images/sleep_white.png")} style={styles.icon} />
           <Text style={styles.goalText}>
             {userData
               ? `${userData.username}'s Sleep Goal: ${userData.sleepDurationGoal} hours`
               : "Loading..."}
           </Text>
-          <Image
-            source={require("../images/editwhite.png")}
-            style={styles.icon}
-          />
+          <Image source={require("../images/editwhite.png")} style={styles.icon} />
         </View>
         <View style={styles.container}>
           <View style={[styles.switchContainer, styles.bedtimeContainer]}>
-            <Image
-              source={require("../images/blue_moon.png")}
-              style={styles.icon}
-            />
+            <Image source={require("../images/blue_moon.png")} style={styles.icon} />
             <Text style={styles.timeText}>Bedtime</Text>
             <Text style={styles.timetime}>{bedtime}</Text>
             <Switch
@@ -120,10 +115,7 @@ const Home: React.FC<NavAndUserProps> = ({ navigation, currentUser }) => {
             />
           </View>
           <View style={[styles.switchContainer, styles.wakeUpContainer]}>
-            <Image
-              source={require("../images/sunyellow.png")}
-              style={styles.icon}
-            />
+            <Image source={require("../images/sunyellow.png")} style={styles.icon} />
             <Text style={styles.timeText}>Wake Up</Text>
             <Text style={styles.timetime}>{wakeUpTime}</Text>
             <Switch
@@ -156,12 +148,6 @@ const Home: React.FC<NavAndUserProps> = ({ navigation, currentUser }) => {
 
           {/* TASKS COMPONENT */}
           <PlaceholderTasks currentUser={currentUser} />
-
-          {/* <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText} onPress={() => FIREBASE_AUTH.signOut()}>
-              Log Out
-            </Text>
-          </TouchableOpacity> */}
         </View>
       </View>
     </ScrollView>
@@ -241,7 +227,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     color: colors.textWhite,
-    textAlign: "left",  // Align text to the left
+    textAlign: "left", // Align text to the left
   },
   icon: {
     width: 30,
@@ -265,7 +251,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     padding: 20,
     borderRadius: 8,
-    margin: 10,
+    margin: 20,
     backgroundColor: "#252A49",
   },
   timeText: {
@@ -273,7 +259,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     color: colors.textWhite,
   },
-  timetime:{
+  timetime: {
     fontSize: 16,
     color: colors.textWhite,
   },
@@ -281,24 +267,24 @@ const styles = StyleSheet.create({
     backgroundColor: "#252A49",
   },
   currentMonthText: {
-    color: '#f2f2f2',
-    fontFamily: 'inter',
+    color: "#f2f2f2",
+    // fontFamily: 'inter',
     fontSize: 18,
-    textAlign: 'left',
+    textAlign: "left",
     marginBottom: 0,
     marginLeft: 7,
   },
-  sleepscheduletext:{
-    color: '#f2f2f2',
-    fontFamily: 'inter',
+  sleepscheduletext: {
+    color: "#f2f2f2",
+    // fontFamily: 'inter',
     fontSize: 18,
-    textAlign: 'left',
+    textAlign: "left",
     marginBottom: 0,
     marginLeft: 7,
     marginTop: 30,
   },
   switches: {
-    transform: [{ scaleX: 1.1 }, { scaleY: 1.1 }],  // Scaling to 1.5 times the original size
+    transform: [{ scaleX: 1.1 }, { scaleY: 1.1 }], // Scaling to 1.5 times the original size
   },
 });
 
