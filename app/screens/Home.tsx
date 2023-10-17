@@ -72,21 +72,11 @@ const Home: React.FC<NavAndUserProps> = ({ navigation, currentUser }) => {
   useEffect(() => {
     (async () => {
       const { status } = await Brightness.requestPermissionsAsync();
-      if (status !== 'granted') {
-        alert('Brightness permission is required');
+      if (status === 'granted') {
+        Brightness.setSystemBrightnessAsync(1);
       }
     })();
   }, []);
-
-  useEffect(() => {
-    (async () => {
-      if (isBedtimeEnabled) {
-        await Brightness.setSystemBrightnessAsync(0.1);  // Set brightness to low (dim)
-      } else {
-        await Brightness.setSystemBrightnessAsync(1);  // Reset brightness to default
-      }
-    })();
-  }, [isBedtimeEnabled]);
 
 
   return (
@@ -130,7 +120,10 @@ const Home: React.FC<NavAndUserProps> = ({ navigation, currentUser }) => {
             <Switch
               trackColor={{ false: "#767577", true: "#686868" }}
               thumbColor={isBedtimeEnabled ? "#9174D0" : "#f4f3f4"}
-              onValueChange={() => setIsBedtimeEnabled((prev) => !prev)}
+              onValueChange={async (value) => {
+                setIsBedtimeEnabled(value);
+                await Brightness.setSystemBrightnessAsync(value ? 0.1 : 1.0);
+              }}
               value={isBedtimeEnabled}
               style={styles.switches}
             />
