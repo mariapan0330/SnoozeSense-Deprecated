@@ -251,7 +251,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     padding: 20,
     borderRadius: 8,
-    margin: 10,
+    margin: 20,
     backgroundColor: "#252A49",
   },
   timeText: {
