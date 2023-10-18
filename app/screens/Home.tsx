@@ -14,8 +14,11 @@ import { calculateTime } from "../../services/handleTime";
 import PlaceholderTasks from "./PlaceholderTasks";
 import { NavAndUserProps } from "../../types/componentTypes";
 import { colors } from "../../utils/colors";
-import * as Brightness from "expo-brightness";
+import * as Brightness from 'expo-brightness';
 
+const setLowBrightness = async () => {
+  await Brightness.setSystemBrightnessAsync(0.1);
+};
 const getNext14Days: () => { day: string; date: number }[] = () => {
   const abbreviatedDays = ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"];
   const today = new Date();
@@ -28,6 +31,24 @@ const getNext14Days: () => { day: string; date: number }[] = () => {
     };
   });
 };
+
+const setBrightness = async (value) => {
+  try {
+    await Brightness.setSystemBrightnessAsync(value);
+  } catch (e) {
+    console.error(e);
+  }
+};
+const getBrightness = async () => {
+  try {
+    const brightness = await Brightness.getSystemBrightnessAsync();
+    console.log(brightness);
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+
 
 const todayDate = new Date().getDate(); //Current Date
 
@@ -69,14 +90,14 @@ const Home: React.FC<NavAndUserProps> = ({ navigation, currentUser }) => {
     }
   }, [userData]);
 
-  useEffect(() => {
-    (async () => {
-      const { status } = await Brightness.requestPermissionsAsync();
-      if (status === 'granted') {
-        Brightness.setSystemBrightnessAsync(1);
-      }
-    })();
-  }, []);
+  const handleBedtimeToggle = async (isEnabled) => {
+    setIsBedtimeEnabled(isEnabled);
+    try {
+      await Brightness.setSystemBrightnessAsync(isEnabled ? 0.1 : 1.0);  // Sets brightness to 10% if enabled, 100% if disabled
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
 
   return (
@@ -120,10 +141,6 @@ const Home: React.FC<NavAndUserProps> = ({ navigation, currentUser }) => {
             <Switch
               trackColor={{ false: "#767577", true: "#686868" }}
               thumbColor={isBedtimeEnabled ? "#9174D0" : "#f4f3f4"}
-              onValueChange={async (value) => {
-                setIsBedtimeEnabled(value);
-                await Brightness.setSystemBrightnessAsync(value ? 0.1 : 1.0);
-              }}
               value={isBedtimeEnabled}
               style={styles.switches}
             />
@@ -135,7 +152,7 @@ const Home: React.FC<NavAndUserProps> = ({ navigation, currentUser }) => {
             <Switch
               trackColor={{ false: "#767577", true: "#686868" }}
               thumbColor={isWakeUpEnabled ? "#9174D0" : "#f4f3f4"}
-              onValueChange={() => setIsWakeUpEnabled((prev) => !prev)}
+              onValueChange={handleBedtimeToggle}
               value={isWakeUpEnabled}
               style={styles.switches}
             />
