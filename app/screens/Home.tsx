@@ -11,10 +11,9 @@ import {
 } from "react-native";
 import useUserData from "../hooks/useUserData";
 import { calculateTime } from "../../services/handleTime";
-import PlaceholderTasks from "./PlaceholderTasks";
+import TaskList from "./TaskList";
 import { NavAndUserProps } from "../../types/componentTypes";
 import { colors } from "../../utils/colors";
-import * as Brightness from 'expo-brightness';
 
 const setLowBrightness = async () => {
   await Brightness.setSystemBrightnessAsync(0.1);
@@ -82,7 +81,7 @@ const Home: React.FC<NavAndUserProps> = ({ navigation, currentUser }) => {
 
   useEffect(() => {
     if (userData) {
-      let time = userData[`${dayOfWeek}daySleepTime`];
+      let time = userData[`generalSleepTime`];
       // calls calculateTime which converts the time stored in db to human readable 12H format
       // also accepts argument for # hours to add to the given time
       setBedtime(calculateTime(time) || "");
@@ -90,15 +89,33 @@ const Home: React.FC<NavAndUserProps> = ({ navigation, currentUser }) => {
     }
   }, [userData]);
 
-  const handleBedtimeToggle = async (isEnabled) => {
-    setIsBedtimeEnabled(isEnabled);
-    try {
-      await Brightness.setSystemBrightnessAsync(isEnabled ? 0.1 : 1.0);  // Sets brightness to 10% if enabled, 100% if disabled
-    } catch (e) {
-      console.error(e);
-    }
-  };
+  useEffect(() => {
+    if (isBedtimeEnabled) {
+      const checkTime = () => {
+        const currentTime = new Date();
+        const [bedHour, bedMinute] = bedtime.split(":").map(Number);
+        const [wakeHour, wakeMinute] = wakeUpTime.split(":").map(Number);
+        
+        const bedtimeDate = new Date();
+        bedtimeDate.setHours(bedHour, bedMinute);
 
+        const wakeTimeDate = new Date();
+        wakeTimeDate.setHours(wakeHour, wakeMinute);
+
+        if (currentTime >= bedtimeDate && currentTime <= wakeTimeDate) {
+          ScreenBrightness.setBrightness(0.1); // Setting screen brightness to low (dim)
+        } else {
+          ScreenBrightness.setBrightness(1);  // Resetting screen brightness to default
+        }
+      };
+
+      const intervalId = setInterval(checkTime, 60000); // Checking every minute
+
+      return () => {
+        clearInterval(intervalId); // Cleanup interval on component unmount
+      };
+    }
+  }, [isBedtimeEnabled, bedtime, wakeUpTime]);
 
   return (
     <ScrollView style={[{ flex: 1 }, styles.backgroundContainer]}>
@@ -178,7 +195,7 @@ const Home: React.FC<NavAndUserProps> = ({ navigation, currentUser }) => {
           </View>
 
           {/* TASKS COMPONENT */}
-          <PlaceholderTasks currentUser={currentUser} />
+          <TaskList currentUser={currentUser} />
         </View>
       </View>
     </ScrollView>
